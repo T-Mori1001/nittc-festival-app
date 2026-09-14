@@ -9,9 +9,25 @@ import {
   MapPin,
   ChevronRight,
   X,
-  Instagram,
   ExternalLink,
 } from "lucide-react";
+
+// Lucideから削除されたInstagramアイコンをインラインSVGで定義
+const InstagramIcon = ({ className = "w-4 h-4" }: { className?: string }) => (
+  <svg
+    className={className}
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+  >
+    <rect width="20" height="20" x="2" y="2" rx="5" ry="5" />
+    <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
+    <line x1="17.5" x2="17.51" y1="6.5" y2="6.5" />
+  </svg>
+);
 
 interface StallItem {
   id: number;
@@ -681,7 +697,7 @@ export default function Page() {
                         onClick={(e) => e.stopPropagation()}
                         className="inline-flex items-center gap-1 text-pink-600 bg-pink-50 hover:bg-pink-100 px-2 py-1 rounded-full text-[10px] font-bold border border-pink-200 transition"
                       >
-                        <Instagram className="w-3 h-3" />
+                        <InstagramIcon className="w-3 h-3" />
                         <span>Instagram</span>
                       </a>
                     )}
@@ -773,7 +789,7 @@ export default function Page() {
                   rel="noopener noreferrer"
                   className="inline-flex items-center gap-1.5 text-white bg-gradient-to-r from-purple-500 via-pink-500 to-orange-500 hover:opacity-90 px-3 py-1.5 rounded-full text-xs font-bold shadow-sm transition"
                 >
-                  <Instagram className="w-4 h-4" />
+                  <InstagramIcon className="w-4 h-4" />
                   <span>公式 Instagram</span>
                   <ExternalLink className="w-3 h-3" />
                 </a>
