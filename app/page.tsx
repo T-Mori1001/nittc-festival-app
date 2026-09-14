@@ -9,14 +9,15 @@ import {
   MapPin,
   ChevronRight,
   X,
+  Instagram,
+  ExternalLink,
 } from "lucide-react";
 
 interface StallItem {
   id: number;
   title: string;
   category: "模擬店" | "クラス企画" | "キッチンカー";
-  subcategory: string;
-  grade: "1年" | "2年" | "3年" | "4年" | "外部" | "部活";
+  grade: string;
   dept: string;
   location: string;
   zoneId: string;
@@ -27,58 +28,194 @@ interface StallItem {
 }
 
 const STALLS_DATA: StallItem[] = [
+  // --- 1号館 (bldg1) ---
+  {
+    id: 1,
+    title: "ほっとサンド",
+    category: "模擬店",
+    grade: "1-1",
+    dept: "1年1組",
+    location: "1号館 1F 111教室",
+    zoneId: "bldg1",
+    description: "1-1による熱々で外はサクッ、中はジュワッ！香ばしい絶品ほっとサンド！",
+    icon: "🥪",
+    menu: ["ほっとサンド"]
+  },
+  {
+    id: 2,
+    title: "ドリンク",
+    category: "模擬店",
+    grade: "1-2",
+    dept: "1年2組",
+    location: "1号館 1F 112教室",
+    zoneId: "bldg1",
+    description: "1-2がお届けする冷たくてシュワっと美味しい各種ソフトドリンク！",
+    icon: "🍹",
+    menu: ["ソフトドリンク各種"]
+  },
+  {
+    id: 3,
+    title: "わたあめ",
+    category: "模擬店",
+    grade: "1-3",
+    dept: "1年3組",
+    location: "1号館 1F 121教室",
+    zoneId: "bldg1",
+    description: "1-3作！フワフワ甘くて可愛いビッグわたあめ！",
+    icon: "🍥",
+    menu: ["わたあめ"]
+  },
+  {
+    id: 4,
+    title: "クレープ",
+    category: "模擬店",
+    grade: "1-4",
+    dept: "1年4組",
+    location: "1号館 1F 122教室",
+    zoneId: "bldg1",
+    description: "1-4手作り生地のボリューム満点トッピングクレープ！",
+    icon: "🥞",
+    menu: ["手作りクレープ"]
+  },
+  {
+    id: 10,
+    title: "ゲームカフェ",
+    category: "クラス企画",
+    grade: "3E",
+    dept: "3年 電気・電子コース (3E)",
+    location: "1号館 1F 123教室",
+    zoneId: "bldg1",
+    description: "3Eみんなでワイワイ楽しめる対戦ゲーム＆レトロゲームが揃ったゲームカフェ！",
+    icon: "🎮"
+  },
+  {
+    id: 11,
+    title: "バー",
+    category: "クラス企画",
+    grade: "3I",
+    dept: "3年 情報コース (3I)",
+    location: "1号館 1F 132教室",
+    zoneId: "bldg1",
+    description: "3Iがお届けするおしゃれで落ち着いた雰囲気のノンアルコールバー！",
+    icon: "🍸"
+  },
+  {
+    id: 12,
+    title: "喫茶店",
+    category: "クラス企画",
+    grade: "3B",
+    dept: "3年 生物・化学コース (3B)",
+    location: "1号館 1F 133教室",
+    zoneId: "bldg1",
+    description: "3Bによるゆったり寛げる特製喫茶店！こだわりのドリンクでおもてなし。",
+    icon: "☕"
+  },
+  {
+    id: 13,
+    title: "ホスト",
+    category: "クラス企画",
+    grade: "4M",
+    dept: "4年 機械コース (4M)",
+    location: "1号館 1F 113教室",
+    zoneId: "bldg1",
+    description: "4Mのイケメンたちが華麗にお出迎え！？非日常の最高のおもてなし空間！",
+    icon: "🌹"
+  },
+  {
+    id: 15,
+    title: "カジノ",
+    category: "クラス企画",
+    grade: "4I",
+    dept: "4年 情報コース (4I)",
+    location: "1号館 1F 131教室",
+    zoneId: "bldg1",
+    description: "4I特製カジノ！本格的なテーブルゲームでスリリングな心理戦を楽しもう！",
+    icon: "🎲"
+  },
+
   // --- 第一体育館 (gym1) ---
   {
     id: 5,
-    title: "パリッとジューシー餃子",
+    title: "餃子",
     category: "模擬店",
-    subcategory: "フード",
-    grade: "2年",
-    dept: "機械 (2M)",
+    grade: "2M",
+    dept: "2年 機械コース (2M)",
     location: "第一体育館 模擬店エリア",
     zoneId: "gym1",
-    description: "2M（機械工学科）特製！鉄板で一気に焼き上げるパリッとジューシーな絶品焼き餃子！",
+    description: "2M特製！鉄板で一気に焼き上げるパリッとジューシーな絶品焼き餃子！",
     icon: "🥟",
-    menu: ["特製焼き餃子 (5個入)", "ピリ辛キムチ餃子"]
+    menu: ["特製焼き餃子"]
   },
   {
     id: 6,
-    title: "できたてポップコーン",
+    title: "ポップコーン",
     category: "模擬店",
-    subcategory: "スナック",
-    grade: "2年",
-    dept: "電気 (2E)",
+    grade: "2E",
+    dept: "2年 電気・電子コース (2E)",
     location: "第一体育館 模擬店エリア",
     zoneId: "gym1",
-    description: "2E（電気電子工学科）がお届けする弾ける香ばしさ！選べるフレーバーポップコーン！",
+    description: "2Eがお届けする弾ける香ばしさ！選べるフレーバーポップコーン！",
     icon: "🍿",
-    menu: ["バター醤油", "塩キャラメル", "コンソメ"]
+    menu: ["フレーバーポップコーン"]
   },
   {
     id: 7,
-    title: "山形名物 玉こん",
+    title: "玉こん",
     category: "模擬店",
-    subcategory: "フード",
-    grade: "2年",
-    dept: "情報 (2I)",
+    grade: "2I",
+    dept: "2年 情報コース (2I)",
     location: "第一体育館 模擬店エリア",
     zoneId: "gym1",
-    description: "2I（情報コース）秘伝の出汁がしっかり染み込んだ熱々の山形名物・玉こんにゃく！からしを添えてどうぞ！",
+    description: "2I秘伝の出汁がしっかり染み込んだ熱々の山形名物・玉こんにゃく！",
     icon: "🍡",
-    menu: ["特製出汁玉こんにゃく (1本)"]
+    menu: ["山形名物 玉こんにゃく"]
   },
   {
     id: 8,
-    title: "極上炭火風 焼き鳥",
+    title: "焼き鳥",
     category: "模擬店",
-    subcategory: "フード",
-    grade: "2年",
-    dept: "物質 (2B)",
+    grade: "2B",
+    dept: "2年 生物・化学コース (2B)",
     location: "第一体育館 模擬店エリア",
     zoneId: "gym1",
-    description: "2B（物質工学科）香ばしく焼き上げる秘伝タレ＆塩のやみつき焼き鳥！",
+    description: "2B香ばしく焼き上げる秘伝タレ＆塩のやみつき焼き鳥！",
     icon: "🍢",
-    menu: ["ももタレ", "皮塩", "つくね"]
+    menu: ["やみつき焼き鳥"]
+  },
+
+  // --- 7号館 (bldg7) ---
+  {
+    id: 9,
+    title: "お化け屋敷",
+    category: "クラス企画",
+    grade: "3M",
+    dept: "3年 機械コース (3M)",
+    location: "7号館 1F (711・712教室)",
+    zoneId: "bldg7",
+    description: "3Mギミック満載！機械コースの技術を結集した本格的な恐怖があなたを襲う…絶叫必至！",
+    icon: "👻"
+  },
+  {
+    id: 14,
+    title: "キッキングスナイパー",
+    category: "クラス企画",
+    grade: "4E",
+    dept: "4年 電気・電子コース (4E)",
+    location: "7号館 2F 722教室",
+    zoneId: "bldg7",
+    description: "4E動くターゲットを狙ってシュート！高得点を狙って豪華景品をゲットしよう！",
+    icon: "⚽"
+  },
+  {
+    id: 16,
+    title: "格付けチェック",
+    category: "クラス企画",
+    grade: "4B",
+    dept: "4年 生物・化学コース (4B)",
+    location: "7号館 マルチメディア教室",
+    zoneId: "bldg7",
+    description: "4Bあなたの一流度が試される！高級品と激安品を見破れるか！？全問正解で「一流高専生」の称号を！",
+    icon: "🍷"
   },
 
   // --- 昇降口前広場 (entrance) ---
@@ -86,166 +223,40 @@ const STALLS_DATA: StallItem[] = [
     id: 101,
     title: "ラーメン もっけだの",
     category: "キッチンカー",
-    subcategory: "ラーメン",
     grade: "外部",
     dept: "キッチンカー",
-    location: "学生昇降口前広場",
+    location: "学生昇降口前",
     zoneId: "entrance",
     description: "スープと麺にこだわり抜いた自慢の本格ラーメン！高専祭で味わう極上の一杯をご賞味あれ！",
     icon: "🍜",
     instagram: "https://www.instagram.com/mokkedanonoodle/",
-    menu: ["特製醤油ラーメン", "濃厚味噌ラーメン", "チャーシュー丼"]
+    menu: ["ラーメン"]
   },
   {
     id: 102,
     title: "祇園はんなりCafé",
     category: "キッチンカー",
-    subcategory: "和スイーツ",
     grade: "外部",
     dept: "キッチンカー",
-    location: "学生昇降口前広場",
+    location: "学生昇降口前",
     zoneId: "entrance",
     description: "とろける口溶けの本格本わらび餅や、出来立てふわふわのベビーカステラなど京都の味覚をお届け！",
     icon: "🍡",
     instagram: "https://www.instagram.com/gion_hannari_cafe/",
-    menu: ["極上本わらび餅", "焼きたてベビーカステラ", "抹茶ラテ"]
+    menu: ["本わらび餅", "ベビーカステラ等"]
   },
   {
     id: 103,
     title: "フェリチタプラス",
     category: "キッチンカー",
-    subcategory: "エスニック・ドリンク",
     grade: "外部",
     dept: "キッチンカー",
-    location: "学生昇降口前広場",
+    location: "学生昇降口前",
     zoneId: "entrance",
     description: "フルーツたっぷりのフレッシュスムージー＆スパイシーで食欲をそそる本格ガパオライス！",
     icon: "🥤",
     instagram: "https://www.instagram.com/felicitaplus.sakata/",
-    menu: ["特製ガパオライス", "季節のフルーツスムージー", "タピオカミルクティー"]
-  },
-
-  // --- 1号館 (bldg1) ---
-  {
-    id: 1,
-    title: "ほっとサンド 1-1",
-    category: "模擬店",
-    subcategory: "軽食",
-    grade: "1年",
-    dept: "1-1",
-    location: "1号館 1F (111教室)",
-    zoneId: "bldg1",
-    description: "1-1による熱々で外はサクッ、中はジュワッ！香ばしい絶品ほっとサンドをご賞味あれ！",
-    icon: "🥪",
-    menu: ["ハムチーズサンド", "ツナマヨサンド", "あんバターサンド"]
-  },
-  {
-    id: 2,
-    title: "ドリンクショップ 1-2",
-    category: "模擬店",
-    subcategory: "ドリンク",
-    grade: "1年",
-    dept: "1-2",
-    location: "1号館 1F (112教室)",
-    zoneId: "bldg1",
-    description: "1-2がお届けする冷たくてシュワっと美味しい各種ソフトドリンク＆スペシャルソーダ！",
-    icon: "🍹",
-    menu: ["メロンソーダ", "コーラ", "レモネード", "オレンジジュース"]
-  },
-  {
-    id: 3,
-    title: "カラフルわたあめ 1-3",
-    category: "模擬店",
-    subcategory: "スイーツ",
-    grade: "1年",
-    dept: "1-3",
-    location: "1号館 1F (121教室)",
-    zoneId: "bldg1",
-    description: "1-3作！フワフワ甘くて可愛い映え間違いなしのカラフルビッグわたあめ！",
-    icon: "🍥",
-    menu: ["レインボーわたあめ", "いちご味", "ブルーハワイ味"]
-  },
-  {
-    id: 4,
-    title: "モチモチクレープ 1-4",
-    category: "模擬店",
-    subcategory: "スイーツ",
-    grade: "1年",
-    dept: "1-4",
-    location: "1号館 1F (122教室)",
-    zoneId: "bldg1",
-    description: "1-4手作り生地のボリューム満点トッピングクレープ！甘党集合！",
-    icon: "🥞",
-    menu: ["チョコバナナ生クリーム", "イチゴスペシャル", "キャラメルナッツ"]
-  },
-  {
-    id: 10,
-    title: "RETRO & NEW ゲームカフェ",
-    category: "クラス企画",
-    subcategory: "体験・カフェ",
-    grade: "3年",
-    dept: "電気 (3E)",
-    location: "1号館 1F (123教室)",
-    zoneId: "bldg1",
-    description: "3Eみんなでワイワイ楽しめる対戦ゲーム＆懐かしのレトロゲームを取り揃えた憩いの空間！",
-    icon: "🎮",
-    menu: ["フリープレイ＋フリードリンク"]
-  },
-
-  // --- 7号館 (bldg7) ---
-  {
-    id: 9,
-    title: "戦慄のお化け屋敷 - 廃病棟の迷宮 -",
-    category: "クラス企画",
-    subcategory: "アトラクション",
-    grade: "3年",
-    dept: "機械 (3M)",
-    location: "7号館 1F (711・712教室)",
-    zoneId: "bldg7",
-    description: "3Mギミック満載！機械工学科の技術を結集した本格的な恐怖があなたを襲う…絶叫必至！",
-    icon: "👻",
-    menu: ["入場チケット"]
-  },
-  {
-    id: 14,
-    title: "キッキングスナイパー",
-    category: "クラス企画",
-    subcategory: "体感ゲーム",
-    grade: "4年",
-    dept: "電気 (4E)",
-    location: "7号館 2F (722教室)",
-    zoneId: "bldg7",
-    description: "4E動くターゲットを狙って力強くシュート！高得点を狙って豪華景品をゲットしよう！",
-    icon: "⚽",
-    menu: ["3球チャレンジ"]
-  },
-  {
-    id: 16,
-    title: "高専版・芸能人格付けチェック",
-    category: "クラス企画",
-    subcategory: "バラエティ",
-    grade: "4年",
-    dept: "物質 (4B)",
-    location: "7号館 1F (713教室)",
-    zoneId: "bldg7",
-    description: "4Bあなたの一流度が試される！高級品と激安品を見破れるか！？全問正解で「一流高専生」の称号を！",
-    icon: "🍷",
-    menu: ["格付け挑戦チケット"]
-  },
-
-  // --- 機械実習工場 (factory) ---
-  {
-    id: 20,
-    title: "ロボコン部 操縦体験＆超科学射的",
-    category: "クラス企画",
-    subcategory: "部活動体験",
-    grade: "部活",
-    dept: "ロボコン部",
-    location: "機械実習工場 1F",
-    zoneId: "factory",
-    description: "高専ロボコン出場機体を実際に自分で操縦しよう！精密メカでターゲットを打ち抜く射的ゲームも同時開催！",
-    icon: "🤖",
-    menu: ["操縦体験", "射的ゲーム"]
+    menu: ["スムージー", "ガパオライス等"]
   }
 ];
 
@@ -307,19 +318,19 @@ const CAMPUS_ZONES = [
     icon: "🏟️",
     top: "72%",
     left: "30%",
-    desc: "高専祭の超メイン会場！ステージプログラムと2年生4学科による焼き餃子・ポップコーン・玉こん・焼き鳥！"
+    desc: "高専祭の超メイン会場！ステージプログラムと2年生4コース（2M, 2E, 2I, 2B）による餃子・ポップコーン・玉こん・焼き鳥！"
   },
   {
     id: "entrance",
-    name: "昇降口前広場",
+    name: "学生昇降口前",
     subName: "キッチンカーエリア",
-    pinLabel: "昇降口前広場",
+    pinLabel: "学生昇降口前",
     color: "bg-amber-500",
     lightBg: "bg-amber-50 border-amber-300 text-amber-900",
     icon: "🚚",
     top: "58%",
     left: "63%",
-    desc: "人気のキッチンカー3店が集結！ラーメンもっけだの、祇園はんなりCafé、フェリチタプラス！"
+    desc: "話題のキッチンカー3店が集結！ラーメンもっけだの、祇園はんなりCafé、フェリチタプラス！"
   },
   {
     id: "bldg1",
@@ -331,7 +342,7 @@ const CAMPUS_ZONES = [
     icon: "🏫",
     top: "38%",
     left: "40%",
-    desc: "キャンパス中央に位置するメイン校舎。1年生の軽食・スイーツ模擬店や各種クラス企画を展開！"
+    desc: "キャンパス中央に位置するメイン校舎。1年生の各種模擬店および3・4年生の趣向を凝らしたクラス企画を展開！"
   },
   {
     id: "bldg7",
@@ -343,19 +354,7 @@ const CAMPUS_ZONES = [
     icon: "👻",
     top: "26%",
     left: "72%",
-    desc: "体験型アトラクション満載！機械工学科特製の恐怖お化け屋敷やキッキングスナイパー、格付けチェック！"
-  },
-  {
-    id: "factory",
-    name: "機械実習工場",
-    subName: "モノづくり拠点",
-    pinLabel: "実習工場",
-    color: "bg-emerald-500",
-    lightBg: "bg-emerald-50 border-emerald-300 text-emerald-900",
-    icon: "⚙️",
-    top: "16%",
-    left: "16%",
-    desc: "高専ならではの技術体験！全国大会出場のロボコン部機体を直接操縦できます！"
+    desc: "体験型アトラクション満載！3M特製お化け屋敷、4Eキッキングスナイパー、4B格付けチェック！"
   },
   {
     id: "parking",
@@ -383,7 +382,8 @@ export default function Page() {
       return (
         stall.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
         stall.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        stall.location.toLowerCase().includes(searchQuery.toLowerCase())
+        stall.location.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        stall.grade.toLowerCase().includes(searchQuery.toLowerCase())
       );
     });
   }, [searchQuery]);
@@ -399,7 +399,6 @@ export default function Page() {
       <div className="min-h-screen bg-[#FFFDF7] text-slate-800 flex flex-col items-center justify-between py-12 px-6 relative overflow-hidden select-none font-sans">
         {/* コンフェッティ（紙吹雪）装飾 */}
         <div className="absolute inset-0 pointer-events-none overflow-hidden">
-          {/* 上部・左右に散らばる紙吹雪 */}
           <div className="absolute top-4 left-4 w-4 h-6 bg-orange-400 rounded-sm rotate-12" />
           <div className="absolute top-3 right-4 w-5 h-3 bg-blue-500 rounded-sm -rotate-45" />
           <div className="absolute top-2 right-12 w-3 h-4 bg-pink-500 rounded-sm rotate-12" />
@@ -432,15 +431,16 @@ export default function Page() {
             TSURUOKA KOSEN FESTIVAL 2026
           </div>
 
-          {/* メインタイトル：「熱狂の高専祭」（高専祭の上にカーニバル） */}
-          <div className="flex flex-col items-center relative">
-            {/* ルビ風のカーニバル文字 */}
-            <span className="text-red-500 text-xs font-black tracking-widest mb-[-4px] block">
-              カーニバル
-            </span>
-            <h1 className="text-5xl sm:text-6xl font-black tracking-tight text-[#E53935] drop-shadow-sm font-sans">
-              熱狂の高専祭
-            </h1>
+          {/* メインタイトル：「熱狂の高専祭」（高専祭の真上にカーニバル） */}
+          <div className="flex items-baseline justify-center font-black tracking-tight text-[#E53935] drop-shadow-sm font-sans">
+            <span className="text-4xl sm:text-5xl">熱狂の</span>
+            <div className="relative inline-block ml-1">
+              {/* 「高専祭」の真上にぴったり配置されたカーニバル */}
+              <span className="absolute -top-3.5 left-1/2 -translate-x-1/2 text-[11px] sm:text-xs font-black text-rose-500 tracking-widest whitespace-nowrap">
+                カーニバル
+              </span>
+              <span className="text-5xl sm:text-6xl">高専祭</span>
+            </div>
           </div>
 
           {/* 日時バッジ（カプセルデザイン） */}
@@ -637,7 +637,7 @@ export default function Page() {
                 <Search className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" />
                 <input
                   type="text"
-                  placeholder="企画名・料理名・場所で検索..."
+                  placeholder="クラス・企画名・料理名・場所で検索..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   className="w-full pl-10 pr-4 py-2 bg-slate-50 border border-slate-200 rounded-2xl text-xs font-semibold"
@@ -650,21 +650,41 @@ export default function Page() {
                 <div
                   key={stall.id}
                   onClick={() => setModalItem(stall)}
-                  className="bg-white rounded-3xl p-4 border border-slate-200 shadow-sm cursor-pointer hover:shadow-md transition space-y-2"
+                  className="bg-white rounded-3xl p-4 border border-slate-200 shadow-sm cursor-pointer hover:shadow-md transition space-y-2 flex flex-col justify-between"
                 >
-                  <div className="flex items-center gap-3">
-                    <span className="text-3xl p-2 bg-slate-50 rounded-2xl">{stall.icon}</span>
-                    <div>
-                      <span className="text-[10px] font-black px-2 py-0.5 bg-orange-50 text-orange-700 rounded border border-orange-200">
-                        {stall.grade}
-                      </span>
-                      <h4 className="font-black text-sm text-slate-800 mt-0.5">{stall.title}</h4>
+                  <div className="space-y-2">
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-2">
+                        <span className="text-3xl p-2 bg-slate-50 rounded-2xl">{stall.icon}</span>
+                        <div>
+                          <span className="text-[10px] font-black px-2 py-0.5 bg-orange-100 text-orange-700 rounded border border-orange-200">
+                            {stall.grade}
+                          </span>
+                          <h4 className="font-black text-sm text-slate-800 mt-0.5">{stall.title}</h4>
+                        </div>
+                      </div>
                     </div>
+                    <p className="text-xs text-slate-600 line-clamp-2">{stall.description}</p>
                   </div>
-                  <p className="text-xs text-slate-600 line-clamp-2">{stall.description}</p>
-                  <div className="text-[11px] text-slate-500 font-bold pt-2 border-t flex items-center gap-1">
-                    <MapPin className="w-3.5 h-3.5 text-rose-500" />
-                    <span>{stall.location}</span>
+
+                  <div className="pt-2 border-t flex items-center justify-between text-[11px] text-slate-500 font-bold">
+                    <div className="flex items-center gap-1">
+                      <MapPin className="w-3.5 h-3.5 text-rose-500" />
+                      <span>{stall.location}</span>
+                    </div>
+
+                    {stall.instagram && (
+                      <a
+                        href={stall.instagram}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        onClick={(e) => e.stopPropagation()}
+                        className="inline-flex items-center gap-1 text-pink-600 bg-pink-50 hover:bg-pink-100 px-2 py-1 rounded-full text-[10px] font-bold border border-pink-200 transition"
+                      >
+                        <Instagram className="w-3 h-3" />
+                        <span>Instagram</span>
+                      </a>
+                    )}
                   </div>
                 </div>
               ))}
@@ -705,25 +725,59 @@ export default function Page() {
           <div className="bg-white border border-slate-200 text-slate-800 w-full max-w-md rounded-3xl p-6 shadow-2xl relative space-y-4">
             <button
               onClick={() => setModalItem(null)}
-              className="absolute right-4 top-4 p-2 rounded-full bg-slate-100 text-slate-500"
+              className="absolute right-4 top-4 p-2 rounded-full bg-slate-100 text-slate-500 hover:bg-slate-200 transition"
             >
               <X className="w-5 h-5" />
             </button>
             <div className="flex items-center gap-3">
               <span className="text-4xl p-3 bg-slate-50 rounded-2xl">{modalItem.icon}</span>
               <div>
-                <span className="text-xs font-extrabold px-2.5 py-0.5 rounded-full bg-orange-100 text-orange-700">
-                  {modalItem.grade}
-                </span>
+                <div className="flex items-center gap-1.5">
+                  <span className="text-xs font-extrabold px-2.5 py-0.5 rounded-full bg-orange-100 text-orange-700">
+                    {modalItem.grade}
+                  </span>
+                  <span className="text-xs font-bold text-slate-500">{modalItem.category}</span>
+                </div>
                 <h3 className="text-lg font-black text-slate-900 mt-0.5">{modalItem.title}</h3>
+                <p className="text-xs text-slate-500 font-bold">{modalItem.dept}</p>
               </div>
             </div>
+
             <p className="text-xs text-slate-600 font-medium bg-slate-50 p-3.5 rounded-2xl border border-slate-100">
               {modalItem.description}
             </p>
-            <div className="text-xs font-bold text-slate-700 flex items-center gap-1.5">
-              <MapPin className="w-4 h-4 text-rose-500" />
-              <span>場所: {modalItem.location}</span>
+
+            {modalItem.menu && modalItem.menu.length > 0 && (
+              <div className="space-y-1">
+                <span className="text-[11px] font-bold text-slate-400">提供内容・メニュー</span>
+                <div className="flex flex-wrap gap-1.5">
+                  {modalItem.menu.map((m, i) => (
+                    <span key={i} className="text-xs font-extrabold px-2.5 py-1 bg-amber-50 text-amber-800 rounded-lg border border-amber-200">
+                      {m}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            <div className="text-xs font-bold text-slate-700 flex items-center justify-between pt-2 border-t">
+              <div className="flex items-center gap-1.5">
+                <MapPin className="w-4 h-4 text-rose-500" />
+                <span>場所: {modalItem.location}</span>
+              </div>
+
+              {modalItem.instagram && (
+                <a
+                  href={modalItem.instagram}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-1.5 text-white bg-gradient-to-r from-purple-500 via-pink-500 to-orange-500 hover:opacity-90 px-3 py-1.5 rounded-full text-xs font-bold shadow-sm transition"
+                >
+                  <Instagram className="w-4 h-4" />
+                  <span>公式 Instagram</span>
+                  <ExternalLink className="w-3 h-3" />
+                </a>
+              )}
             </div>
           </div>
         </div>
