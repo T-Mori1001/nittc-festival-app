@@ -396,44 +396,80 @@ export default function Page() {
 
   if (!isEntered) {
     return (
-      <div className="min-h-screen bg-[#FFFDF7] text-slate-800 flex flex-col items-center justify-center relative overflow-hidden px-6 text-center select-none font-sans">
-        <style>{`
-          @import url('https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@700;800;900&display=swap');
-          .font-pop { font-family: 'M PLUS Rounded 1c', sans-serif; }
-          @keyframes charPopIn {
-            0% { opacity: 0; transform: translateY(20px) scale(0.7); }
-            70% { opacity: 1; transform: translateY(-4px) scale(1.08); }
-            100% { opacity: 1; transform: translateY(0) scale(1); }
-          }
-          .animate-char { animation: charPopIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards; opacity: 0; }
-        `}</style>
+      <div className="min-h-screen bg-[#FFFDF7] text-slate-800 flex flex-col items-center justify-between py-12 px-6 relative overflow-hidden select-none font-sans">
+        {/* コンフェッティ（紙吹雪）装飾 */}
+        <div className="absolute inset-0 pointer-events-none overflow-hidden">
+          {/* 上部・左右に散らばる紙吹雪 */}
+          <div className="absolute top-4 left-4 w-4 h-6 bg-orange-400 rounded-sm rotate-12" />
+          <div className="absolute top-3 right-4 w-5 h-3 bg-blue-500 rounded-sm -rotate-45" />
+          <div className="absolute top-2 right-12 w-3 h-4 bg-pink-500 rounded-sm rotate-12" />
+          <div className="absolute top-4 right-20 w-4 h-3 bg-teal-500 rounded-sm rotate-45" />
 
-        <div className="inline-flex items-center gap-1.5 text-teal-600 font-extrabold text-xs sm:text-sm tracking-[0.25em] mb-4 z-10 font-pop">
-          TSURUOKA KOSEN FESTIVAL 2026
+          <div className="absolute top-14 left-1/2 -translate-x-32 w-5 h-3 bg-pink-400 rounded-sm -rotate-12" />
+          <div className="absolute top-16 left-1/2 -translate-x-12 w-6 h-3 bg-orange-500 rounded-sm rotate-12" />
+          <div className="absolute top-14 left-1/2 translate-x-12 w-4 h-3 bg-teal-400 rounded-sm -rotate-45" />
+          <div className="absolute top-16 left-1/2 translate-x-24 w-4 h-3 bg-red-400 rounded-sm rotate-45" />
+
+          <div className="absolute top-32 left-10 w-6 h-4 bg-blue-600 rounded-sm -rotate-45" />
+          <div className="absolute top-36 left-24 w-4 h-5 bg-pink-500 rounded-sm rotate-12" />
+          <div className="absolute top-36 right-24 w-5 h-4 bg-teal-500 rounded-sm -rotate-12" />
+
+          <div className="absolute top-48 left-16 w-5 h-3 bg-amber-400 rounded-sm rotate-45" />
+          <div className="absolute top-52 left-32 w-4 h-6 bg-amber-500 rounded-sm -rotate-12" />
+          <div className="absolute top-56 left-48 w-4 h-3 bg-red-500 rounded-sm rotate-12" />
+          <div className="absolute top-52 right-44 w-3 h-5 bg-blue-500 rounded-sm -rotate-45" />
+
+          <div className="absolute bottom-20 left-2 w-5 h-3 bg-red-500 rounded-sm rotate-12" />
         </div>
 
-        {/* トップ画面タイトル：ふりがな（カーニバル）表記 */}
-        <h1 className="font-pop flex flex-col items-center justify-center tracking-tight mb-6 z-10">
-          <div className="flex items-center gap-1.5 mb-1 bg-amber-100 text-amber-800 px-3 py-1 rounded-full border border-amber-300 shadow-sm">
-            <span className="text-[11px] font-black bg-amber-500 text-white px-1.5 py-0.2 rounded">ふりがな</span>
-            <span className="text-sm font-black tracking-widest">カーニバル</span>
-          </div>
-          <div className="text-4xl sm:text-6xl text-rose-500 font-black drop-shadow-sm flex justify-center gap-0.5">
-            {"熱狂の高専祭".split("").map((char, index) => (
-              <span key={index} className="animate-char inline-block" style={{ animationDelay: `${0.1 + index * 0.07}s` }}>
-                {char}
-              </span>
-            ))}
-          </div>
-        </h1>
+        {/* 空白スペーサー */}
+        <div />
 
-        <button
-          onClick={() => setIsEntered(true)}
-          className="font-pop px-10 py-4 rounded-full bg-gradient-to-r from-orange-500 via-amber-500 to-rose-500 text-white text-lg font-black tracking-wider shadow-lg hover:scale-105 active:scale-95 transition-all duration-300 flex items-center gap-2 border border-white/40 z-10"
-        >
-          <span>マップを見る</span>
-          <span className="text-xl">🗺️</span>
-        </button>
+        {/* メインコンテンツブロック */}
+        <div className="w-full max-w-sm flex flex-col items-center text-center z-10 my-auto space-y-6">
+          {/* サブタイトル英字 */}
+          <div className="text-teal-600 font-extrabold text-xs tracking-[0.25em] font-sans">
+            TSURUOKA KOSEN FESTIVAL 2026
+          </div>
+
+          {/* メインタイトル：「熱狂の高専祭」（高専祭の上にカーニバル） */}
+          <div className="flex flex-col items-center relative">
+            {/* ルビ風のカーニバル文字 */}
+            <span className="text-red-500 text-xs font-black tracking-widest mb-[-4px] block">
+              カーニバル
+            </span>
+            <h1 className="text-5xl sm:text-6xl font-black tracking-tight text-[#E53935] drop-shadow-sm font-sans">
+              熱狂の高専祭
+            </h1>
+          </div>
+
+          {/* 日時バッジ（カプセルデザイン） */}
+          <div className="bg-white/95 border border-slate-200/80 shadow-sm rounded-full px-5 py-2.5 flex items-center justify-center gap-2 text-xs font-extrabold text-slate-700">
+            <span className="text-rose-600">2026.10.24 SAT</span>
+            <span className="text-slate-300">|</span>
+            <span>9:30〜15:30</span>
+            <span className="text-slate-400 font-normal">@鶴岡高専</span>
+          </div>
+
+          {/* 入場ボタン */}
+          <div className="pt-4 w-full flex flex-col items-center space-y-3">
+            <button
+              onClick={() => setIsEntered(true)}
+              className="w-full max-w-[260px] py-4 rounded-full bg-gradient-to-r from-red-500 via-orange-500 to-amber-500 text-white text-base font-black tracking-wider shadow-md hover:shadow-lg hover:scale-105 active:scale-95 transition-all duration-300 flex items-center justify-center gap-2 border border-white/30"
+            >
+              <span>入場する</span>
+              <span className="text-lg">🎉</span>
+            </button>
+
+            {/* 下部メッセージ */}
+            <p className="text-xs text-slate-500 font-semibold tracking-wide">
+              鶴岡高専祭をお楽しみください！
+            </p>
+          </div>
+        </div>
+
+        {/* 空白スペーサー */}
+        <div />
       </div>
     );
   }
@@ -449,7 +485,7 @@ export default function Page() {
             <span className="font-black text-lg text-slate-800">高専祭</span>
           </button>
 
-          {/* 右上ナビゲーション：タップ時のみテキスト表示 */}
+          {/* 右上ナビゲーション */}
           <nav className="flex items-center gap-1 bg-slate-100 p-1 rounded-full border border-slate-200">
             <button
               onClick={() => setActiveTab("map")}
@@ -489,7 +525,7 @@ export default function Page() {
       <main className="max-w-2xl mx-auto px-4 pt-4 pb-12 space-y-4">
         {activeTab === "map" && (
           <div className="space-y-4">
-            {/* インタラクティブ構内図（INTERACTIVE MAPの欄は削除済み） */}
+            {/* インタラクティブ構内図 */}
             <div className="relative w-full rounded-3xl overflow-hidden border-2 border-slate-200 shadow-md bg-slate-200 aspect-[4/3]">
               <img
                 src="/校内図.jpeg"
