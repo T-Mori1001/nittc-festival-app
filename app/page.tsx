@@ -90,35 +90,35 @@ const STALLS_DATA = [
   },
 ];
 
-// タイムスケジュール
+// タイムスケジュール（更新済み）
 const EVENTS_DATA = [
   {
-    stage: "メインステージ（体育館）",
+    stage: "メインステージ（第一体育館）",
     note: "会場には座席・立ち見エリアがあります。飲食も可能です。",
     items: [
       {
-        time: "09:30 - 10:00",
-        title: "オープニング＆開会式",
+        time: "09:30 - 10:30",
+        title: "腕立て選手権",
         org: "実行委員会",
-        desc: "高専祭2026スタート！熱狂のカーニバルの幕開けです！",
+        desc: "誰が一番腕立て伏せができるかを競う、白熱の筋肉バトル！",
       },
       {
-        time: "11:30 - 12:00",
-        title: "吹奏楽部パフォーマンス",
-        org: "吹奏楽部",
-        desc: "親しみやすい楽曲を、吹奏楽ならではの豊かな響きでお届けします。",
+        time: "11:30 - 12:30",
+        title: "漫才",
+        org: "有志団体",
+        desc: "会場を爆笑の渦に巻き込む！高専生有志によるお笑いステージ！",
       },
       {
-        time: "12:45 - 13:30",
-        title: "有志団体・ダンス発表会",
+        time: "13:30 - 14:30",
+        title: "ダンス",
         org: "ダンス同好会＆有志",
-        desc: "有志の発表やダンスのパフォーマンスで会場をいっぱいに盛り上げます！",
+        desc: "キレキレのダンスパフォーマンスで会場の盛り上がりは最高潮に！",
       },
       {
         time: "14:30 - 15:30",
-        title: "グランドフィナーレ＆ビンゴ大会",
+        title: "エンディング",
         org: "全校生徒",
-        desc: "豪華賞品が当たる大ビンゴ大会！最高の締めくくりにしましょう！",
+        desc: "高専祭2026のフィナーレ！最高の締めくくりにしましょう！",
       },
     ],
   },
@@ -144,7 +144,7 @@ const EVENTS_DATA = [
 
 export default function FestivalApp() {
   const [isEntered, setIsEntered] = useState(false);
-  const [activeTab, setActiveTab] = useState<"map" | "stalls" | "events" | "guide">("stalls");
+  const [activeTab, setActiveTab] = useState<"map" | "stalls" | "events" | "guide">("events");
 
   // フィルター用State
   const [searchQuery, setSearchQuery] = useState("");
@@ -245,7 +245,7 @@ export default function FestivalApp() {
         {/* 背景グラデーション */}
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-blue-900/60 via-slate-950 to-slate-950 pointer-events-none" />
 
-        {/* 機械・情報系モチーフの背景浮遊イラスト */}
+        {/* モチーフ背景イラスト */}
         <div className="absolute inset-0 pointer-events-none overflow-hidden select-none">
           <div className="absolute top-8 -left-8 text-sky-500/25 animate-spin-gear">
             <Cog className="w-32 h-32" />
@@ -290,9 +290,8 @@ export default function FestivalApp() {
           KOSEN FESTIVAL 2026
         </p>
 
-        {/* タイトル：ポップフォント + 1文字ずつ出現 */}
+        {/* タイトル */}
         <h1 className="font-pop flex flex-col items-center justify-center tracking-wide mb-8 z-10">
-          {/* 「熱狂の」 */}
           <div className="text-3xl sm:text-5xl text-white drop-shadow-[0_4px_12px_rgba(0,0,0,0.5)] flex justify-center gap-1">
             {"熱狂の".split("").map((char, index) => (
               <span
@@ -306,7 +305,6 @@ export default function FestivalApp() {
           </div>
 
           <div className="relative inline-block text-center mt-2">
-            {/* 「高専祭」 - ポップで圧倒的インパクトのネオンシアンカラー */}
             <div className="text-5xl sm:text-7xl text-cyan-300 drop-shadow-[0_0_20px_rgba(56,189,248,0.7)] flex justify-center gap-1">
               {"高専祭".split("").map((char, index) => (
                 <span
@@ -319,7 +317,6 @@ export default function FestivalApp() {
               ))}
             </div>
 
-            {/* 「カーニバル」 */}
             <div className="text-base sm:text-2xl tracking-[0.25em] text-sky-200 mt-2 drop-shadow flex justify-center gap-1">
               {"カーニバル".split("").map((char, index) => (
                 <span
@@ -334,7 +331,7 @@ export default function FestivalApp() {
           </div>
         </h1>
 
-        {/* 日時＆場所バッジ */}
+        {/* 日時＆場所 */}
         <div
           className="animate-fade bg-slate-900/90 backdrop-blur-md border border-cyan-500/30 shadow-lg shadow-cyan-500/10 rounded-full px-6 py-3 flex flex-wrap items-center justify-center gap-2.5 mb-10 text-xs sm:text-sm font-bold text-slate-200 z-10"
           style={{ animationDelay: "1.5s" }}
@@ -356,7 +353,6 @@ export default function FestivalApp() {
           </button>
         </div>
 
-        {/* 補足テキスト */}
         <p
           className="animate-fade mt-5 text-xs text-slate-400 font-medium z-10"
           style={{ animationDelay: "1.9s" }}
@@ -375,7 +371,6 @@ export default function FestivalApp() {
       {/* 上部ヘッダー */}
       <header className="sticky top-0 z-50 bg-white/90 backdrop-blur-md pt-3 pb-2 px-4 border-b border-blue-100 shadow-sm">
         <div className="max-w-md mx-auto flex items-center justify-between gap-2">
-          {/* 左側：ロゴ＆戻るボタン */}
           <div className="flex items-center gap-1.5 shrink-0">
             <button
               onClick={() => setIsEntered(false)}
@@ -394,7 +389,6 @@ export default function FestivalApp() {
             </div>
           </div>
 
-          {/* 右側：丸型アイコンタブ */}
           <nav className="flex items-center gap-1.5 overflow-x-auto no-scrollbar">
             <button
               onClick={() => setActiveTab("map")}
@@ -447,7 +441,7 @@ export default function FestivalApp() {
         </div>
       </header>
 
-      {/* メインコンテンツエリア */}
+      {/* メインコンテンツ */}
       <main className="max-w-md mx-auto p-4 space-y-4">
         {/* TAB 1: マップ */}
         {activeTab === "map" && (
@@ -470,7 +464,7 @@ export default function FestivalApp() {
                 1号館
               </div>
               <div className="absolute top-1/3 right-10 bg-cyan-600 text-white text-[10px] px-2 py-0.5 rounded-full font-bold shadow">
-                体育館
+                第一体育館
               </div>
               <div className="absolute bottom-8 left-1/3 bg-indigo-600 text-white text-[10px] px-2 py-0.5 rounded-full font-bold shadow">
                 中庭ステージ
