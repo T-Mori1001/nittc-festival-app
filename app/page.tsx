@@ -161,14 +161,32 @@ export default function FestivalApp() {
   });
 
   // ----------------------------------------------------
-  // 1. トップ（ランディング）画面 (青基調)
+  // 1. トップ（ランディング）画面 (青基調 ＆ 順次フェードインアニメーション)
   // ----------------------------------------------------
   if (!isEntered) {
     return (
       <div className="min-h-screen bg-slate-950 text-white flex flex-col items-center justify-center relative overflow-hidden px-6 text-center select-none">
+        {/* CSSアニメーション定義 */}
+        <style jsx>{`
+          @keyframes fadeInUp {
+            from {
+              opacity: 0;
+              transform: translateY(24px);
+            }
+            to {
+              opacity: 1;
+              transform: translateY(0);
+            }
+          }
+          .animate-appear {
+            animation: fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            opacity: 0;
+          }
+        `}</style>
+
         {/* 背景の青系装飾グラデーション＆デコレーション */}
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-blue-900/60 via-slate-950 to-slate-950 pointer-events-none" />
-        
+
         <div className="absolute inset-0 pointer-events-none opacity-60">
           <div className="absolute top-12 left-10 w-4 h-8 bg-sky-400 rounded-full rotate-45 shadow-lg shadow-sky-400/50" />
           <div className="absolute top-20 right-12 w-6 h-3 bg-blue-500 rounded-full -rotate-12 shadow-lg shadow-blue-500/50" />
@@ -178,28 +196,45 @@ export default function FestivalApp() {
           <div className="absolute bottom-20 right-16 w-4 h-7 bg-blue-400 rounded-full -rotate-12 shadow-md shadow-blue-400/50" />
         </div>
 
-        {/* サブタイトル */}
-        <p className="text-xs sm:text-sm tracking-[0.25em] font-black text-cyan-400 mb-4 uppercase drop-shadow">
+        {/* 1番目：サブタイトル (0.1秒後) */}
+        <p
+          className="animate-appear text-xs sm:text-sm tracking-[0.25em] font-black text-cyan-400 mb-4 uppercase drop-shadow"
+          style={{ animationDelay: "0.1s" }}
+        >
           KOSEN FESTIVAL 2026
         </p>
 
-        {/* メインタイトル (ポスター風のレイアウト＆ふりがな) */}
+        {/* 2番目：メインタイトル 「熱狂の」 (0.3秒後) */}
         <h1 className="flex flex-col items-center justify-center font-black tracking-wider mb-8">
-          <span className="text-3xl sm:text-5xl text-white drop-shadow-md">
+          <span
+            className="animate-appear text-3xl sm:text-5xl text-white drop-shadow-md"
+            style={{ animationDelay: "0.3s" }}
+          >
             熱狂の
           </span>
+
+          {/* 3番目：「高専祭」＆ふりがな「カーニバル」 (0.5秒後 & 0.7秒後) */}
           <div className="relative inline-block text-center mt-1">
-            <span className="text-5xl sm:text-7xl font-black text-transparent bg-clip-text bg-gradient-to-r from-cyan-300 via-sky-300 to-blue-400 drop-shadow-lg tracking-tight">
+            <span
+              className="animate-appear block text-5xl sm:text-7xl font-black text-transparent bg-clip-text bg-gradient-to-r from-cyan-300 via-sky-300 to-blue-400 drop-shadow-lg tracking-tight"
+              style={{ animationDelay: "0.5s" }}
+            >
               高専祭
             </span>
-            <span className="block text-sm sm:text-lg font-extrabold italic tracking-[0.35em] text-cyan-200 -mt-1 sm:-mt-2 drop-shadow">
+            <span
+              className="animate-appear block text-sm sm:text-lg font-extrabold italic tracking-[0.35em] text-cyan-200 -mt-1 sm:-mt-2 drop-shadow"
+              style={{ animationDelay: "0.7s" }}
+            >
               カーニバル
             </span>
           </div>
         </h1>
 
-        {/* 日時＆場所ピルバッジ */}
-        <div className="bg-slate-900/90 backdrop-blur-md border border-cyan-500/30 shadow-lg shadow-cyan-500/10 rounded-full px-6 py-3 flex flex-wrap items-center justify-center gap-2.5 mb-10 text-xs sm:text-sm font-bold text-slate-200">
+        {/* 4番目：日時＆場所バッジ (0.9秒後) */}
+        <div
+          className="animate-appear bg-slate-900/90 backdrop-blur-md border border-cyan-500/30 shadow-lg shadow-cyan-500/10 rounded-full px-6 py-3 flex flex-wrap items-center justify-center gap-2.5 mb-10 text-xs sm:text-sm font-bold text-slate-200"
+          style={{ animationDelay: "0.9s" }}
+        >
           <span className="text-cyan-300">10/24 [SAT]</span>
           <span className="text-slate-600">|</span>
           <span>9:30〜15:30</span>
@@ -207,15 +242,21 @@ export default function FestivalApp() {
           <span className="text-sky-300">@鶴岡高専</span>
         </div>
 
-        {/* 入場ボタン */}
-        <button
-          onClick={() => setIsEntered(true)}
-          className="w-64 sm:w-72 py-4 rounded-full bg-gradient-to-r from-cyan-500 via-blue-600 to-indigo-600 text-white font-extrabold text-lg shadow-lg shadow-blue-500/40 hover:shadow-xl hover:shadow-blue-500/60 hover:scale-105 active:scale-95 transition-all duration-200 flex items-center justify-center gap-2 border border-cyan-300/30"
-        >
-          入場する 🎉
-        </button>
+        {/* 5番目：入場ボタン (1.1秒後) */}
+        <div className="animate-appear" style={{ animationDelay: "1.1s" }}>
+          <button
+            onClick={() => setIsEntered(true)}
+            className="w-64 sm:w-72 py-4 rounded-full bg-gradient-to-r from-cyan-500 via-blue-600 to-indigo-600 text-white font-extrabold text-lg shadow-lg shadow-blue-500/40 hover:shadow-xl hover:shadow-blue-500/60 hover:scale-105 active:scale-95 transition-all duration-200 flex items-center justify-center gap-2 border border-cyan-300/30"
+          >
+            入場する 🎉
+          </button>
+        </div>
 
-        <p className="mt-5 text-xs text-slate-400 font-medium">
+        {/* 6番目：補足テキスト (1.3秒後) */}
+        <p
+          className="animate-appear mt-5 text-xs text-slate-400 font-medium"
+          style={{ animationDelay: "1.3s" }}
+        >
           タップしてキャンパスマップ＆催しをチェック！
         </p>
       </div>
@@ -223,7 +264,7 @@ export default function FestivalApp() {
   }
 
   // ----------------------------------------------------
-  // 2. メインアプリ画面 (青基調)
+  // 2. メインアプリ画面
   // ----------------------------------------------------
   return (
     <div className="min-h-screen bg-slate-50 text-slate-800 pb-16 font-sans">
@@ -308,9 +349,7 @@ export default function FestivalApp() {
 
       {/* 2-2. メインコンテンツエリア */}
       <main className="max-w-md mx-auto p-4 space-y-4">
-        {/* ========================================== */}
         {/* TAB 1: マップ */}
-        {/* ========================================== */}
         {activeTab === "map" && (
           <div className="space-y-4">
             <div className="flex items-center justify-between">
@@ -372,9 +411,7 @@ export default function FestivalApp() {
           </div>
         )}
 
-        {/* ========================================== */}
         {/* TAB 2: 模擬店 */}
-        {/* ========================================== */}
         {activeTab === "stalls" && (
           <div className="space-y-4">
             <div className="flex items-center justify-around bg-white p-2.5 rounded-3xl shadow-sm border border-slate-100">
@@ -506,9 +543,7 @@ export default function FestivalApp() {
           </div>
         )}
 
-        {/* ========================================== */}
         {/* TAB 3: イベントタイムテーブル */}
-        {/* ========================================== */}
         {activeTab === "events" && (
           <div className="space-y-4">
             <div className="bg-gradient-to-r from-blue-700 via-blue-600 to-sky-500 rounded-3xl p-5 text-white shadow-lg shadow-blue-500/20 relative overflow-hidden">
@@ -564,9 +599,7 @@ export default function FestivalApp() {
           </div>
         )}
 
-        {/* ========================================== */}
         {/* TAB 4: その他 / ご案内 */}
-        {/* ========================================== */}
         {activeTab === "guide" && (
           <div className="space-y-4">
             <div className="bg-gradient-to-r from-indigo-600 via-blue-600 to-sky-500 rounded-3xl p-5 text-white shadow-lg shadow-blue-500/20 relative overflow-hidden space-y-3">
