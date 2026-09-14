@@ -10,6 +10,7 @@ import {
   ChevronRight,
   X,
   ExternalLink,
+  Layers,
 } from "lucide-react";
 
 // Lucideから削除されたInstagramアイコンをインラインSVGで定義
@@ -37,6 +38,9 @@ interface StallItem {
   dept: string;
   location: string;
   zoneId: string;
+  floor?: "1F" | "2F" | "3F";
+  roomNo?: string;
+  pinPos?: { top: string; left: string };
   description: string;
   icon: string;
   instagram?: string;
@@ -44,7 +48,7 @@ interface StallItem {
 }
 
 const STALLS_DATA: StallItem[] = [
-  // --- 1号館 (bldg1) ---
+  // --- 1号館 (bldg1) 1F ---
   {
     id: 1,
     title: "ほっとサンド",
@@ -53,6 +57,9 @@ const STALLS_DATA: StallItem[] = [
     dept: "1年1組",
     location: "1号館 1F 111教室",
     zoneId: "bldg1",
+    floor: "1F",
+    roomNo: "111教室",
+    pinPos: { top: "25.5%", left: "61.5%" },
     description: "1-1による熱々で外はサクッ、中はジュワッ！香ばしい絶品ほっとサンド！",
     icon: "🥪",
     menu: ["ほっとサンド"]
@@ -65,18 +72,40 @@ const STALLS_DATA: StallItem[] = [
     dept: "1年2組",
     location: "1号館 1F 112教室",
     zoneId: "bldg1",
+    floor: "1F",
+    roomNo: "112教室",
+    pinPos: { top: "25.5%", left: "41.5%" },
     description: "1-2がお届けする冷たくてシュワっと美味しい各種ソフトドリンク！",
     icon: "🍹",
     menu: ["ソフトドリンク各種"]
   },
+  {
+    id: 13,
+    title: "ホスト",
+    category: "クラス企画",
+    grade: "4M",
+    dept: "4年 機械コース (4M)",
+    location: "1号館 1F 113教室",
+    zoneId: "bldg1",
+    floor: "1F",
+    roomNo: "113教室",
+    pinPos: { top: "25.5%", left: "21.5%" },
+    description: "4Mのイケメンたちが華麗にお出迎え！？非日常の最高のおもてなし空間！",
+    icon: "🌹"
+  },
+
+  // --- 1号館 (bldg1) 2F ---
   {
     id: 3,
     title: "わたあめ",
     category: "模擬店",
     grade: "1-3",
     dept: "1年3組",
-    location: "1号館 1F 121教室",
+    location: "1号館 2F 121教室",
     zoneId: "bldg1",
+    floor: "2F",
+    roomNo: "121教室",
+    pinPos: { top: "25.5%", left: "61.5%" },
     description: "1-3作！フワフワ甘くて可愛いビッグわたあめ！",
     icon: "🍥",
     menu: ["わたあめ"]
@@ -87,8 +116,11 @@ const STALLS_DATA: StallItem[] = [
     category: "模擬店",
     grade: "1-4",
     dept: "1年4組",
-    location: "1号館 1F 122教室",
+    location: "1号館 2F 122教室",
     zoneId: "bldg1",
+    floor: "2F",
+    roomNo: "122教室",
+    pinPos: { top: "25.5%", left: "44.0%" },
     description: "1-4手作り生地のボリューム満点トッピングクレープ！",
     icon: "🥞",
     menu: ["手作りクレープ"]
@@ -99,10 +131,29 @@ const STALLS_DATA: StallItem[] = [
     category: "クラス企画",
     grade: "3E",
     dept: "3年 電気・電子コース (3E)",
-    location: "1号館 1F 123教室",
+    location: "1号館 2F 123教室",
     zoneId: "bldg1",
+    floor: "2F",
+    roomNo: "123教室",
+    pinPos: { top: "25.5%", left: "21.5%" },
     description: "3Eみんなでワイワイ楽しめる対戦ゲーム＆レトロゲームが揃ったゲームカフェ！",
     icon: "🎮"
+  },
+
+  // --- 1号館 (bldg1) 3F ---
+  {
+    id: 15,
+    title: "カジノ",
+    category: "クラス企画",
+    grade: "4I",
+    dept: "4年 情報コース (4I)",
+    location: "1号館 3F 131教室",
+    zoneId: "bldg1",
+    floor: "3F",
+    roomNo: "131教室",
+    pinPos: { top: "25.5%", left: "46.0%" },
+    description: "4I特製カジノ！本格的なテーブルゲームでスリリングな心理戦を楽しもう！",
+    icon: "🎲"
   },
   {
     id: 11,
@@ -110,8 +161,11 @@ const STALLS_DATA: StallItem[] = [
     category: "クラス企画",
     grade: "3I",
     dept: "3年 情報コース (3I)",
-    location: "1号館 1F 132教室",
+    location: "1号館 3F 132教室",
     zoneId: "bldg1",
+    floor: "3F",
+    roomNo: "132教室",
+    pinPos: { top: "25.5%", left: "32.0%" },
     description: "3Iがお届けするおしゃれで落ち着いた雰囲気のノンアルコールバー！",
     icon: "🍸"
   },
@@ -121,32 +175,13 @@ const STALLS_DATA: StallItem[] = [
     category: "クラス企画",
     grade: "3B",
     dept: "3年 生物・化学コース (3B)",
-    location: "1号館 1F 133教室",
+    location: "1号館 3F 133教室",
     zoneId: "bldg1",
+    floor: "3F",
+    roomNo: "133教室",
+    pinPos: { top: "25.5%", left: "18.0%" },
     description: "3Bによるゆったり寛げる特製喫茶店！こだわりのドリンクでおもてなし。",
     icon: "☕"
-  },
-  {
-    id: 13,
-    title: "ホスト",
-    category: "クラス企画",
-    grade: "4M",
-    dept: "4年 機械コース (4M)",
-    location: "1号館 1F 113教室",
-    zoneId: "bldg1",
-    description: "4Mのイケメンたちが華麗にお出迎え！？非日常の最高のおもてなし空間！",
-    icon: "🌹"
-  },
-  {
-    id: 15,
-    title: "カジノ",
-    category: "クラス企画",
-    grade: "4I",
-    dept: "4年 情報コース (4I)",
-    location: "1号館 1F 131教室",
-    zoneId: "bldg1",
-    description: "4I特製カジノ！本格的なテーブルゲームでスリリングな心理戦を楽しもう！",
-    icon: "🎲"
   },
 
   // --- 第一体育館 (gym1) ---
@@ -351,14 +386,14 @@ const CAMPUS_ZONES = [
   {
     id: "bldg1",
     name: "1号館",
-    subName: "一般教室棟・管理棟",
+    subName: "一般教室棟 (1F/2F/3F)",
     pinLabel: "1号館",
     color: "bg-blue-500",
     lightBg: "bg-blue-50 border-blue-300 text-blue-900",
     icon: "🏫",
     top: "38%",
     left: "40%",
-    desc: "キャンパス中央に位置するメイン校舎。1年生の各種模擬店および3・4年生の趣向を凝らしたクラス企画を展開！"
+    desc: "キャンパス中央に位置するメイン校舎。タップして各階（1F/2F/3F）の詳細マップ・配置図を確認できます！"
   },
   {
     id: "bldg7",
@@ -386,12 +421,29 @@ const CAMPUS_ZONES = [
   }
 ];
 
+// 工学モチーフの浮遊用データ
+const TECH_FLOATING_ITEMS = [
+  { icon: "⚙️", top: "8%", left: "10%", size: "text-3xl", delay: "0s", duration: "7s" },
+  { icon: "🤖", top: "16%", right: "8%", size: "text-4xl", delay: "0.5s", duration: "6.5s" },
+  { icon: "🔩", top: "25%", left: "6%", size: "text-2xl", delay: "1s", duration: "8s" },
+  { icon: "⚡", top: "35%", right: "12%", size: "text-3xl", delay: "0.3s", duration: "5.5s" },
+  { icon: "🔧", top: "45%", left: "12%", size: "text-3xl", delay: "1.2s", duration: "6.8s" },
+  { icon: "💻", top: "52%", right: "6%", size: "text-3xl", delay: "0.8s", duration: "7.5s" },
+  { icon: "🔌", top: "66%", left: "8%", size: "text-2xl", delay: "1.5s", duration: "6.2s" },
+  { icon: "⚙️", top: "75%", right: "10%", size: "text-5xl", delay: "0.2s", duration: "9s" },
+  { icon: "🤖", top: "84%", left: "18%", size: "text-3xl", delay: "1.1s", duration: "7.2s" },
+];
+
 export default function Page() {
   const [isEntered, setIsEntered] = useState(false);
   const [activeTab, setActiveTab] = useState<"map" | "stalls" | "events">("map");
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedZoneId, setSelectedZoneId] = useState("gym1");
   const [modalItem, setModalItem] = useState<StallItem | null>(null);
+
+  // 1号館フロア詳細モーダル用ステート
+  const [isBldg1ModalOpen, setIsBldg1ModalOpen] = useState(false);
+  const [currentFloor, setCurrentFloor] = useState<"1F" | "2F" | "3F">("1F");
 
   const filteredStalls = useMemo(() => {
     return STALLS_DATA.filter((stall) => {
@@ -408,33 +460,58 @@ export default function Page() {
     return STALLS_DATA.filter((s) => s.zoneId === selectedZoneId);
   }, [selectedZoneId]);
 
+  const floorStalls = useMemo(() => {
+    return STALLS_DATA.filter((s) => s.zoneId === "bldg1" && s.floor === currentFloor);
+  }, [currentFloor]);
+
   const currentZone = CAMPUS_ZONES.find((z) => z.id === selectedZoneId) || CAMPUS_ZONES[0];
+
+  const titlePart1 = ["熱", "狂", "の"];
+  const titlePart2 = ["カ", "ー", "ニ", "バ", "ル"];
+  const titlePart3 = ["高", "専", "祭"];
 
   if (!isEntered) {
     return (
-      <div className="min-h-screen bg-[#FFFDF7] text-slate-800 flex flex-col items-center justify-between py-12 px-6 relative overflow-hidden select-none font-sans">
-        {/* コンフェッティ（紙吹雪）装飾 */}
+      <div className="min-h-screen bg-[#F8FAFC] text-slate-800 flex flex-col items-center justify-between py-12 px-6 relative overflow-hidden select-none font-sans">
+        {/* アニメーション用スタイル定義 */}
+        <style>{`
+          @keyframes floatTech {
+            0% { transform: translateY(0px) rotate(0deg) scale(1); }
+            50% { transform: translateY(-18px) rotate(180deg) scale(1.1); }
+            100% { transform: translateY(0px) rotate(360deg) scale(1); }
+          }
+          @keyframes dropChar {
+            0% { transform: translateY(-70px) scale(0.3); opacity: 0; }
+            60% { transform: translateY(14px) scale(1.15); opacity: 1; }
+            80% { transform: translateY(-4px) scale(0.95); }
+            100% { transform: translateY(0) scale(1); opacity: 1; }
+          }
+          .animate-float-tech {
+            animation: floatTech linear infinite;
+          }
+          .animate-drop-char {
+            display: inline-block;
+            animation: dropChar 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+          }
+        `}</style>
+
+        {/* 背景：工学モチーフ浮遊要素 */}
         <div className="absolute inset-0 pointer-events-none overflow-hidden">
-          <div className="absolute top-4 left-4 w-4 h-6 bg-orange-400 rounded-sm rotate-12" />
-          <div className="absolute top-3 right-4 w-5 h-3 bg-blue-500 rounded-sm -rotate-45" />
-          <div className="absolute top-2 right-12 w-3 h-4 bg-pink-500 rounded-sm rotate-12" />
-          <div className="absolute top-4 right-20 w-4 h-3 bg-teal-500 rounded-sm rotate-45" />
-
-          <div className="absolute top-14 left-1/2 -translate-x-32 w-5 h-3 bg-pink-400 rounded-sm -rotate-12" />
-          <div className="absolute top-16 left-1/2 -translate-x-12 w-6 h-3 bg-orange-500 rounded-sm rotate-12" />
-          <div className="absolute top-14 left-1/2 translate-x-12 w-4 h-3 bg-teal-400 rounded-sm -rotate-45" />
-          <div className="absolute top-16 left-1/2 translate-x-24 w-4 h-3 bg-red-400 rounded-sm rotate-45" />
-
-          <div className="absolute top-32 left-10 w-6 h-4 bg-blue-600 rounded-sm -rotate-45" />
-          <div className="absolute top-36 left-24 w-4 h-5 bg-pink-500 rounded-sm rotate-12" />
-          <div className="absolute top-36 right-24 w-5 h-4 bg-teal-500 rounded-sm -rotate-12" />
-
-          <div className="absolute top-48 left-16 w-5 h-3 bg-amber-400 rounded-sm rotate-45" />
-          <div className="absolute top-52 left-32 w-4 h-6 bg-amber-500 rounded-sm -rotate-12" />
-          <div className="absolute top-56 left-48 w-4 h-3 bg-red-500 rounded-sm rotate-12" />
-          <div className="absolute top-52 right-44 w-3 h-5 bg-blue-500 rounded-sm -rotate-45" />
-
-          <div className="absolute bottom-20 left-2 w-5 h-3 bg-red-500 rounded-sm rotate-12" />
+          {TECH_FLOATING_ITEMS.map((item, idx) => (
+            <div
+              key={idx}
+              style={{
+                top: item.top,
+                left: item.left,
+                right: item.right,
+                animationDuration: item.duration,
+                animationDelay: item.delay,
+              }}
+              className={`absolute ${item.size} opacity-70 animate-float-tech filter drop-shadow-sm`}
+            >
+              {item.icon}
+            </div>
+          ))}
         </div>
 
         {/* 空白スペーサー */}
@@ -447,20 +524,55 @@ export default function Page() {
             TSURUOKA KOSEN FESTIVAL 2026
           </div>
 
-          {/* メインタイトル：「熱狂の高専祭」（高専祭の真上にカーニバル） */}
-          <div className="flex items-baseline justify-center font-black tracking-tight text-[#E53935] drop-shadow-sm font-sans">
-            <span className="text-4xl sm:text-5xl">熱狂の</span>
-            <div className="relative inline-block ml-1">
-              {/* 「高専祭」の真上にぴったり配置されたカーニバル */}
-              <span className="absolute -top-3.5 left-1/2 -translate-x-1/2 text-[11px] sm:text-xs font-black text-rose-500 tracking-widest whitespace-nowrap">
-                カーニバル
-              </span>
-              <span className="text-5xl sm:text-6xl">高専祭</span>
+          {/* メインタイトル：1文字ずつ降ってくるアニメーション */}
+          <div className="flex flex-col items-center justify-center font-black tracking-tight font-sans">
+            <div className="flex items-baseline justify-center text-[#E53935] drop-shadow-sm">
+              {/* 「熱狂の」 */}
+              <div className="text-4xl sm:text-5xl flex">
+                {titlePart1.map((char, index) => (
+                  <span
+                    key={index}
+                    className="animate-drop-char"
+                    style={{ animationDelay: `${index * 0.1}s` }}
+                  >
+                    {char}
+                  </span>
+                ))}
+              </div>
+
+              {/* 「高専祭」 ＆ 上部の「カーニバル」 */}
+              <div className="relative inline-block ml-1">
+                {/* 「カーニバル」1文字ずつドロップ */}
+                <span className="absolute -top-4 left-1/2 -translate-x-1/2 text-[11px] sm:text-xs font-black text-rose-500 tracking-widest whitespace-nowrap flex">
+                  {titlePart2.map((char, index) => (
+                    <span
+                      key={index}
+                      className="animate-drop-char"
+                      style={{ animationDelay: `${0.3 + index * 0.08}s` }}
+                    >
+                      {char}
+                    </span>
+                  ))}
+                </span>
+
+                {/* 「高専祭」 */}
+                <div className="text-5xl sm:text-6xl flex">
+                  {titlePart3.map((char, index) => (
+                    <span
+                      key={index}
+                      className="animate-drop-char"
+                      style={{ animationDelay: `${0.7 + index * 0.1}s` }}
+                    >
+                      {char}
+                    </span>
+                  ))}
+                </div>
+              </div>
             </div>
           </div>
 
           {/* 日時バッジ（カプセルデザイン） */}
-          <div className="bg-white/95 border border-slate-200/80 shadow-sm rounded-full px-5 py-2.5 flex items-center justify-center gap-2 text-xs font-extrabold text-slate-700">
+          <div className="bg-white/95 border border-slate-200/80 shadow-md rounded-full px-5 py-2.5 flex items-center justify-center gap-2 text-xs font-extrabold text-slate-700">
             <span className="text-rose-600">2026.10.24 SAT</span>
             <span className="text-slate-300">|</span>
             <span>9:30〜15:30</span>
@@ -471,10 +583,10 @@ export default function Page() {
           <div className="pt-4 w-full flex flex-col items-center space-y-3">
             <button
               onClick={() => setIsEntered(true)}
-              className="w-full max-w-[260px] py-4 rounded-full bg-gradient-to-r from-red-500 via-orange-500 to-amber-500 text-white text-base font-black tracking-wider shadow-md hover:shadow-lg hover:scale-105 active:scale-95 transition-all duration-300 flex items-center justify-center gap-2 border border-white/30"
+              className="w-full max-w-[260px] py-4 rounded-full bg-gradient-to-r from-red-500 via-orange-500 to-amber-500 text-white text-base font-black tracking-wider shadow-lg hover:shadow-xl hover:scale-105 active:scale-95 transition-all duration-300 flex items-center justify-center gap-2 border border-white/30"
             >
               <span>入場する</span>
-              <span className="text-lg">🎉</span>
+              <span className="text-lg">⚙️</span>
             </button>
 
             {/* 下部メッセージ */}
@@ -605,6 +717,17 @@ export default function Page() {
 
               <p className="text-xs leading-relaxed font-medium opacity-90">{currentZone.desc}</p>
 
+              {/* 1号館が選択されている場合、詳細図（1F/2F/3F）モーダルを開くボタンを表示 */}
+              {selectedZoneId === "bldg1" && (
+                <button
+                  onClick={() => setIsBldg1ModalOpen(true)}
+                  className="w-full py-3 px-4 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-2xl font-black text-xs shadow-md hover:shadow-lg transition flex items-center justify-center gap-2"
+                >
+                  <Layers className="w-4 h-4" />
+                  <span>1号館のフロア詳細図（1F / 2F / 3F）を開く</span>
+                </button>
+              )}
+
               <div className="space-y-2">
                 <h4 className="text-xs font-extrabold text-slate-800 flex items-center gap-1">
                   <span>📍 {currentZone.name} の出展・企画一覧</span>
@@ -734,6 +857,94 @@ export default function Page() {
           </div>
         )}
       </main>
+
+      {/* 1号館 フロア詳細マップ モーダル */}
+      {isBldg1ModalOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-3 bg-slate-900/60 backdrop-blur-sm">
+          <div className="bg-white border border-slate-200 text-slate-800 w-full max-w-xl rounded-3xl p-4 sm:p-5 shadow-2xl relative space-y-4 max-h-[92vh] flex flex-col">
+            <div className="flex items-center justify-between pb-2 border-b">
+              <div className="flex items-center gap-2">
+                <span className="text-2xl p-1.5 bg-blue-100 text-blue-700 rounded-xl">🏫</span>
+                <div>
+                  <h3 className="text-base font-black text-slate-900">1号館 フロア詳細マップ</h3>
+                  <p className="text-[11px] font-bold text-slate-500">教室をタップすると企画詳細が見れます</p>
+                </div>
+              </div>
+              <button
+                onClick={() => setIsBldg1ModalOpen(false)}
+                className="p-1.5 rounded-full bg-slate-100 text-slate-500 hover:bg-slate-200 transition"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
+            {/* 1F / 2F / 3F 切り替えタブ */}
+            <div className="flex justify-center gap-2 bg-slate-100 p-1 rounded-2xl">
+              {(["1F", "2F", "3F"] as const).map((floor) => (
+                <button
+                  key={floor}
+                  onClick={() => setCurrentFloor(floor)}
+                  className={`flex-1 py-2 rounded-xl font-black text-xs transition-all ${
+                    currentFloor === floor
+                      ? "bg-blue-600 text-white shadow-sm"
+                      : "text-slate-600 hover:bg-slate-200"
+                  }`}
+                >
+                  {floor} 詳細図
+                </button>
+              ))}
+            </div>
+
+            {/* フロア詳細画像 ＆ ピンオーバーレイ */}
+            <div className="relative w-full rounded-2xl overflow-hidden border border-slate-200 bg-slate-100 aspect-[16/9]">
+              <img
+                src={`/${currentFloor}.jpeg`}
+                alt={`1号館 ${currentFloor}マップ`}
+                className="w-full h-full object-contain select-none"
+              />
+
+              {/* 各教室のピン */}
+              {floorStalls.map((stall) => {
+                if (!stall.pinPos) return null;
+                return (
+                  <button
+                    key={stall.id}
+                    onClick={() => setModalItem(stall)}
+                    style={{ top: stall.pinPos.top, left: stall.pinPos.left }}
+                    className="absolute -translate-x-1/2 -translate-y-1/2 z-20 flex flex-col items-center group transition hover:scale-110"
+                  >
+                    <div className="bg-rose-600 text-white font-black text-[10px] px-2 py-0.5 rounded-full shadow-md flex items-center gap-1 border border-white whitespace-nowrap animate-bounce">
+                      <span>{stall.icon}</span>
+                      <span>{stall.roomNo}: {stall.title}</span>
+                    </div>
+                    <div className="w-4 h-4 rounded-full bg-rose-500 ring-4 ring-rose-300 border-2 border-white shadow-sm" />
+                  </button>
+                );
+              })}
+            </div>
+
+            {/* 現在の階の教室一覧カード */}
+            <div className="overflow-y-auto max-h-48 space-y-2 pr-1">
+              <h4 className="text-xs font-bold text-slate-500">📍 {currentFloor} の教室・出展企画</h4>
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
+                {floorStalls.map((stall) => (
+                  <div
+                    key={stall.id}
+                    onClick={() => setModalItem(stall)}
+                    className="bg-slate-50 border border-slate-200 p-2.5 rounded-xl cursor-pointer hover:bg-blue-50 transition flex items-center gap-2"
+                  >
+                    <span className="text-xl">{stall.icon}</span>
+                    <div className="min-w-0">
+                      <div className="text-[10px] font-black text-blue-600">{stall.roomNo} ({stall.grade})</div>
+                      <div className="text-xs font-black truncate text-slate-800">{stall.title}</div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Detail Modal */}
       {modalItem && (
