@@ -7,11 +7,6 @@ import {
   Calendar,
   Grid,
   Search,
-  Instagram,
-  Clock,
-  Footprints,
-  Bike,
-  Car,
   MapPin,
   Sparkles,
   ChevronRight,
@@ -217,7 +212,7 @@ export default function FestivalApp() {
   }
 
   // ----------------------------------------------------
-  // 2. メインアプリ画面（参考画像風デザイン）
+  // 2. メインアプリ画面
   // ----------------------------------------------------
   return (
     <div className="min-h-screen bg-[#FAF8F5] text-slate-800 pb-16 font-sans">
@@ -298,11 +293,10 @@ export default function FestivalApp() {
       {/* 2-2. メインコンテンツエリア */}
       <main className="max-w-md mx-auto p-4 space-y-4">
         {/* ========================================== */}
-        {/* TAB 1: マップ (IMG_1411 参考) */}
+        {/* TAB 1: マップ */}
         {/* ========================================== */}
         {activeTab === "map" && (
-          <div className="space-y-4 animate-fadeIn">
-            {/* マップ切り替えヘッダー風 */}
+          <div className="space-y-4">
             <div className="flex items-center justify-between">
               <span className="bg-white px-3 py-1 rounded-full text-xs font-bold text-slate-600 border border-slate-200 shadow-sm">
                 現在のマップ: <strong className="text-orange-600">敷地内全体</strong>
@@ -310,7 +304,6 @@ export default function FestivalApp() {
               <span className="text-[11px] text-slate-400 font-bold">▲ 上へ</span>
             </div>
 
-            {/* マップ画像表示エリア */}
             <div className="bg-emerald-900/10 rounded-3xl overflow-hidden border-2 border-white shadow-sm relative aspect-[4/3] flex flex-col items-center justify-center p-4 bg-gradient-to-br from-emerald-50 via-teal-100 to-sky-100">
               <MapPin className="w-10 h-10 text-rose-500 animate-bounce drop-shadow-md" />
               <p className="font-extrabold text-sm text-slate-700 mt-2">キャンパスマップエリア</p>
@@ -318,7 +311,6 @@ export default function FestivalApp() {
                 （`public/map.jpg` を配置して画像表示）
               </p>
 
-              {/* ピン風グラフィックデコレーション */}
               <div className="absolute top-6 left-12 bg-rose-500 text-white text-[10px] px-2 py-0.5 rounded-full font-bold shadow">
                 1号館
               </div>
@@ -330,7 +322,6 @@ export default function FestivalApp() {
               </div>
             </div>
 
-            {/* フロア別模擬店リスト */}
             <div className="pt-2">
               <h2 className="font-extrabold text-base text-slate-800 mb-2 px-1">
                 このフロアの模擬店
@@ -366,11 +357,10 @@ export default function FestivalApp() {
         )}
 
         {/* ========================================== */}
-        {/* TAB 2: 模擬店 (IMG_1412 参考) */}
+        {/* TAB 2: 模擬店 */}
         {/* ========================================== */}
         {activeTab === "stalls" && (
-          <div className="space-y-4 animate-fadeIn">
-            {/* アイコン丸ボタンカテゴリ */}
+          <div className="space-y-4">
             <div className="flex items-center justify-around bg-white p-2.5 rounded-3xl shadow-sm border border-slate-100">
               <button className="flex flex-col items-center gap-1 text-[10px] font-extrabold text-emerald-700 bg-emerald-50 p-2 rounded-2xl w-14">
                 <Store className="w-5 h-5 text-emerald-600" /> 全体
@@ -389,7 +379,6 @@ export default function FestivalApp() {
               </button>
             </div>
 
-            {/* 検索バー */}
             <div className="relative">
               <Search className="absolute left-3.5 top-3 text-orange-400 w-4 h-4" />
               <input
@@ -401,13 +390,11 @@ export default function FestivalApp() {
               />
             </div>
 
-            {/* 絞り込みフィルターカード */}
             <div className="bg-white p-4 rounded-3xl border border-slate-100 shadow-sm space-y-3">
               <p className="text-xs font-extrabold text-slate-600 flex items-center gap-1">
                 絞り込む条件 <span className="text-[10px] font-normal text-slate-400">複数選択できます</span>
               </p>
 
-              {/* 学年フィルター */}
               <div className="flex items-center gap-2 text-xs">
                 <span className="text-slate-400 font-bold w-10 text-[11px]">学年</span>
                 <div className="flex gap-1.5 flex-wrap">
@@ -427,7 +414,6 @@ export default function FestivalApp() {
                 </div>
               </div>
 
-              {/* 学科フィルター */}
               <div className="flex items-center gap-2 text-xs">
                 <span className="text-slate-400 font-bold w-10 text-[11px]">学科</span>
                 <div className="flex gap-1.5 flex-wrap">
@@ -448,7 +434,6 @@ export default function FestivalApp() {
               </div>
             </div>
 
-            {/* 模擬店カード一覧 (IMG_1412 下部参考) */}
             <div className="space-y-3">
               {filteredStalls.map((item) => (
                 <div
@@ -456,13 +441,11 @@ export default function FestivalApp() {
                   className="bg-white rounded-3xl p-4 shadow-sm border border-slate-100 hover:shadow-md transition space-y-2 relative overflow-hidden"
                 >
                   <div className="flex items-start gap-3">
-                    {/* アイコンイラスト風枠 */}
                     <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-orange-100 to-amber-50 flex items-center justify-center text-3xl shrink-0 border border-orange-200/50 shadow-inner">
                       {item.icon}
                     </div>
 
                     <div className="flex-1 space-y-1">
-                      {/* タグ＆場所 */}
                       <div className="flex items-center gap-1.5 flex-wrap">
                         <span className="bg-rose-500 text-white text-[10px] font-extrabold px-2 py-0.5 rounded-full">
                           {item.category}
@@ -475,7 +458,6 @@ export default function FestivalApp() {
                         </span>
                       </div>
 
-                      {/* タイトル */}
                       <div className="flex justify-between items-center">
                         <h3 className="font-extrabold text-base text-slate-800">{item.title}</h3>
                         <button
@@ -492,12 +474,10 @@ export default function FestivalApp() {
                         </button>
                       </div>
 
-                      {/* 説明 */}
                       <p className="text-xs text-slate-500 leading-relaxed">{item.description}</p>
                     </div>
                   </div>
 
-                  {/* 価格バッジ */}
                   <div className="pt-2 border-t border-slate-50 flex justify-between items-center text-xs">
                     <span className="text-slate-400 font-bold">
                       {item.grade}（{item.dept}）
@@ -511,11 +491,10 @@ export default function FestivalApp() {
         )}
 
         {/* ========================================== */}
-        {/* TAB 3: イベントタイムテーブル (IMG_1413 参考) */}
+        {/* TAB 3: イベントタイムテーブル */}
         {/* ========================================== */}
         {activeTab === "events" && (
-          <div className="space-y-4 animate-fadeIn">
-            {/* イベント上部バナー（オレンジグラデーション） */}
+          <div className="space-y-4">
             <div className="bg-gradient-to-r from-orange-500 via-rose-500 to-pink-500 rounded-3xl p-5 text-white shadow-lg shadow-orange-500/20 relative overflow-hidden">
               <p className="text-[11px] font-bold tracking-widest text-orange-200 uppercase">
                 イベントタイムテーブル
@@ -527,7 +506,6 @@ export default function FestivalApp() {
               </p>
             </div>
 
-            {/* 各ステージごとのプログラム */}
             {EVENTS_DATA.map((section, sIdx) => (
               <div key={sIdx} className="space-y-2">
                 <div className="px-1">
@@ -539,7 +517,6 @@ export default function FestivalApp() {
                   </p>
                 </div>
 
-                {/* タイムラインアイテム */}
                 <div className="space-y-2.5">
                   {section.items.map((item, idx) => (
                     <div
@@ -572,11 +549,10 @@ export default function FestivalApp() {
         )}
 
         {/* ========================================== */}
-        {/* TAB 4: その他 / ご案内 (IMG_1414 参考) */}
+        {/* TAB 4: その他 / ご案内 */}
         {/* ========================================== */}
         {activeTab === "guide" && (
-          <div className="space-y-4 animate-fadeIn">
-            {/* 公式Instagramカード (IMG_1414上部) */}
+          <div className="space-y-4">
             <div className="bg-gradient-to-r from-purple-500 via-pink-500 to-orange-400 rounded-3xl p-5 text-white shadow-lg shadow-pink-500/20 relative overflow-hidden space-y-3">
               <div className="flex items-center gap-3">
                 <div className="w-12 h-12 rounded-2xl bg-white/20 backdrop-blur-md flex items-center justify-center text-2xl border border-white/30 shrink-0">
@@ -601,7 +577,6 @@ export default function FestivalApp() {
               </a>
             </div>
 
-            {/* ご来場案内ヘッダーバナー */}
             <div className="bg-gradient-to-r from-orange-500 to-amber-500 rounded-3xl p-5 text-white shadow-md space-y-1">
               <p className="text-[10px] font-bold tracking-widest uppercase text-orange-200">
                 VISITOR GUIDE
@@ -610,9 +585,7 @@ export default function FestivalApp() {
               <p className="text-xs text-white/90">ご来場前にご確認ください</p>
             </div>
 
-            {/* 案内カードリスト (IMG_1414下部) */}
             <div className="space-y-3">
-              {/* 1. 開催日時 */}
               <div className="bg-white p-4 rounded-3xl shadow-sm border border-slate-100 flex items-center gap-4">
                 <div className="w-12 h-12 rounded-2xl bg-slate-100 flex items-center justify-center text-2xl shrink-0">
                   🕒
@@ -627,7 +600,6 @@ export default function FestivalApp() {
                 </div>
               </div>
 
-              {/* 2. 上履き */}
               <div className="bg-white p-4 rounded-3xl shadow-sm border border-slate-100 flex items-center gap-4">
                 <div className="w-12 h-12 rounded-2xl bg-slate-100 flex items-center justify-center text-2xl shrink-0">
                   👟
@@ -640,7 +612,6 @@ export default function FestivalApp() {
                 </div>
               </div>
 
-              {/* 3. 自転車でお越しの方 */}
               <div className="bg-white p-4 rounded-3xl shadow-sm border border-slate-100 flex items-center gap-4">
                 <div className="w-12 h-12 rounded-2xl bg-slate-100 flex items-center justify-center text-2xl shrink-0">
                   🚲
@@ -653,7 +624,6 @@ export default function FestivalApp() {
                 </div>
               </div>
 
-              {/* 4. 駐車場 */}
               <div className="bg-white p-4 rounded-3xl shadow-sm border border-slate-100 flex items-center gap-4">
                 <div className="w-12 h-12 rounded-2xl bg-slate-100 flex items-center justify-center text-2xl shrink-0">
                   🚗
