@@ -9,7 +9,6 @@ import {
   MapPin,
   ChevronRight,
   X,
-  Compass
 } from "lucide-react";
 
 interface StallItem {
@@ -297,7 +296,6 @@ const EVENTS_DATA = [
   }
 ];
 
-// 構内図画像上のピン位置情報（メディアセンターを削除し7号館を配置）
 const CAMPUS_ZONES = [
   {
     id: "gym1",
@@ -373,7 +371,7 @@ const CAMPUS_ZONES = [
   }
 ];
 
-export default function App() {
+export default function Page() {
   const [isEntered, setIsEntered] = useState(false);
   const [activeTab, setActiveTab] = useState<"map" | "stalls" | "events">("map");
   const [searchQuery, setSearchQuery] = useState("");
@@ -445,14 +443,10 @@ export default function App() {
       {/* Header */}
       <header className="sticky top-0 z-40 bg-white/90 backdrop-blur-md border-b border-slate-200 shadow-sm">
         <div className="max-w-2xl mx-auto px-4 py-2.5 flex items-center justify-between gap-2">
-          <button onClick={() => setIsEntered(false)} className="flex items-center gap-2 text-left shrink-0">
-            <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-orange-500 via-amber-500 to-rose-500 flex items-center justify-center font-black text-white text-base shadow-sm">
-              高
-            </div>
-            <div className="flex flex-col leading-tight">
-              <span className="font-black text-sm text-slate-800">熱狂の高専祭2026</span>
-              <span className="text-[10px] text-slate-500">鶴岡高専キャンパス</span>
-            </div>
+          {/* 左上ロゴ：「高専ロゴ.jpg」アイコン + 「高専祭」テキスト */}
+          <button onClick={() => setIsEntered(false)} className="flex items-center gap-2.5 text-left shrink-0">
+            <img src="/高専ロゴ.jpg" alt="高専ロゴ" className="w-9 h-9 object-contain" />
+            <span className="font-black text-lg text-slate-800">高専祭</span>
           </button>
 
           {/* 右上ナビゲーション：タップ時のみテキスト表示 */}
@@ -495,20 +489,7 @@ export default function App() {
       <main className="max-w-2xl mx-auto px-4 pt-4 pb-12 space-y-4">
         {activeTab === "map" && (
           <div className="space-y-4">
-            {/* Header info (文字削除済み) */}
-            <div className="bg-white rounded-3xl px-4 py-3 border border-slate-200 shadow-sm flex items-center justify-between">
-              <div className="flex items-center gap-2">
-                <Compass className="w-4 h-4 text-orange-600" />
-                <span className="text-xs font-black tracking-widest text-orange-600 uppercase">
-                  INTERACTIVE MAP
-                </span>
-              </div>
-              <span className="text-xs bg-orange-100 text-orange-800 font-extrabold px-3 py-1 rounded-full border border-orange-200">
-                ピンをタップ！
-              </span>
-            </div>
-
-            {/* Interactive Image Map */}
+            {/* インタラクティブ構内図（INTERACTIVE MAPの欄は削除済み） */}
             <div className="relative w-full rounded-3xl overflow-hidden border-2 border-slate-200 shadow-md bg-slate-200 aspect-[4/3]">
               <img
                 src="/校内図.jpeg"
