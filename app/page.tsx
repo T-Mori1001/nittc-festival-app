@@ -3,22 +3,22 @@
 import React, { useState, useEffect } from "react";
 import { Search, MapPin, Clock, Heart, Info, Calendar, Map as MapIcon, Home, ChevronLeft, Sparkles } from "lucide-react";
 
-// 模擬店・企画データ（鶴東祭用）
+// 模擬店・企画データ
 const STALLS_DATA = [
-  { id: 1, title: "秘伝のたこ焼き", category: "模擬店", location: "1号館前広場 A-1", time: "9:00 - 15:00", description: "外はカリッと中はトロッと！焼きたての秘伝タレたこ焼きです。" },
+  { id: 1, title: "秘伝のたこ焼き", category: "模擬店", location: "1号館前広場 A-1", time: "9:30 - 15:30", description: "外はカリッと中はトロッと！焼きたての秘伝タレたこ焼きです。" },
   { id: 2, title: "軽音部 メインステージ", category: "ステージ", location: "体育館ステージ", time: "10:30 - 12:30", description: "話題のロックバンドカバーライブ！会場一体で盛り上がりましょう！" },
-  { id: 3, title: "美術部 作品展 2026", category: "展示", location: "2号館2F 201教室", time: "9:00 - 14:30", description: "部員が1年間かけて制作した油絵・イラスト・立体作品の展示。" },
+  { id: 3, title: "ロボットコンテスト実演展示", category: "展示", location: "実習棟 1F", time: "9:30 - 15:00", description: "高専ロボコン出場機体のデモ走行＆体験操縦コーナー！" },
   { id: 4, title: "極上手打ちそば", category: "模擬店", location: "中庭 B-3", time: "11:00 - 14:00", description: "数量限定！伝統の製法で手打ちした本格そばを提供します。" },
   { id: 5, title: "吹奏楽部 ポップスコンサート", category: "ステージ", location: "中庭特設ステージ", time: "13:00 - 14:00", description: "アニメソングからヒット曲まで、全員で楽しめる吹奏楽演奏！" },
 ];
 
 // タイムスケジュールデータ
 const SCHEDULE_DATA = [
-  { time: "09:00 - 09:30", title: "オープニングセレモニー", location: "メインステージ" },
+  { time: "09:30 - 10:00", title: "オープニングセレモニー", location: "メインステージ" },
   { time: "10:30 - 12:30", title: "軽音部 ライブパフォーマンス", location: "体育館" },
-  { time: "11:00 - 12:00", title: "ダンス部 スペシャルステージ", location: "メインステージ" },
+  { time: "11:00 - 12:00", title: "プログラミングコンテスト発表", location: "視聴覚教室" },
   { time: "13:00 - 14:00", title: "吹奏楽部 ポップスコンサート", location: "中庭ステージ" },
-  { time: "14:30 - 15:00", title: "グランドフィナーレ & ビンゴ大会", location: "メインステージ" },
+  { time: "15:00 - 15:30", title: "グランドフィナーレ & ビンゴ大会", location: "メインステージ" },
 ];
 
 export default function FestivalApp() {
@@ -30,7 +30,7 @@ export default function FestivalApp() {
 
   // お気に入り（LocalStorage）
   useEffect(() => {
-    const saved = localStorage.getItem("tsuruto_favorites");
+    const saved = localStorage.getItem("kosen_favorites");
     if (saved) setFavorites(JSON.parse(saved));
   }, []);
 
@@ -39,7 +39,7 @@ export default function FestivalApp() {
       ? favorites.filter((favId) => favId !== id)
       : [...favorites, id];
     setFavorites(updated);
-    localStorage.setItem("tsuruto_favorites", JSON.stringify(updated));
+    localStorage.setItem("kosen_favorites", JSON.stringify(updated));
   };
 
   const filteredStalls = STALLS_DATA.filter((item) => {
@@ -49,7 +49,7 @@ export default function FestivalApp() {
   });
 
   // ----------------------------------------------------
-  // 1. トップ画面（画像デザイン再現：青基調）
+  // 1. トップ画面（ランディング画面）
   // ----------------------------------------------------
   if (!isEntered) {
     return (
@@ -69,19 +69,22 @@ export default function FestivalApp() {
 
         {/* サブタイトル */}
         <p className="text-xs sm:text-sm tracking-[0.3em] font-bold text-sky-600 mb-3 uppercase">
-          TSURUTO FESTIVAL 2026
+          KOSEN FESTIVAL 2026
         </p>
 
         {/* メインタイトルロゴ */}
-        <h1 className="text-6xl sm:text-7xl font-black text-blue-950 tracking-wider mb-6 drop-shadow-sm font-sans">
-          鶴東祭
+        <h1 className="text-4xl sm:text-6xl font-black text-blue-950 tracking-wider mb-6 drop-shadow-sm font-sans leading-tight">
+          熱狂の高専祭
+          <span className="block text-2xl sm:text-4xl text-sky-600 mt-2 font-black">
+            ～カーニバル～
+          </span>
         </h1>
 
         {/* 開催日時バッジ */}
-        <div className="bg-white/80 backdrop-blur-md border border-blue-100/80 shadow-md rounded-full px-6 py-2.5 flex items-center justify-center gap-3 mb-12 text-xs sm:text-sm font-bold text-slate-700">
-          <span>2026.8.30 SUN</span>
+        <div className="bg-white/80 backdrop-blur-md border border-blue-100/80 shadow-md rounded-full px-6 py-2.5 flex items-center justify-center gap-3 mb-10 text-xs sm:text-sm font-bold text-slate-700">
+          <span>2026.10.24 SAT</span>
           <span className="text-blue-200">|</span>
-          <span>9:00〜15:00</span>
+          <span>9:30〜15:30</span>
         </div>
 
         {/* 入場ボタン */}
@@ -94,14 +97,14 @@ export default function FestivalApp() {
 
         {/* キャプション */}
         <p className="mt-5 text-xs text-slate-500 font-medium tracking-wide">
-          鶴東祭をお楽しみください！
+          高専祭をお楽しみください！
         </p>
       </div>
     );
   }
 
   // ----------------------------------------------------
-  // 2. メイン画面（案内アプリ本体：青ベースのUI）
+  // 2. メイン画面（案内アプリ本体）
   // ----------------------------------------------------
   return (
     <div className="min-h-screen bg-slate-50 text-slate-800 pb-24">
@@ -117,7 +120,7 @@ export default function FestivalApp() {
               <ChevronLeft className="w-5 h-5" />
             </button>
             <h1 className="text-lg font-black tracking-wide flex items-center gap-1.5">
-              <Sparkles className="w-4 h-4 text-sky-300" /> 鶴東祭 2026
+              <Sparkles className="w-4 h-4 text-sky-300" /> 高専祭 2026
             </h1>
           </div>
           <span className="text-[10px] bg-white/20 backdrop-blur-md px-2.5 py-1 rounded-full font-bold border border-white/20">
