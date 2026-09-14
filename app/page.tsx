@@ -5,38 +5,12 @@ import {
   Map,
   Store,
   Calendar,
-  Grid,
   Search,
   MapPin,
   ChevronRight,
-  Heart,
-  Info,
   X,
-  Share2,
-  CheckCircle2,
-  Compass,
-  Building2,
-  Car,
-  Shield,
-  HelpCircle
+  Compass
 } from "lucide-react";
-
-// Custom SVG Instagram Icon
-const InstagramIcon = ({ className = "w-4 h-4" }: { className?: string }) => (
-  <svg
-    className={className}
-    viewBox="0 0 24 24"
-    fill="none"
-    stroke="currentColor"
-    strokeWidth="2"
-    strokeLinecap="round"
-    strokeLinejoin="round"
-  >
-    <rect width="20" height="20" x="2" y="2" rx="5" ry="5" />
-    <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
-    <line x1="17.5" x2="17.51" y1="6.5" y2="6.5" />
-  </svg>
-);
 
 interface StallItem {
   id: number;
@@ -246,8 +220,6 @@ const STALLS_DATA: StallItem[] = [
     icon: "⚽",
     menu: ["3球チャレンジ"]
   },
-
-  // --- 総合メディアセンター (media) ---
   {
     id: 16,
     title: "高専版・芸能人格付けチェック",
@@ -255,8 +227,8 @@ const STALLS_DATA: StallItem[] = [
     subcategory: "バラエティ",
     grade: "4年",
     dept: "物質 (4B)",
-    location: "総合メディアセンター 1F",
-    zoneId: "media",
+    location: "7号館 1F (713教室)",
+    zoneId: "bldg7",
     description: "4Bあなたの一流度が試される！高級品と激安品を見破れるか！？全問正解で「一流高専生」の称号を！",
     icon: "🍷",
     menu: ["格付け挑戦チケット"]
@@ -284,7 +256,6 @@ const EVENTS_DATA = [
     stageName: "メインステージ",
     location: "第一体育館",
     badgeColor: "bg-rose-500 text-white",
-    note: "※第一体育館アリーナにて開催！館内飲食可能です。",
     schedule: [
       {
         id: "m1",
@@ -326,7 +297,7 @@ const EVENTS_DATA = [
   }
 ];
 
-// 構内図画像上のピン位置情報 (%指定)
+// 構内図画像上のピン位置情報（メディアセンターを削除し7号館を配置）
 const CAMPUS_ZONES = [
   {
     id: "gym1",
@@ -336,10 +307,8 @@ const CAMPUS_ZONES = [
     color: "bg-rose-500",
     lightBg: "bg-rose-50 border-rose-300 text-rose-900",
     icon: "🏟️",
-    // 画像上の位置 (%)
     top: "72%",
     left: "30%",
-    floors: ["アリーナ: メインステージ", "周遊スペース: 2年4学科模擬店"],
     desc: "高専祭の超メイン会場！ステージプログラムと2年生4学科による焼き餃子・ポップコーン・玉こん・焼き鳥！"
   },
   {
@@ -352,7 +321,6 @@ const CAMPUS_ZONES = [
     icon: "🚚",
     top: "58%",
     left: "63%",
-    floors: ["屋外ロータリー広場"],
     desc: "人気のキッチンカー3店が集結！ラーメンもっけだの、祇園はんなりCafé、フェリチタプラス！"
   },
   {
@@ -365,7 +333,6 @@ const CAMPUS_ZONES = [
     icon: "🏫",
     top: "38%",
     left: "40%",
-    floors: ["1F: 1年生模擬店 / 3Eカフェ", "2F: 3I BAR / 3B純喫茶"],
     desc: "キャンパス中央に位置するメイン校舎。1年生の軽食・スイーツ模擬店や各種クラス企画を展開！"
   },
   {
@@ -376,23 +343,9 @@ const CAMPUS_ZONES = [
     color: "bg-purple-500",
     lightBg: "bg-purple-50 border-purple-300 text-purple-900",
     icon: "👻",
-    top: "18%",
-    left: "32%",
-    floors: ["1F: 3M お化け屋敷", "2F: 4E キッキングスナイパー"],
-    desc: "体験型アトラクション満載！機械工学科特製の恐怖お化け屋敷とキッキングスナイパー！"
-  },
-  {
-    id: "media",
-    name: "総合メディアセンター",
-    subName: "図書館・メディアホール",
-    pinLabel: "メディアセンター",
-    color: "bg-cyan-500",
-    lightBg: "bg-cyan-50 border-cyan-300 text-cyan-900",
-    icon: "📚",
     top: "26%",
     left: "72%",
-    floors: ["1F: 4B 高専版格付けチェック"],
-    desc: "4B（物質工学科）主催の大熱狂体験ブース『高専版・芸能人格付けチェック』を開催！"
+    desc: "体験型アトラクション満載！機械工学科特製の恐怖お化け屋敷やキッキングスナイパー、格付けチェック！"
   },
   {
     id: "factory",
@@ -404,7 +357,6 @@ const CAMPUS_ZONES = [
     icon: "⚙️",
     top: "16%",
     left: "16%",
-    floors: ["1F: ロボコン部機体操縦＆超科学射的"],
     desc: "高専ならではの技術体験！全国大会出場のロボコン部機体を直接操縦できます！"
   },
   {
@@ -417,65 +369,32 @@ const CAMPUS_ZONES = [
     icon: "🅿️",
     top: "84%",
     left: "86%",
-    floors: ["正門 / 駐車場"],
     desc: "ご来場者様用駐車場および駐輪場です。"
   }
 ];
 
 export default function App() {
   const [isEntered, setIsEntered] = useState(false);
-  const [activeTab, setActiveTab] = useState<"map" | "stalls" | "events" | "guide">("map");
-
-  // State
+  const [activeTab, setActiveTab] = useState<"map" | "stalls" | "events">("map");
   const [searchQuery, setSearchQuery] = useState("");
-  const [selectedCategory, setSelectedCategory] = useState("すべて");
-  const [selectedGrade, setSelectedGrade] = useState("すべて");
-  const [favorites, setFavorites] = useState<number[]>([]);
   const [selectedZoneId, setSelectedZoneId] = useState("gym1");
   const [modalItem, setModalItem] = useState<StallItem | null>(null);
-  const [copiedNotification, setCopiedNotification] = useState(false);
-
-  const toggleFavorite = (id: number, e?: React.MouseEvent) => {
-    if (e) e.stopPropagation();
-    setFavorites((prev) =>
-      prev.includes(id) ? prev.filter((item) => item !== id) : [...prev, id]
-    );
-  };
 
   const filteredStalls = useMemo(() => {
     return STALLS_DATA.filter((stall) => {
-      const matchSearch =
+      return (
         stall.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
         stall.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        stall.location.toLowerCase().includes(searchQuery.toLowerCase());
-
-      const matchCategory =
-        selectedCategory === "すべて"
-          ? true
-          : selectedCategory === "お気に入り"
-          ? favorites.includes(stall.id)
-          : stall.category === selectedCategory;
-
-      const matchGrade = selectedGrade === "すべて" || stall.grade === selectedGrade;
-
-      return matchSearch && matchCategory && matchGrade;
+        stall.location.toLowerCase().includes(searchQuery.toLowerCase())
+      );
     });
-  }, [searchQuery, selectedCategory, selectedGrade, favorites]);
+  }, [searchQuery]);
 
-  // Selected Zone stalls
   const zoneStalls = useMemo(() => {
     return STALLS_DATA.filter((s) => s.zoneId === selectedZoneId);
   }, [selectedZoneId]);
 
   const currentZone = CAMPUS_ZONES.find((z) => z.id === selectedZoneId) || CAMPUS_ZONES[0];
-
-  const handleShare = (item: StallItem) => {
-    if (typeof window !== "undefined" && navigator.clipboard) {
-      navigator.clipboard.writeText(`鶴岡高専祭2026: ${item.title} (${item.location})`);
-      setCopiedNotification(true);
-      setTimeout(() => setCopiedNotification(false), 2000);
-    }
-  };
 
   if (!isEntered) {
     return (
@@ -495,17 +414,15 @@ export default function App() {
           TSURUOKA KOSEN FESTIVAL 2026
         </div>
 
+        {/* トップ画面タイトル：ふりがな（カーニバル）表記 */}
         <h1 className="font-pop flex flex-col items-center justify-center tracking-tight mb-6 z-10">
+          <div className="flex items-center gap-1.5 mb-1 bg-amber-100 text-amber-800 px-3 py-1 rounded-full border border-amber-300 shadow-sm">
+            <span className="text-[11px] font-black bg-amber-500 text-white px-1.5 py-0.2 rounded">ふりがな</span>
+            <span className="text-sm font-black tracking-widest">カーニバル</span>
+          </div>
           <div className="text-4xl sm:text-6xl text-rose-500 font-black drop-shadow-sm flex justify-center gap-0.5">
             {"熱狂の高専祭".split("").map((char, index) => (
               <span key={index} className="animate-char inline-block" style={{ animationDelay: `${0.1 + index * 0.07}s` }}>
-                {char}
-              </span>
-            ))}
-          </div>
-          <div className="text-5xl sm:text-7xl text-orange-500 font-black drop-shadow-sm flex justify-center gap-1 mt-1">
-            {"カーニバル".split("").map((char, index) => (
-              <span key={index} className="animate-char inline-block" style={{ animationDelay: `${0.5 + index * 0.08}s` }}>
                 {char}
               </span>
             ))}
@@ -538,33 +455,37 @@ export default function App() {
             </div>
           </button>
 
+          {/* 右上ナビゲーション：タップ時のみテキスト表示 */}
           <nav className="flex items-center gap-1 bg-slate-100 p-1 rounded-full border border-slate-200">
             <button
               onClick={() => setActiveTab("map")}
-              className={`flex items-center gap-1 px-3 py-1.5 rounded-full text-xs font-bold transition ${
-                activeTab === "map" ? "bg-gradient-to-r from-orange-500 to-rose-500 text-white" : "text-slate-600"
+              className={`flex items-center gap-1 px-3 py-1.5 rounded-full text-xs font-bold transition-all duration-200 ${
+                activeTab === "map" ? "bg-gradient-to-r from-orange-500 to-rose-500 text-white" : "text-slate-600 hover:text-slate-900"
               }`}
+              title="マップ"
             >
-              <Map className="w-3.5 h-3.5" />
-              <span>マップ</span>
+              <Map className="w-4 h-4" />
+              {activeTab === "map" && <span>マップ</span>}
             </button>
             <button
               onClick={() => setActiveTab("stalls")}
-              className={`flex items-center gap-1 px-3 py-1.5 rounded-full text-xs font-bold transition ${
-                activeTab === "stalls" ? "bg-gradient-to-r from-orange-500 to-rose-500 text-white" : "text-slate-600"
+              className={`flex items-center gap-1 px-3 py-1.5 rounded-full text-xs font-bold transition-all duration-200 ${
+                activeTab === "stalls" ? "bg-gradient-to-r from-orange-500 to-rose-500 text-white" : "text-slate-600 hover:text-slate-900"
               }`}
+              title="企画一覧"
             >
-              <Store className="w-3.5 h-3.5" />
-              <span>企画一覧</span>
+              <Store className="w-4 h-4" />
+              {activeTab === "stalls" && <span>企画一覧</span>}
             </button>
             <button
               onClick={() => setActiveTab("events")}
-              className={`flex items-center gap-1 px-3 py-1.5 rounded-full text-xs font-bold transition ${
-                activeTab === "events" ? "bg-gradient-to-r from-orange-500 to-rose-500 text-white" : "text-slate-600"
+              className={`flex items-center gap-1 px-3 py-1.5 rounded-full text-xs font-bold transition-all duration-200 ${
+                activeTab === "events" ? "bg-gradient-to-r from-orange-500 to-rose-500 text-white" : "text-slate-600 hover:text-slate-900"
               }`}
+              title="ステージ"
             >
-              <Calendar className="w-3.5 h-3.5" />
-              <span>ステージ</span>
+              <Calendar className="w-4 h-4" />
+              {activeTab === "events" && <span>ステージ</span>}
             </button>
           </nav>
         </div>
@@ -574,14 +495,13 @@ export default function App() {
       <main className="max-w-2xl mx-auto px-4 pt-4 pb-12 space-y-4">
         {activeTab === "map" && (
           <div className="space-y-4">
-            {/* Header info */}
-            <div className="bg-white rounded-3xl p-4 border border-slate-200 shadow-sm flex items-center justify-between">
-              <div>
-                <span className="text-[10px] font-black tracking-widest text-orange-600 uppercase flex items-center gap-1">
-                  <Compass className="w-3 h-3 text-orange-600" />
+            {/* Header info (文字削除済み) */}
+            <div className="bg-white rounded-3xl px-4 py-3 border border-slate-200 shadow-sm flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <Compass className="w-4 h-4 text-orange-600" />
+                <span className="text-xs font-black tracking-widest text-orange-600 uppercase">
                   INTERACTIVE MAP
                 </span>
-                <h2 className="text-lg font-black text-slate-800">鶴岡高専 構内ピン付きマップ</h2>
               </div>
               <span className="text-xs bg-orange-100 text-orange-800 font-extrabold px-3 py-1 rounded-full border border-orange-200">
                 ピンをタップ！
@@ -590,14 +510,12 @@ export default function App() {
 
             {/* Interactive Image Map */}
             <div className="relative w-full rounded-3xl overflow-hidden border-2 border-slate-200 shadow-md bg-slate-200 aspect-[4/3]">
-              {/* Campus Image Background */}
               <img
                 src="/校内図.jpeg"
                 alt="鶴岡高専 構内図"
                 className="w-full h-full object-cover select-none"
               />
 
-              {/* Pins rendered on top of the image */}
               {CAMPUS_ZONES.map((zone) => {
                 const isSelected = selectedZoneId === zone.id;
                 return (
@@ -609,7 +527,6 @@ export default function App() {
                       isSelected ? "scale-125 z-30" : "hover:scale-110"
                     }`}
                   >
-                    {/* Pin Bubble Label */}
                     <div
                       className={`px-2 py-0.5 rounded-full text-[10px] font-black whitespace-nowrap shadow-md mb-0.5 border flex items-center gap-1 ${
                         isSelected
@@ -621,7 +538,6 @@ export default function App() {
                       <span>{zone.pinLabel}</span>
                     </div>
 
-                    {/* Pin Icon / Marker */}
                     <div className="relative flex items-center justify-center">
                       {isSelected && (
                         <span className="absolute w-8 h-8 rounded-full bg-rose-500/40 animate-ping" />
@@ -639,7 +555,7 @@ export default function App() {
               })}
             </div>
 
-            {/* Selected Location Details & Stalls List */}
+            {/* Selected Location Details */}
             <div className={`rounded-3xl p-5 border shadow-sm space-y-4 transition-all ${currentZone.lightBg}`}>
               <div className="flex items-start justify-between gap-2 border-b border-current/10 pb-3">
                 <div className="flex items-center gap-3">
@@ -656,7 +572,6 @@ export default function App() {
 
               <p className="text-xs leading-relaxed font-medium opacity-90">{currentZone.desc}</p>
 
-              {/* List of stalls in the selected location */}
               <div className="space-y-2">
                 <h4 className="text-xs font-extrabold text-slate-800 flex items-center gap-1">
                   <span>📍 {currentZone.name} の出展・企画一覧</span>
@@ -697,7 +612,7 @@ export default function App() {
           </div>
         )}
 
-        {/* TAB 2: Stalls List */}
+        {/* TAB 2: Stalls */}
         {activeTab === "stalls" && (
           <div className="space-y-4">
             <div className="bg-white p-4 rounded-3xl border border-slate-200 shadow-sm space-y-3">
