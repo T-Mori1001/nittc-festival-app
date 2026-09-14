@@ -1,3 +1,5 @@
+"use client";
+
 import React, { useState, useMemo } from "react";
 import {
   Map,
@@ -19,7 +21,6 @@ import {
   Wrench,
   Bot,
   Terminal,
-  Instagram,
   Clock,
   Info,
   X,
@@ -34,7 +35,8 @@ import {
   Building2,
   Shield,
   Coffee,
-  HelpCircle
+  HelpCircle,
+  Camera, // ⭕ Instagramの代わりにCamera等を使用（またはSVGアイコン）
 } from "lucide-react";
 
 // 全企画・店舗データ
