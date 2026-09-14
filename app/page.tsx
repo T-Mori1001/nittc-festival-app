@@ -581,114 +581,104 @@ export default function App() {
 
   if (!isEntered) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-sky-50 via-indigo-50/50 to-blue-100 text-slate-800 flex flex-col items-center justify-center relative overflow-hidden px-6 text-center select-none font-sans">
+      <div className="min-h-screen bg-[#FFFDF7] text-slate-800 flex flex-col items-center justify-center relative overflow-hidden px-6 text-center select-none font-sans">
         <style>{`
-          @import url('https://fonts.googleapis.com/css2?family=Dela+Gothic+One&family=M+PLUS+Rounded+1c:wght@700;800;900&display=swap');
-          .font-pop { font-family: 'Dela Gothic One', 'M PLUS Rounded 1c', sans-serif; }
+          @import url('https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@700;800;900&display=swap');
+          .font-pop { font-family: 'M PLUS Rounded 1c', sans-serif; }
+          
           @keyframes charPopIn {
-            0% { opacity: 0; transform: translateY(24px) scale(0.6); }
-            70% { opacity: 1; transform: translateY(-6px) scale(1.1); }
+            0% { opacity: 0; transform: translateY(20px) scale(0.7); }
+            70% { opacity: 1; transform: translateY(-4px) scale(1.08); }
             100% { opacity: 1; transform: translateY(0) scale(1); }
           }
-          @keyframes fadeInUp {
-            from { opacity: 0; transform: translateY(24px); }
-            to { opacity: 1; transform: translateY(0); }
+          @keyframes floatConfetti {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-10px) rotate(15deg); }
           }
-          @keyframes spinSlow { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
-          @keyframes floatSlow { 0%, 100% { transform: translateY(0px); } 50% { transform: translateY(-12px); } }
-          .animate-char { animation: charPopIn 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) forwards; opacity: 0; }
-          .animate-fade { animation: fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards; opacity: 0; }
-          .animate-spin-gear { animation: spinSlow 16s linear infinite; }
-          .animate-float-icon { animation: floatSlow 4s ease-in-out infinite; }
+          .animate-char { animation: charPopIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards; opacity: 0; }
+          .animate-confetti { animation: floatConfetti 3.5s ease-in-out infinite; }
         `}</style>
 
-        {/* Ambient background glows */}
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-sky-200/50 via-transparent to-transparent pointer-events-none" />
+        {/* Soft Warm Ambient Glow */}
+        <div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[420px] h-[420px] bg-amber-200/40 rounded-full blur-3xl pointer-events-none" />
 
-        {/* Floating tech background elements */}
+        {/* Floating Colorful Confetti Elements (Reference Image Style) */}
         <div className="absolute inset-0 pointer-events-none overflow-hidden select-none">
-          <div className="absolute top-6 -left-10 text-sky-300/40 animate-spin-gear">
-            <Cog className="w-36 h-36" />
-          </div>
-          <div className="absolute top-12 right-8 text-blue-300/40 animate-float-icon">
-            <Cpu className="w-16 h-16" />
-          </div>
-          <div className="absolute bottom-28 left-8 text-indigo-300/40 animate-float-icon">
-            <Code className="w-14 h-14" />
-          </div>
-          <div className="absolute bottom-10 -right-8 text-cyan-300/40 animate-spin-gear">
-            <Cog className="w-32 h-32" />
-          </div>
+          {/* Top Left Cluster */}
+          <div className="absolute top-10 left-[12%] w-4 h-2 bg-orange-500 rounded-xs rotate-45 animate-confetti" style={{ animationDelay: "0.1s" }} />
+          <div className="absolute top-16 left-[22%] w-3 h-5 bg-teal-500 rounded-xs -rotate-12 animate-confetti" style={{ animationDelay: "0.4s" }} />
+          <div className="absolute top-8 left-[32%] w-4 h-3 bg-rose-500 rounded-xs rotate-12 animate-confetti" style={{ animationDelay: "0.7s" }} />
+
+          {/* Top Right Cluster */}
+          <div className="absolute top-7 right-[15%] w-3 h-3 bg-amber-400 rounded-xs rotate-45 animate-confetti" style={{ animationDelay: "0.3s" }} />
+          <div className="absolute top-14 right-[25%] w-5 h-2.5 bg-sky-500 rounded-xs -rotate-45 animate-confetti" style={{ animationDelay: "0.6s" }} />
+          <div className="absolute top-20 right-[10%] w-3.5 h-4 bg-emerald-500 rounded-xs rotate-12 animate-confetti" style={{ animationDelay: "0.2s" }} />
+
+          {/* Around Main Title */}
+          <div className="absolute top-[32%] left-[8%] w-5 h-3 bg-sky-500 rounded-xs -rotate-45 animate-confetti" style={{ animationDelay: "0.5s" }} />
+          <div className="absolute top-[36%] left-[18%] w-3.5 h-5 bg-rose-500 rounded-xs rotate-12 animate-confetti" style={{ animationDelay: "0.8s" }} />
+          <div className="absolute top-[30%] right-[14%] w-4 h-3 bg-amber-400 rounded-xs -rotate-12 animate-confetti" style={{ animationDelay: "0.3s" }} />
+          <div className="absolute top-[37%] right-[7%] w-3 h-5 bg-teal-500 rounded-xs rotate-45 animate-confetti" style={{ animationDelay: "0.9s" }} />
+
+          {/* Bottom Area */}
+          <div className="absolute bottom-16 left-[10%] w-4 h-2.5 bg-rose-400 rounded-xs rotate-12 animate-confetti" style={{ animationDelay: "0.2s" }} />
+          <div className="absolute bottom-20 right-[12%] w-3.5 h-4 bg-orange-400 rounded-xs -rotate-45 animate-confetti" style={{ animationDelay: "0.7s" }} />
         </div>
 
-        {/* Badge */}
-        <div
-          className="animate-fade inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/90 border border-sky-300 text-sky-800 text-xs font-bold mb-4 tracking-wider z-10 shadow-sm"
-          style={{ animationDelay: "0.1s" }}
-        >
-          <Sparkles className="w-3.5 h-3.5 text-sky-600 animate-spin" />
-          <span>TSURUOKA KOSEN FESTIVAL 2026</span>
+        {/* English Subtitle Badge */}
+        <div className="inline-flex items-center gap-1.5 text-teal-600 font-extrabold text-xs sm:text-sm tracking-[0.25em] mb-4 z-10 font-pop">
+          TSURUOKA KOSEN FESTIVAL 2026
         </div>
 
-        {/* Title */}
-        <h1 className="font-pop flex flex-col items-center justify-center tracking-wide mb-8 z-10">
-          <div className="text-3xl sm:text-5xl text-slate-800 drop-shadow-sm flex justify-center gap-1">
+        {/* Main Title Section */}
+        <h1 className="font-pop flex flex-col items-center justify-center tracking-tight mb-6 z-10">
+          {/* 熱狂の高専祭 (Solid Vivid Red/Coral - Always visible) */}
+          <div className="text-4xl sm:text-6xl text-rose-500 font-black drop-shadow-sm flex justify-center gap-0.5">
             {"熱狂の高専祭".split("").map((char, index) => (
               <span
                 key={index}
                 className="animate-char inline-block"
-                style={{ animationDelay: `${0.2 + index * 0.08}s` }}
+                style={{ animationDelay: `${0.1 + index * 0.07}s` }}
               >
                 {char}
               </span>
             ))}
           </div>
 
-          <div className="relative inline-block text-center mt-3">
-            <div className="text-5xl sm:text-7xl text-transparent bg-clip-text bg-gradient-to-r from-cyan-600 via-blue-600 to-indigo-600 drop-shadow-sm flex justify-center gap-1">
-              {"カーニバル".split("").map((char, index) => (
-                <span
-                  key={index}
-                  className="animate-char inline-block"
-                  style={{ animationDelay: `${0.6 + index * 0.09}s` }}
-                >
-                  {char}
-                </span>
-              ))}
-            </div>
+          {/* カーニバル - FIXED: Solid Orange with Drop Shadow to guarantee 100% visibility on Mobile Safari */}
+          <div className="text-5xl sm:text-7xl text-orange-500 font-black drop-shadow-sm flex justify-center gap-1 mt-1">
+            {"カーニバル".split("").map((char, index) => (
+              <span
+                key={index}
+                className="animate-char inline-block"
+                style={{ animationDelay: `${0.5 + index * 0.08}s` }}
+              >
+                {char}
+              </span>
+            ))}
           </div>
         </h1>
 
-        {/* Info card */}
-        <div
-          className="animate-fade bg-white/90 backdrop-blur-md border border-slate-200 shadow-lg rounded-2xl px-6 py-3.5 flex flex-wrap items-center justify-center gap-3 mb-10 text-xs sm:text-sm font-bold text-slate-700 z-10"
-          style={{ animationDelay: "1.2s" }}
-        >
-          <div className="flex items-center gap-1.5 text-blue-700 font-extrabold">
-            <Calendar className="w-4 h-4" />
-            <span>2026年10月24日 (土)</span>
-          </div>
+        {/* Date / Time Card (Pop Pill Style) */}
+        <div className="bg-white/95 backdrop-blur-md border border-slate-200/80 shadow-sm rounded-full px-6 py-2.5 flex items-center justify-center gap-3 mb-8 text-xs sm:text-sm font-black text-slate-700 z-10 font-pop">
+          <span className="text-rose-500">2026.10.24 SAT</span>
           <span className="text-slate-300">|</span>
-          <div className="flex items-center gap-1.5 text-slate-700">
-            <Clock className="w-4 h-4 text-sky-600" />
-            <span>9:30 〜 15:30</span>
-          </div>
-          <span className="text-slate-300">|</span>
-          <div className="flex items-center gap-1 text-slate-700">
-            <MapPin className="w-4 h-4 text-rose-500" />
-            <span>@鶴岡高専 キャンパス</span>
-          </div>
+          <span className="text-slate-600">9:30 〜 15:30</span>
         </div>
 
-        {/* Enter Button */}
-        <div className="animate-fade z-10" style={{ animationDelay: "1.4s" }}>
+        {/* Pop Entrance Pill Button (Vibrant Orange Gradient matching reference) */}
+        <div className="z-10 flex flex-col items-center gap-3">
           <button
             onClick={() => setIsEntered(true)}
-            className="font-pop group relative w-64 sm:w-72 py-4 rounded-full bg-gradient-to-r from-cyan-500 via-blue-600 to-indigo-600 text-white text-lg tracking-widest shadow-lg hover:shadow-xl hover:scale-105 active:scale-95 transition-all duration-300 flex items-center justify-center gap-2 border border-white/20"
+            className="font-pop group relative px-10 py-4 rounded-full bg-gradient-to-r from-orange-500 via-amber-500 to-rose-500 text-white text-lg font-black tracking-wider shadow-lg shadow-orange-500/25 hover:shadow-orange-500/40 hover:scale-105 active:scale-95 transition-all duration-300 flex items-center justify-center gap-2 border border-white/40"
           >
-            <span>アプリを起動する</span>
-            <ChevronRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+            <span>入場する</span>
+            <span className="text-xl">🎉</span>
           </button>
+
+          <p className="text-xs font-bold text-slate-400 tracking-wider font-pop">
+            高専祭をお楽しみください！
+          </p>
         </div>
       </div>
     );
@@ -703,13 +693,13 @@ export default function App() {
             onClick={() => setIsEntered(false)}
             className="flex items-center gap-2.5 hover:opacity-80 transition text-left shrink-0"
           >
-            <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-cyan-500 via-blue-600 to-indigo-600 flex items-center justify-center font-black text-white text-base shadow-sm">
+            <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-orange-500 via-amber-500 to-rose-500 flex items-center justify-center font-black text-white text-base shadow-sm">
               高
             </div>
             <div className="flex flex-col leading-tight">
               <span className="font-black text-sm text-slate-800 tracking-tight flex items-center gap-1">
                 熱狂の高専祭
-                <span className="text-[10px] font-bold px-1.5 py-0.2 bg-blue-100 text-blue-700 rounded border border-blue-200">
+                <span className="text-[10px] font-bold px-1.5 py-0.2 bg-orange-100 text-orange-700 rounded border border-orange-200">
                   2026
                 </span>
               </span>
@@ -725,7 +715,7 @@ export default function App() {
               onClick={() => setActiveTab("map")}
               className={`flex items-center gap-1 px-3 py-1.5 rounded-full text-xs font-bold transition-all ${
                 activeTab === "map"
-                  ? "bg-gradient-to-r from-cyan-500 to-blue-600 text-white shadow-sm"
+                  ? "bg-gradient-to-r from-orange-500 to-rose-500 text-white shadow-sm"
                   : "text-slate-600 hover:text-slate-900"
               }`}
             >
@@ -737,7 +727,7 @@ export default function App() {
               onClick={() => setActiveTab("stalls")}
               className={`flex items-center gap-1 px-3 py-1.5 rounded-full text-xs font-bold transition-all ${
                 activeTab === "stalls"
-                  ? "bg-gradient-to-r from-cyan-500 to-blue-600 text-white shadow-sm"
+                  ? "bg-gradient-to-r from-orange-500 to-rose-500 text-white shadow-sm"
                   : "text-slate-600 hover:text-slate-900"
               }`}
             >
@@ -749,7 +739,7 @@ export default function App() {
               onClick={() => setActiveTab("events")}
               className={`flex items-center gap-1 px-3 py-1.5 rounded-full text-xs font-bold transition-all ${
                 activeTab === "events"
-                  ? "bg-gradient-to-r from-cyan-500 to-blue-600 text-white shadow-sm"
+                  ? "bg-gradient-to-r from-orange-500 to-rose-500 text-white shadow-sm"
                   : "text-slate-600 hover:text-slate-900"
               }`}
             >
@@ -761,7 +751,7 @@ export default function App() {
               onClick={() => setActiveTab("guide")}
               className={`flex items-center gap-1 px-3 py-1.5 rounded-full text-xs font-bold transition-all ${
                 activeTab === "guide"
-                  ? "bg-gradient-to-r from-cyan-500 to-blue-600 text-white shadow-sm"
+                  ? "bg-gradient-to-r from-orange-500 to-rose-500 text-white shadow-sm"
                   : "text-slate-600 hover:text-slate-900"
               }`}
             >
@@ -775,16 +765,14 @@ export default function App() {
       {/* Main Content Area */}
       <main className="max-w-2xl mx-auto px-4 pt-4 pb-12 space-y-4">
 
-        {/* ========================================================= */}
-        {/* TAB 1: Campus Interactive Map                             */}
-        {/* ========================================================= */}
+        {/* TAB 1: Campus Interactive Map */}
         {activeTab === "map" && (
           <div className="space-y-4">
             <div className="bg-white rounded-3xl p-5 border border-slate-200 shadow-sm space-y-2">
               <div className="flex items-center justify-between">
                 <div>
-                  <span className="text-[10px] font-black tracking-widest text-cyan-600 uppercase flex items-center gap-1">
-                    <Compass className="w-3 h-3 text-cyan-600" />
+                  <span className="text-[10px] font-black tracking-widest text-orange-600 uppercase flex items-center gap-1">
+                    <Compass className="w-3 h-3 text-orange-600" />
                     TSURUOKA KOSEN MAP
                   </span>
                   <h2 className="text-xl font-black text-slate-800 mt-0.5">鶴岡高専 構内インタラクティブ図面</h2>
@@ -799,16 +787,15 @@ export default function App() {
             <div className="bg-slate-100 border-2 border-slate-200 rounded-3xl p-4 shadow-sm space-y-3">
               <div className="bg-white text-slate-700 text-[10px] font-bold py-1.5 px-3 rounded-xl flex justify-between items-center border border-slate-200">
                 <span className="flex items-center gap-1.5">
-                  <Navigation className="w-3.5 h-3.5 text-cyan-600 rotate-45" />
+                  <Navigation className="w-3.5 h-3.5 text-orange-600 rotate-45" />
                   <span>🛣️ 北側: 国道345号線 / 正門アプローチ</span>
                 </span>
-                <span className="text-[9px] bg-cyan-100 text-cyan-800 font-extrabold px-2 py-0.5 rounded border border-cyan-200">
+                <span className="text-[9px] bg-orange-100 text-orange-800 font-extrabold px-2 py-0.5 rounded border border-orange-200">
                   北 ↑
                 </span>
               </div>
 
               <div className="space-y-2">
-                {/* North Entrance Zone */}
                 <button
                   onClick={() => setSelectedZoneId("parking")}
                   className={`w-full rounded-2xl p-2.5 text-left transition border ${
@@ -825,7 +812,6 @@ export default function App() {
                   </div>
                 </button>
 
-                {/* Main 1号館 and Kitchen Car zone */}
                 <div className="grid grid-cols-12 gap-2">
                   <button
                     onClick={() => setSelectedZoneId("bldg1")}
@@ -875,7 +861,6 @@ export default function App() {
                   </button>
                 </div>
 
-                {/* Gymnasium, Media Center, Workshop */}
                 <div className="grid grid-cols-12 gap-2">
                   <button
                     onClick={() => setSelectedZoneId("factory")}
@@ -914,7 +899,6 @@ export default function App() {
                   </button>
                 </div>
 
-                {/* 7号館 & Specialized Bldgs */}
                 <div className="grid grid-cols-12 gap-2">
                   <button
                     onClick={() => setSelectedZoneId("bldg7")}
@@ -941,7 +925,6 @@ export default function App() {
                   </button>
                 </div>
 
-                {/* South Cafeteria Zone */}
                 <button
                   onClick={() => setSelectedZoneId("cafeteria")}
                   className={`w-full rounded-2xl p-2.5 text-left transition border ${
@@ -988,7 +971,6 @@ export default function App() {
                 </div>
               )}
 
-              {/* Zone Stalls List */}
               <div className="pt-2">
                 <h4 className="text-xs font-extrabold mb-2 flex items-center gap-1">
                   <span>このエリアの企画・店舗 ({zoneStalls.length}件)</span>
@@ -1004,7 +986,7 @@ export default function App() {
                         <span className="text-2xl p-2 bg-slate-100 rounded-xl shrink-0">{stall.icon}</span>
                         <div className="min-w-0 flex-1">
                           <div className="flex items-center gap-1">
-                            <span className="text-[10px] font-bold px-1.5 py-0.2 rounded bg-blue-100 text-blue-700">
+                            <span className="text-[10px] font-bold px-1.5 py-0.2 rounded bg-orange-100 text-orange-700">
                               {stall.grade}
                             </span>
                             <span className="text-xs font-black truncate">{stall.title}</span>
@@ -1023,12 +1005,9 @@ export default function App() {
           </div>
         )}
 
-        {/* ========================================================= */}
-        {/* TAB 2: Stalls & Class Projects                            */}
-        {/* ========================================================= */}
+        {/* TAB 2: Stalls & Class Projects */}
         {activeTab === "stalls" && (
           <div className="space-y-4">
-            {/* Search & Filter Header */}
             <div className="bg-white p-4 rounded-3xl border border-slate-200 shadow-sm space-y-3">
               <div className="relative">
                 <Search className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" />
@@ -1037,7 +1016,7 @@ export default function App() {
                   placeholder="店名・料理・クラス・教室で検索..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="w-full pl-10 pr-4 py-2.5 bg-slate-50 border border-slate-200 rounded-2xl text-xs font-semibold text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
+                  className="w-full pl-10 pr-4 py-2.5 bg-slate-50 border border-slate-200 rounded-2xl text-xs font-semibold text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-orange-500 transition"
                 />
                 {searchQuery && (
                   <button
@@ -1049,7 +1028,6 @@ export default function App() {
                 )}
               </div>
 
-              {/* Filter Chips */}
               <div className="space-y-2">
                 <div className="flex items-center gap-1.5 overflow-x-auto pb-1 scrollbar-none">
                   <span className="text-[10px] font-bold text-slate-400 shrink-0 mr-1">カテゴリ:</span>
@@ -1059,7 +1037,7 @@ export default function App() {
                       onClick={() => setSelectedCategory(cat)}
                       className={`px-3 py-1 rounded-full text-xs font-extrabold shrink-0 transition ${
                         selectedCategory === cat
-                          ? "bg-blue-600 text-white shadow-sm"
+                          ? "bg-gradient-to-r from-orange-500 to-rose-500 text-white shadow-sm"
                           : "bg-slate-100 text-slate-600 hover:bg-slate-200"
                       }`}
                     >
@@ -1087,7 +1065,6 @@ export default function App() {
               </div>
             </div>
 
-            {/* Results Count */}
             <div className="flex items-center justify-between px-1 text-xs font-bold text-slate-500">
               <span>検索結果: {filteredStalls.length} 件</span>
               {favorites.length > 0 && (
@@ -1098,7 +1075,6 @@ export default function App() {
               )}
             </div>
 
-            {/* Stall List */}
             {filteredStalls.length > 0 ? (
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 {filteredStalls.map((stall) => {
@@ -1117,14 +1093,14 @@ export default function App() {
                             </span>
                             <div>
                               <div className="flex items-center gap-1">
-                                <span className="text-[10px] font-black px-2 py-0.5 bg-blue-50 text-blue-700 rounded-md border border-blue-200">
+                                <span className="text-[10px] font-black px-2 py-0.5 bg-orange-50 text-orange-700 rounded-md border border-orange-200">
                                   {stall.grade}
                                 </span>
                                 <span className="text-[10px] font-bold text-slate-500">
                                   {stall.category}
                                 </span>
                               </div>
-                              <h3 className="font-black text-sm text-slate-800 mt-0.5 group-hover:text-blue-600 transition">
+                              <h3 className="font-black text-sm text-slate-800 mt-0.5 group-hover:text-orange-600 transition">
                                 {stall.title}
                               </h3>
                             </div>
@@ -1189,14 +1165,12 @@ export default function App() {
           </div>
         )}
 
-        {/* ========================================================= */}
-        {/* TAB 3: Events & Stage Schedule                            */}
-        {/* ========================================================= */}
+        {/* TAB 3: Events & Stage Schedule */}
         {activeTab === "events" && (
           <div className="space-y-4">
             <div className="bg-white p-5 rounded-3xl border border-slate-200 shadow-sm space-y-2">
-              <span className="text-[10px] font-black tracking-widest text-cyan-600 uppercase flex items-center gap-1">
-                <Calendar className="w-3 h-3 text-cyan-600" />
+              <span className="text-[10px] font-black tracking-widest text-orange-600 uppercase flex items-center gap-1">
+                <Calendar className="w-3 h-3 text-orange-600" />
                 STAGE PROGRAM
               </span>
               <h2 className="text-xl font-black text-slate-800">ステージタイムスケジュール</h2>
@@ -1223,7 +1197,7 @@ export default function App() {
                   {stage.schedule.map((item) => (
                     <div key={item.id} className="p-4 hover:bg-slate-50/80 transition space-y-1.5">
                       <div className="flex items-center justify-between gap-2">
-                        <span className="text-xs font-black text-blue-600 bg-blue-50 px-2.5 py-0.5 rounded-full border border-blue-200">
+                        <span className="text-xs font-black text-orange-600 bg-orange-50 px-2.5 py-0.5 rounded-full border border-orange-200">
                           {item.time}
                         </span>
                         <span className="text-[10px] font-bold text-slate-500 bg-slate-100 px-2 py-0.5 rounded">
@@ -1247,7 +1221,7 @@ export default function App() {
 
                 {stage.note && (
                   <div className="p-3 bg-slate-50 border-t border-slate-100 text-[11px] font-semibold text-slate-500 flex items-center gap-1.5">
-                    <Info className="w-3.5 h-3.5 text-blue-500 shrink-0" />
+                    <Info className="w-3.5 h-3.5 text-orange-500 shrink-0" />
                     <span>{stage.note}</span>
                   </div>
                 )}
@@ -1256,22 +1230,19 @@ export default function App() {
           </div>
         )}
 
-        {/* ========================================================= */}
-        {/* TAB 4: Campus Guide & FAQ                                 */}
-        {/* ========================================================= */}
+        {/* TAB 4: Campus Guide & FAQ */}
         {activeTab === "guide" && (
           <div className="space-y-4">
-            {/* Festival Overview */}
             <div className="bg-white p-5 rounded-3xl border border-slate-200 shadow-sm space-y-3">
-              <span className="text-[10px] font-black tracking-widest text-cyan-600 uppercase flex items-center gap-1">
-                <Grid className="w-3 h-3 text-cyan-600" />
+              <span className="text-[10px] font-black tracking-widest text-orange-600 uppercase flex items-center gap-1">
+                <Grid className="w-3 h-3 text-orange-600" />
                 INFORMATION GUIDE
               </span>
               <h2 className="text-xl font-black text-slate-800">高専祭 ご案内 ＆ アクセス</h2>
 
               <div className="space-y-2 text-xs font-semibold text-slate-600 leading-relaxed">
                 <div className="p-3 bg-slate-50 rounded-2xl border border-slate-200 flex items-start gap-2.5">
-                  <Building2 className="w-5 h-5 text-blue-600 shrink-0 mt-0.5" />
+                  <Building2 className="w-5 h-5 text-orange-600 shrink-0 mt-0.5" />
                   <div>
                     <span className="font-extrabold text-slate-800 block">鶴岡工業高等専門学校</span>
                     <span>〒997-8511 山形県鶴岡市井岡字沢田104</span>
@@ -1296,23 +1267,22 @@ export default function App() {
               </div>
             </div>
 
-            {/* Q&A Accordion style list */}
             <div className="bg-white p-5 rounded-3xl border border-slate-200 shadow-sm space-y-3">
               <h3 className="font-black text-sm text-slate-800 flex items-center gap-2">
-                <HelpCircle className="w-4 h-4 text-blue-600" />
+                <HelpCircle className="w-4 h-4 text-orange-600" />
                 <span>よくあるご質問 (FAQ)</span>
               </h3>
 
               <div className="space-y-2 text-xs">
                 <div className="p-3 bg-slate-50 rounded-2xl border border-slate-200">
-                  <p className="font-extrabold text-blue-700">Q. 入場料や予約は必要ですか？</p>
+                  <p className="font-extrabold text-orange-700">Q. 入場料や予約は必要ですか？</p>
                   <p className="text-slate-600 font-semibold mt-1">
                     どなたでも入場無料・事前予約不要でご来場いただけます！
                   </p>
                 </div>
 
                 <div className="p-3 bg-slate-50 rounded-2xl border border-slate-200">
-                  <p className="font-extrabold text-blue-700">Q. 喫食スペースはありますか？</p>
+                  <p className="font-extrabold text-orange-700">Q. 喫食スペースはありますか？</p>
                   <p className="text-slate-600 font-semibold mt-1">
                     第一体育館内・学食（福利厚生棟）・中庭ベンチエリアにてご自由にお食事いただけます。
                   </p>
@@ -1323,9 +1293,7 @@ export default function App() {
         )}
       </main>
 
-      {/* ========================================================= */}
-      {/* Detail Modal Dialog                                       */}
-      {/* ========================================================= */}
+      {/* Detail Modal Dialog */}
       {modalItem && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/40 backdrop-blur-sm animate-fade">
           <div className="bg-white border border-slate-200 text-slate-800 w-full max-w-md rounded-3xl p-6 shadow-2xl relative space-y-4 max-h-[90vh] overflow-y-auto">
@@ -1340,7 +1308,7 @@ export default function App() {
               <span className="text-4xl p-3 bg-slate-50 border border-slate-100 rounded-2xl">{modalItem.icon}</span>
               <div>
                 <div className="flex items-center gap-1.5">
-                  <span className="text-xs font-extrabold px-2.5 py-0.5 rounded-full bg-blue-100 text-blue-700">
+                  <span className="text-xs font-extrabold px-2.5 py-0.5 rounded-full bg-orange-100 text-orange-700">
                     {modalItem.grade}
                   </span>
                   <span className="text-xs font-bold text-slate-500">{modalItem.dept}</span>
@@ -1373,7 +1341,6 @@ export default function App() {
               )}
             </div>
 
-            {/* Modal Actions */}
             <div className="pt-3 flex items-center gap-2">
               <button
                 onClick={(e) => toggleFavorite(modalItem.id, e)}
