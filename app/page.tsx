@@ -161,45 +161,56 @@ export default function FestivalApp() {
   });
 
   // ----------------------------------------------------
-  // 1. トップ（ランディング）画面
+  // 1. トップ（ランディング）画面 (青基調)
   // ----------------------------------------------------
   if (!isEntered) {
     return (
-      <div className="min-h-screen bg-[#FAF7F2] flex flex-col items-center justify-center relative overflow-hidden px-6 text-center select-none">
-        {/* 背景のカラフル紙吹雪デコレーション */}
-        <div className="absolute inset-0 pointer-events-none opacity-80">
-          <div className="absolute top-12 left-10 w-4 h-8 bg-orange-400 rounded-full rotate-45 shadow-sm" />
-          <div className="absolute top-20 right-12 w-6 h-3 bg-pink-400 rounded-full -rotate-12 shadow-sm" />
-          <div className="absolute top-36 left-1/4 w-4 h-4 bg-yellow-400 rounded-full rotate-12 shadow-sm" />
-          <div className="absolute top-28 right-1/4 w-5 h-5 bg-rose-400 rounded-full rotate-45 shadow-sm" />
-          <div className="absolute bottom-32 left-12 w-6 h-3 bg-teal-400 rounded-full rotate-45 shadow-sm" />
-          <div className="absolute bottom-20 right-16 w-4 h-7 bg-indigo-400 rounded-full -rotate-12 shadow-sm" />
+      <div className="min-h-screen bg-slate-950 text-white flex flex-col items-center justify-center relative overflow-hidden px-6 text-center select-none">
+        {/* 背景の青系装飾グラデーション＆デコレーション */}
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-blue-900/60 via-slate-950 to-slate-950 pointer-events-none" />
+        
+        <div className="absolute inset-0 pointer-events-none opacity-60">
+          <div className="absolute top-12 left-10 w-4 h-8 bg-sky-400 rounded-full rotate-45 shadow-lg shadow-sky-400/50" />
+          <div className="absolute top-20 right-12 w-6 h-3 bg-blue-500 rounded-full -rotate-12 shadow-lg shadow-blue-500/50" />
+          <div className="absolute top-36 left-1/4 w-4 h-4 bg-cyan-300 rounded-full rotate-12 shadow-md shadow-cyan-300/50" />
+          <div className="absolute top-28 right-1/4 w-5 h-5 bg-indigo-400 rounded-full rotate-45 shadow-md shadow-indigo-400/50" />
+          <div className="absolute bottom-32 left-12 w-6 h-3 bg-sky-300 rounded-full rotate-45 shadow-md shadow-sky-300/50" />
+          <div className="absolute bottom-20 right-16 w-4 h-7 bg-blue-400 rounded-full -rotate-12 shadow-md shadow-blue-400/50" />
         </div>
 
         {/* サブタイトル */}
-        <p className="text-xs sm:text-sm tracking-[0.25em] font-extrabold text-orange-500 mb-3 uppercase">
+        <p className="text-xs sm:text-sm tracking-[0.25em] font-black text-cyan-400 mb-4 uppercase drop-shadow">
           KOSEN FESTIVAL 2026
         </p>
 
-        {/* メインタイトル */}
-        <h1 className="text-4xl sm:text-6xl font-black text-slate-800 tracking-wider mb-6 leading-tight">
-          熱狂の高専祭
-          <span className="block text-2xl sm:text-4xl text-transparent bg-clip-text bg-gradient-to-r from-orange-500 via-rose-500 to-pink-500 mt-2 font-black">
-            ～カーニバル～
+        {/* メインタイトル (ポスター風のレイアウト＆ふりがな) */}
+        <h1 className="flex flex-col items-center justify-center font-black tracking-wider mb-8">
+          <span className="text-3xl sm:text-5xl text-white drop-shadow-md">
+            熱狂の
           </span>
+          <div className="relative inline-block text-center mt-1">
+            <span className="text-5xl sm:text-7xl font-black text-transparent bg-clip-text bg-gradient-to-r from-cyan-300 via-sky-300 to-blue-400 drop-shadow-lg tracking-tight">
+              高専祭
+            </span>
+            <span className="block text-sm sm:text-lg font-extrabold italic tracking-[0.35em] text-cyan-200 -mt-1 sm:-mt-2 drop-shadow">
+              カーニバル
+            </span>
+          </div>
         </h1>
 
-        {/* 日時ピルバッジ */}
-        <div className="bg-white/90 backdrop-blur-md border border-orange-100 shadow-md rounded-full px-6 py-3 flex items-center justify-center gap-3 mb-10 text-xs sm:text-sm font-bold text-slate-700">
-          <span>2026.10.24 SAT</span>
-          <span className="text-orange-300">|</span>
+        {/* 日時＆場所ピルバッジ */}
+        <div className="bg-slate-900/90 backdrop-blur-md border border-cyan-500/30 shadow-lg shadow-cyan-500/10 rounded-full px-6 py-3 flex flex-wrap items-center justify-center gap-2.5 mb-10 text-xs sm:text-sm font-bold text-slate-200">
+          <span className="text-cyan-300">10/24 [SAT]</span>
+          <span className="text-slate-600">|</span>
           <span>9:30〜15:30</span>
+          <span className="text-slate-600">|</span>
+          <span className="text-sky-300">@鶴岡高専</span>
         </div>
 
         {/* 入場ボタン */}
         <button
           onClick={() => setIsEntered(true)}
-          className="w-64 sm:w-72 py-4 rounded-full bg-gradient-to-r from-orange-500 via-rose-500 to-pink-500 text-white font-extrabold text-lg shadow-lg shadow-orange-500/30 hover:shadow-xl hover:scale-105 active:scale-95 transition-all duration-200 flex items-center justify-center gap-2 border border-white/20"
+          className="w-64 sm:w-72 py-4 rounded-full bg-gradient-to-r from-cyan-500 via-blue-600 to-indigo-600 text-white font-extrabold text-lg shadow-lg shadow-blue-500/40 hover:shadow-xl hover:shadow-blue-500/60 hover:scale-105 active:scale-95 transition-all duration-200 flex items-center justify-center gap-2 border border-cyan-300/30"
         >
           入場する 🎉
         </button>
@@ -212,25 +223,30 @@ export default function FestivalApp() {
   }
 
   // ----------------------------------------------------
-  // 2. メインアプリ画面
+  // 2. メインアプリ画面 (青基調)
   // ----------------------------------------------------
   return (
-    <div className="min-h-screen bg-[#FAF8F5] text-slate-800 pb-16 font-sans">
-      {/* 2-1. 上部ヘッダー＆丸アイコンナビゲーション */}
-      <header className="sticky top-0 z-50 bg-[#FAF8F5]/90 backdrop-blur-md pt-3 pb-2 px-4 border-b border-orange-100/60 shadow-sm">
+    <div className="min-h-screen bg-slate-50 text-slate-800 pb-16 font-sans">
+      {/* 2-1. 上部ヘッダー */}
+      <header className="sticky top-0 z-50 bg-white/90 backdrop-blur-md pt-3 pb-2 px-4 border-b border-blue-100 shadow-sm">
         <div className="max-w-md mx-auto flex items-center justify-between gap-2">
           {/* 左側：ロゴ＆戻るボタン */}
           <div className="flex items-center gap-1.5 shrink-0">
             <button
               onClick={() => setIsEntered(false)}
-              className="text-slate-400 hover:text-slate-700 p-1 rounded-full hover:bg-slate-200/50 transition"
+              className="text-slate-400 hover:text-slate-700 p-1 rounded-full hover:bg-slate-100 transition"
               title="トップに戻る"
             >
               <ChevronLeft className="w-5 h-5" />
             </button>
-            <h1 className="text-xl font-black tracking-tight text-orange-600 flex items-center gap-1">
-              高専祭
-            </h1>
+            <div className="flex flex-col leading-none">
+              <span className="text-base sm:text-lg font-black tracking-tight text-blue-700">
+                熱狂の高専祭
+              </span>
+              <span className="text-[9px] font-extrabold italic tracking-widest text-sky-500 self-end -mt-0.5">
+                カーニバル
+              </span>
+            </div>
           </div>
 
           {/* 右側：丸型アイコンタブ */}
@@ -240,8 +256,8 @@ export default function FestivalApp() {
               onClick={() => setActiveTab("map")}
               className={`flex items-center gap-1 px-3 py-2 rounded-full font-bold text-xs transition-all duration-200 shrink-0 ${
                 activeTab === "map"
-                  ? "bg-gradient-to-r from-orange-500 to-rose-500 text-white shadow-md shadow-orange-500/30 px-3.5"
-                  : "bg-blue-50 text-blue-600 hover:bg-blue-100/80"
+                  ? "bg-gradient-to-r from-blue-600 to-cyan-500 text-white shadow-md shadow-blue-500/30 px-3.5"
+                  : "bg-sky-50 text-sky-700 hover:bg-sky-100"
               }`}
             >
               <Map className="w-4 h-4" />
@@ -253,8 +269,8 @@ export default function FestivalApp() {
               onClick={() => setActiveTab("stalls")}
               className={`flex items-center gap-1 px-3 py-2 rounded-full font-bold text-xs transition-all duration-200 shrink-0 ${
                 activeTab === "stalls"
-                  ? "bg-gradient-to-r from-orange-500 to-rose-500 text-white shadow-md shadow-orange-500/30 px-3.5"
-                  : "bg-orange-50 text-orange-600 hover:bg-orange-100/80"
+                  ? "bg-gradient-to-r from-blue-600 to-cyan-500 text-white shadow-md shadow-blue-500/30 px-3.5"
+                  : "bg-blue-50 text-blue-700 hover:bg-blue-100"
               }`}
             >
               <Store className="w-4 h-4" />
@@ -266,21 +282,21 @@ export default function FestivalApp() {
               onClick={() => setActiveTab("events")}
               className={`flex items-center gap-1 px-3 py-2 rounded-full font-bold text-xs transition-all duration-200 shrink-0 ${
                 activeTab === "events"
-                  ? "bg-gradient-to-r from-orange-500 to-rose-500 text-white shadow-md shadow-orange-500/30 px-3.5"
-                  : "bg-purple-50 text-purple-600 hover:bg-purple-100/80"
+                  ? "bg-gradient-to-r from-blue-600 to-cyan-500 text-white shadow-md shadow-blue-500/30 px-3.5"
+                  : "bg-indigo-50 text-indigo-700 hover:bg-indigo-100"
               }`}
             >
               <Calendar className="w-4 h-4" />
               {activeTab === "events" && <span>イベント</span>}
             </button>
 
-            {/* 4. その他 / ご案内 */}
+            {/* 4. その他 */}
             <button
               onClick={() => setActiveTab("guide")}
               className={`flex items-center gap-1 px-3 py-2 rounded-full font-bold text-xs transition-all duration-200 shrink-0 ${
                 activeTab === "guide"
-                  ? "bg-gradient-to-r from-orange-500 to-rose-500 text-white shadow-md shadow-orange-500/30 px-3.5"
-                  : "bg-emerald-50 text-emerald-600 hover:bg-emerald-100/80"
+                  ? "bg-gradient-to-r from-blue-600 to-cyan-500 text-white shadow-md shadow-blue-500/30 px-3.5"
+                  : "bg-cyan-50 text-cyan-700 hover:bg-cyan-100"
               }`}
             >
               <Grid className="w-4 h-4" />
@@ -299,25 +315,25 @@ export default function FestivalApp() {
           <div className="space-y-4">
             <div className="flex items-center justify-between">
               <span className="bg-white px-3 py-1 rounded-full text-xs font-bold text-slate-600 border border-slate-200 shadow-sm">
-                現在のマップ: <strong className="text-orange-600">敷地内全体</strong>
+                現在のマップ: <strong className="text-blue-600">敷地内全体</strong>
               </span>
               <span className="text-[11px] text-slate-400 font-bold">▲ 上へ</span>
             </div>
 
-            <div className="bg-emerald-900/10 rounded-3xl overflow-hidden border-2 border-white shadow-sm relative aspect-[4/3] flex flex-col items-center justify-center p-4 bg-gradient-to-br from-emerald-50 via-teal-100 to-sky-100">
-              <MapPin className="w-10 h-10 text-rose-500 animate-bounce drop-shadow-md" />
+            <div className="rounded-3xl overflow-hidden border-2 border-white shadow-sm relative aspect-[4/3] flex flex-col items-center justify-center p-4 bg-gradient-to-br from-sky-50 via-blue-100 to-indigo-100">
+              <MapPin className="w-10 h-10 text-blue-600 animate-bounce drop-shadow-md" />
               <p className="font-extrabold text-sm text-slate-700 mt-2">キャンパスマップエリア</p>
               <p className="text-[11px] text-slate-500 mt-0.5">
                 （`public/map.jpg` を配置して画像表示）
               </p>
 
-              <div className="absolute top-6 left-12 bg-rose-500 text-white text-[10px] px-2 py-0.5 rounded-full font-bold shadow">
+              <div className="absolute top-6 left-12 bg-blue-600 text-white text-[10px] px-2 py-0.5 rounded-full font-bold shadow">
                 1号館
               </div>
-              <div className="absolute top-1/3 right-10 bg-orange-500 text-white text-[10px] px-2 py-0.5 rounded-full font-bold shadow">
+              <div className="absolute top-1/3 right-10 bg-cyan-600 text-white text-[10px] px-2 py-0.5 rounded-full font-bold shadow">
                 体育館
               </div>
-              <div className="absolute bottom-8 left-1/3 bg-blue-500 text-white text-[10px] px-2 py-0.5 rounded-full font-bold shadow">
+              <div className="absolute bottom-8 left-1/3 bg-indigo-600 text-white text-[10px] px-2 py-0.5 rounded-full font-bold shadow">
                 中庭ステージ
               </div>
             </div>
@@ -335,7 +351,7 @@ export default function FestivalApp() {
                     className="bg-white p-3.5 rounded-2xl shadow-sm border border-slate-100 flex items-center justify-between hover:shadow-md transition"
                   >
                     <div className="flex items-center gap-3">
-                      <div className="w-11 h-11 rounded-2xl bg-orange-50 flex items-center justify-center text-2xl shrink-0">
+                      <div className="w-11 h-11 rounded-2xl bg-sky-50 flex items-center justify-center text-2xl shrink-0">
                         {item.icon}
                       </div>
                       <div>
@@ -344,7 +360,7 @@ export default function FestivalApp() {
                       </div>
                     </div>
                     <div className="flex items-center gap-2">
-                      <span className="text-xs font-extrabold text-orange-600 bg-orange-50 px-2.5 py-1 rounded-full border border-orange-100">
+                      <span className="text-xs font-extrabold text-blue-600 bg-blue-50 px-2.5 py-1 rounded-full border border-blue-100">
                         {item.price}
                       </span>
                       <ChevronRight className="w-4 h-4 text-slate-300" />
@@ -362,31 +378,31 @@ export default function FestivalApp() {
         {activeTab === "stalls" && (
           <div className="space-y-4">
             <div className="flex items-center justify-around bg-white p-2.5 rounded-3xl shadow-sm border border-slate-100">
-              <button className="flex flex-col items-center gap-1 text-[10px] font-extrabold text-emerald-700 bg-emerald-50 p-2 rounded-2xl w-14">
-                <Store className="w-5 h-5 text-emerald-600" /> 全体
+              <button className="flex flex-col items-center gap-1 text-[10px] font-extrabold text-blue-700 bg-blue-50 p-2 rounded-2xl w-14">
+                <Store className="w-5 h-5 text-blue-600" /> 全体
               </button>
-              <button className="flex flex-col items-center gap-1 text-[10px] font-extrabold text-slate-500 hover:text-orange-500 p-2 rounded-2xl w-14">
-                <Utensils className="w-5 h-5 text-orange-400" /> フード
+              <button className="flex flex-col items-center gap-1 text-[10px] font-extrabold text-slate-500 hover:text-blue-600 p-2 rounded-2xl w-14">
+                <Utensils className="w-5 h-5 text-sky-500" /> フード
               </button>
-              <button className="flex flex-col items-center gap-1 text-[10px] font-extrabold text-slate-500 hover:text-sky-500 p-2 rounded-2xl w-14">
-                <CupSoda className="w-5 h-5 text-sky-400" /> ドリンク
+              <button className="flex flex-col items-center gap-1 text-[10px] font-extrabold text-slate-500 hover:text-cyan-600 p-2 rounded-2xl w-14">
+                <CupSoda className="w-5 h-5 text-cyan-500" /> ドリンク
               </button>
-              <button className="flex flex-col items-center gap-1 text-[10px] font-extrabold text-slate-500 hover:text-purple-500 p-2 rounded-2xl w-14">
-                <Gamepad2 className="w-5 h-5 text-purple-400" /> ゲーム
+              <button className="flex flex-col items-center gap-1 text-[10px] font-extrabold text-slate-500 hover:text-indigo-600 p-2 rounded-2xl w-14">
+                <Gamepad2 className="w-5 h-5 text-indigo-500" /> ゲーム
               </button>
-              <button className="flex flex-col items-center gap-1 text-[10px] font-extrabold text-slate-500 hover:text-pink-500 p-2 rounded-2xl w-14">
-                <Palette className="w-5 h-5 text-pink-400" /> 展示
+              <button className="flex flex-col items-center gap-1 text-[10px] font-extrabold text-slate-500 hover:text-violet-600 p-2 rounded-2xl w-14">
+                <Palette className="w-5 h-5 text-violet-500" /> 展示
               </button>
             </div>
 
             <div className="relative">
-              <Search className="absolute left-3.5 top-3 text-orange-400 w-4 h-4" />
+              <Search className="absolute left-3.5 top-3 text-blue-400 w-4 h-4" />
               <input
                 type="text"
                 placeholder="キーワードで検索 (例: タピオカ, 焼きそば)"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full pl-10 pr-4 py-2.5 bg-white border border-slate-200/80 rounded-2xl focus:outline-none focus:ring-2 focus:ring-orange-400 shadow-sm text-xs font-medium"
+                className="w-full pl-10 pr-4 py-2.5 bg-white border border-slate-200/80 rounded-2xl focus:outline-none focus:ring-2 focus:ring-blue-400 shadow-sm text-xs font-medium"
               />
             </div>
 
@@ -404,8 +420,8 @@ export default function FestivalApp() {
                       onClick={() => setSelectedGrade(g)}
                       className={`px-3 py-1 rounded-full text-xs font-bold transition ${
                         selectedGrade === g
-                          ? "bg-emerald-500 text-white shadow-sm"
-                          : "bg-emerald-50 text-emerald-800 hover:bg-emerald-100"
+                          ? "bg-blue-600 text-white shadow-sm"
+                          : "bg-blue-50 text-blue-800 hover:bg-blue-100"
                       }`}
                     >
                       {g}
@@ -423,8 +439,8 @@ export default function FestivalApp() {
                       onClick={() => setSelectedDept(d)}
                       className={`px-3 py-1 rounded-full text-xs font-bold transition ${
                         selectedDept === d
-                          ? "bg-emerald-500 text-white shadow-sm"
-                          : "bg-emerald-50 text-emerald-800 hover:bg-emerald-100"
+                          ? "bg-blue-600 text-white shadow-sm"
+                          : "bg-blue-50 text-blue-800 hover:bg-blue-100"
                       }`}
                     >
                       {d}
@@ -441,16 +457,16 @@ export default function FestivalApp() {
                   className="bg-white rounded-3xl p-4 shadow-sm border border-slate-100 hover:shadow-md transition space-y-2 relative overflow-hidden"
                 >
                   <div className="flex items-start gap-3">
-                    <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-orange-100 to-amber-50 flex items-center justify-center text-3xl shrink-0 border border-orange-200/50 shadow-inner">
+                    <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-blue-100 to-sky-50 flex items-center justify-center text-3xl shrink-0 border border-blue-200/50 shadow-inner">
                       {item.icon}
                     </div>
 
                     <div className="flex-1 space-y-1">
                       <div className="flex items-center gap-1.5 flex-wrap">
-                        <span className="bg-rose-500 text-white text-[10px] font-extrabold px-2 py-0.5 rounded-full">
+                        <span className="bg-blue-600 text-white text-[10px] font-extrabold px-2 py-0.5 rounded-full">
                           {item.category}
                         </span>
-                        <span className="bg-orange-100 text-orange-700 text-[10px] font-extrabold px-2 py-0.5 rounded-full">
+                        <span className="bg-sky-100 text-sky-800 text-[10px] font-extrabold px-2 py-0.5 rounded-full">
                           {item.subcategory}
                         </span>
                         <span className="text-[11px] text-slate-400 font-bold ml-auto">
@@ -482,7 +498,7 @@ export default function FestivalApp() {
                     <span className="text-slate-400 font-bold">
                       {item.grade}（{item.dept}）
                     </span>
-                    <span className="font-black text-rose-500 text-sm">{item.price}</span>
+                    <span className="font-black text-blue-600 text-sm">{item.price}</span>
                   </div>
                 </div>
               ))}
@@ -495,13 +511,13 @@ export default function FestivalApp() {
         {/* ========================================== */}
         {activeTab === "events" && (
           <div className="space-y-4">
-            <div className="bg-gradient-to-r from-orange-500 via-rose-500 to-pink-500 rounded-3xl p-5 text-white shadow-lg shadow-orange-500/20 relative overflow-hidden">
-              <p className="text-[11px] font-bold tracking-widest text-orange-200 uppercase">
+            <div className="bg-gradient-to-r from-blue-700 via-blue-600 to-sky-500 rounded-3xl p-5 text-white shadow-lg shadow-blue-500/20 relative overflow-hidden">
+              <p className="text-[11px] font-bold tracking-widest text-cyan-200 uppercase">
                 イベントタイムテーブル
               </p>
               <h2 className="text-xl font-black mt-0.5 mb-1">2026.10.24 SAT 9:30〜15:30</h2>
               <p className="text-xs text-white/90 font-medium flex items-center gap-1">
-                <Sparkles className="w-3.5 h-3.5 text-yellow-300" />
+                <Sparkles className="w-3.5 h-3.5 text-cyan-300" />
                 当日は進行中のイベントがリアルタイムでチェックできます✨
               </p>
             </div>
@@ -512,7 +528,7 @@ export default function FestivalApp() {
                   <h3 className="font-black text-base text-slate-800 flex items-center gap-1.5">
                     🎤 {section.stage}
                   </h3>
-                  <p className="text-xs text-slate-400 font-medium bg-amber-50 border border-amber-100 text-amber-800 p-2 rounded-xl mt-1">
+                  <p className="text-xs font-medium bg-sky-50 border border-sky-100 text-sky-800 p-2 rounded-xl mt-1">
                     {section.note}
                   </p>
                 </div>
@@ -532,7 +548,7 @@ export default function FestivalApp() {
                         </span>
                       </div>
                       <div className="space-y-0.5">
-                        <span className="text-[10px] font-bold text-orange-500 bg-orange-50 px-2 py-0.5 rounded-full">
+                        <span className="text-[10px] font-bold text-blue-600 bg-blue-50 px-2 py-0.5 rounded-full">
                           {item.org}
                         </span>
                         <h4 className="font-extrabold text-sm text-slate-900 mt-1">
@@ -553,7 +569,7 @@ export default function FestivalApp() {
         {/* ========================================== */}
         {activeTab === "guide" && (
           <div className="space-y-4">
-            <div className="bg-gradient-to-r from-purple-500 via-pink-500 to-orange-400 rounded-3xl p-5 text-white shadow-lg shadow-pink-500/20 relative overflow-hidden space-y-3">
+            <div className="bg-gradient-to-r from-indigo-600 via-blue-600 to-sky-500 rounded-3xl p-5 text-white shadow-lg shadow-blue-500/20 relative overflow-hidden space-y-3">
               <div className="flex items-center gap-3">
                 <div className="w-12 h-12 rounded-2xl bg-white/20 backdrop-blur-md flex items-center justify-center text-2xl border border-white/30 shrink-0">
                   📸
@@ -563,31 +579,31 @@ export default function FestivalApp() {
                   <p className="text-xs text-white/90">文化祭の最新情報や当日の様子を投稿！</p>
                 </div>
               </div>
-              <p className="text-xs font-bold text-center text-pink-100">
+              <p className="text-xs font-bold text-center text-cyan-100">
                 ぜひフォローをお願いします！
               </p>
               <a
                 href="https://instagram.com"
                 target="_blank"
                 rel="noreferrer"
-                className="w-full py-2.5 rounded-full bg-white text-pink-600 font-extrabold text-xs shadow hover:bg-pink-50 transition flex items-center justify-center gap-1.5"
+                className="w-full py-2.5 rounded-full bg-white text-blue-600 font-extrabold text-xs shadow hover:bg-sky-50 transition flex items-center justify-center gap-1.5"
               >
                 <span>Instagramを開く</span>
                 <ExternalLink className="w-3.5 h-3.5" />
               </a>
             </div>
 
-            <div className="bg-gradient-to-r from-orange-500 to-amber-500 rounded-3xl p-5 text-white shadow-md space-y-1">
-              <p className="text-[10px] font-bold tracking-widest uppercase text-orange-200">
+            <div className="bg-gradient-to-r from-slate-900 to-blue-900 rounded-3xl p-5 text-white shadow-md space-y-1">
+              <p className="text-[10px] font-bold tracking-widest uppercase text-cyan-300">
                 VISITOR GUIDE
               </p>
               <h2 className="text-xl font-black">ご来場案内</h2>
-              <p className="text-xs text-white/90">ご来場前にご確認ください</p>
+              <p className="text-xs text-slate-300">ご来場前にご確認ください</p>
             </div>
 
             <div className="space-y-3">
               <div className="bg-white p-4 rounded-3xl shadow-sm border border-slate-100 flex items-center gap-4">
-                <div className="w-12 h-12 rounded-2xl bg-slate-100 flex items-center justify-center text-2xl shrink-0">
+                <div className="w-12 h-12 rounded-2xl bg-blue-50 flex items-center justify-center text-2xl shrink-0">
                   🕒
                 </div>
                 <div>
@@ -595,13 +611,13 @@ export default function FestivalApp() {
                     開催日：2026年10月24日（土）
                   </h3>
                   <p className="text-xs text-slate-500 mt-0.5">
-                    時間：9:30〜15:30（15:00販売終了）
+                    時間：9:30〜15:30（@鶴岡高専）
                   </p>
                 </div>
               </div>
 
               <div className="bg-white p-4 rounded-3xl shadow-sm border border-slate-100 flex items-center gap-4">
-                <div className="w-12 h-12 rounded-2xl bg-slate-100 flex items-center justify-center text-2xl shrink-0">
+                <div className="w-12 h-12 rounded-2xl bg-blue-50 flex items-center justify-center text-2xl shrink-0">
                   👟
                 </div>
                 <div>
@@ -613,7 +629,7 @@ export default function FestivalApp() {
               </div>
 
               <div className="bg-white p-4 rounded-3xl shadow-sm border border-slate-100 flex items-center gap-4">
-                <div className="w-12 h-12 rounded-2xl bg-slate-100 flex items-center justify-center text-2xl shrink-0">
+                <div className="w-12 h-12 rounded-2xl bg-blue-50 flex items-center justify-center text-2xl shrink-0">
                   🚲
                 </div>
                 <div>
@@ -625,7 +641,7 @@ export default function FestivalApp() {
               </div>
 
               <div className="bg-white p-4 rounded-3xl shadow-sm border border-slate-100 flex items-center gap-4">
-                <div className="w-12 h-12 rounded-2xl bg-slate-100 flex items-center justify-center text-2xl shrink-0">
+                <div className="w-12 h-12 rounded-2xl bg-blue-50 flex items-center justify-center text-2xl shrink-0">
                   🚗
                 </div>
                 <div>
