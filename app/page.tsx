@@ -281,7 +281,7 @@ const STALLS_DATA: StallItem[] = [
     zoneId: "entrance",
     description: "スープと麺にこだわり抜いた自慢の本格ラーメン！高専祭で味わう極上の一杯をご賞味あれ！",
     icon: "🍜",
-    instagram: "[https://www.instagram.com/mokkedanonoodle/](https://www.instagram.com/mokkedanonoodle/)",
+    instagram: "https://www.instagram.com/mokkedanonoodle/",
     menu: ["ラーメン"]
   },
   {
@@ -294,7 +294,7 @@ const STALLS_DATA: StallItem[] = [
     zoneId: "entrance",
     description: "とろける口溶けの本格本わらび餅や、出来立てふわふわのベビーカステラなど京都の味覚をお届け！",
     icon: "🍡",
-    instagram: "[https://www.instagram.com/gion_hannari_cafe/](https://www.instagram.com/gion_hannari_cafe/)",
+    instagram: "https://www.instagram.com/gion_hannari_cafe/",
     menu: ["本わらび餅", "ベビーカステラ等"]
   },
   {
@@ -307,7 +307,7 @@ const STALLS_DATA: StallItem[] = [
     zoneId: "entrance",
     description: "フルーツたっぷりのフレッシュスムージー＆スパイシーで食欲をそそる本格ガパオライス！",
     icon: "🥤",
-    instagram: "[https://www.instagram.com/felicitaplus.sakata/](https://www.instagram.com/felicitaplus.sakata/)",
+    instagram: "https://www.instagram.com/felicitaplus.sakata/",
     menu: ["スムージー", "ガパオライス等"]
   }
 ];
@@ -449,7 +449,7 @@ export default function Page() {
   const [activeTab, setActiveTab] = useState<"map" | "stalls" | "events">("map");
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedZoneId, setSelectedZoneId] = useState("gym1");
-  const [modalItem, setModalItem] = useState<StallItem null |>(null);
+  const [modalItem, setModalItem] = useState<StallItem | null>(null);
 
   // 1号館フロア詳細モーダル用ステート
   const [isBldg1ModalOpen, setIsBldg1ModalOpen] = useState(false);
@@ -457,13 +457,9 @@ export default function Page() {
 
   // リアルタイムイベント特定ロジック（シミュレーション）
   const liveEvent = useMemo(() => {
-    // 現在の日本時間（JST）をシミュレート (例: 10/24 12:00)
-    const now = new Date();
-    const simulateDate = new Date(2026, 9, 24, 12, 0, 0); // 月は0から始まるため10月=9
-    // const currentTime = now; // リアルな現在時刻を使う場合はこちら
+    const simulateDate = new Date(2026, 9, 24, 12, 0, 0);
     const currentTime = simulateDate;
 
-    // イベントスケジュールから現在実施中のものを検索
     for (const stage of EVENTS_DATA) {
       for (const event of stage.schedule) {
         const [startHour, startMin] = event.startTime.split(":").map(Number);
@@ -507,7 +503,6 @@ export default function Page() {
   if (!isEntered) {
     return (
       <div className="min-h-screen bg-[#F8FAFC] text-slate-800 flex flex-col items-center justify-between py-12 px-6 relative overflow-hidden select-none font-sans">
-        {/* アニメーション用スタイル定義 */}
         <style>{`
           @keyframes floatTech {
             0% { transform: translateY(0px) rotate(0deg) scale(1); }
@@ -529,7 +524,6 @@ export default function Page() {
           }
         `}</style>
 
-        {/* 背景：工学モチーフ浮遊要素 */}
         <div className="absolute inset-0 pointer-events-none overflow-hidden">
           {TECH_FLOATING_ITEMS.map((item, idx) => (
             <div
@@ -548,20 +542,15 @@ export default function Page() {
           ))}
         </div>
 
-        {/* 空白スペーサー */}
         <div />
 
-        {/* メインコンテンツブロック */}
         <div className="w-full max-w-sm flex flex-col items-center text-center z-10 my-auto space-y-6">
-          {/* サブタイトル英字 */}
           <div className="text-teal-600 font-extrabold text-xs tracking-[0.25em] font-sans">
             TSURUOKA KOSEN FESTIVAL 2026
           </div>
 
-          {/* メインタイトル：1文字ずつ降ってくるアニメーション */}
           <div className="flex flex-col items-center justify-center font-black tracking-tight font-sans">
             <div className="flex items-baseline justify-center text-[#E53935] drop-shadow-sm">
-              {/* 「熱狂の」 */}
               <div className="text-4xl sm:text-5xl flex">
                 {titlePart1.map((char, index) => (
                   <span
@@ -574,9 +563,7 @@ export default function Page() {
                 ))}
               </div>
 
-              {/* 「高専祭」 ＆ 上部の「カーニバル」 */}
               <div className="relative inline-block ml-1">
-                {/* 「カーニバル」1文字ずつドロップ */}
                 <span className="absolute -top-4 left-1/2 -translate-x-1/2 text-[11px] sm:text-xs font-black text-rose-500 tracking-widest whitespace-nowrap flex">
                   {titlePart2.map((char, index) => (
                     <span
@@ -589,7 +576,6 @@ export default function Page() {
                   ))}
                 </span>
 
-                {/* 「高専祭」 */}
                 <div className="text-5xl sm:text-6xl flex">
                   {titlePart3.map((char, index) => (
                     <span
@@ -605,7 +591,6 @@ export default function Page() {
             </div>
           </div>
 
-          {/* 日時バッジ（カプセルデザイン） */}
           <div className="bg-white/95 border border-slate-200/80 shadow-md rounded-full px-5 py-2.5 flex items-center justify-center gap-2 text-xs font-extrabold text-slate-700">
             <span className="text-rose-600">2026.10.24 SAT</span>
             <span className="text-slate-300">|</span>
@@ -613,7 +598,6 @@ export default function Page() {
             <span className="text-slate-400 font-normal">@鶴岡高専</span>
           </div>
 
-          {/* 入場ボタン */}
           <div className="pt-4 w-full flex flex-col items-center space-y-3">
             <button
               onClick={() => setIsEntered(true)}
@@ -623,14 +607,12 @@ export default function Page() {
               <span className="text-lg">⚙️</span>
             </button>
 
-            {/* 下部メッセージ */}
             <p className="text-xs text-slate-500 font-semibold tracking-wide">
               鶴岡高専祭をお楽しみください！
             </p>
           </div>
         </div>
 
-        {/* 空白スペーサー */}
         <div />
       </div>
     );
@@ -641,7 +623,6 @@ export default function Page() {
       {/* リアルタイムピックアップバナー（全ページ上部） */}
       {liveEvent && (
         <div className="sticky top-0 z-50 bg-gradient-to-r from-orange-500 to-red-600 text-white border-b border-white/20 shadow-xl overflow-hidden">
-          {/* アニメーション用スタイル定義 */}
           <style>{`
             @keyframes liveFade {
               0%, 100% { opacity: 0.3; }
@@ -696,13 +677,11 @@ export default function Page() {
       {/* Header */}
       <header className={`sticky ${liveEvent ? "top-[76px] sm:top-[72px]" : "top-0"} z-40 bg-white/90 backdrop-blur-md border-b border-slate-200 shadow-sm transition-all`}>
         <div className="max-w-2xl mx-auto px-4 py-2.5 flex items-center justify-between gap-2">
-          {/* 左上ロゴ：「高専ロゴ.jpg」アイコン + 「高専祭」テキスト */}
           <button onClick={() => setIsEntered(false)} className="flex items-center gap-2.5 text-left shrink-0">
             <img src="/高専ロゴ.jpg" alt="高専ロゴ" className="w-9 h-9 object-contain" />
             <span className="font-black text-lg text-slate-800">高専祭</span>
           </button>
 
-          {/* 右上ナビゲーション */}
           <nav className="flex items-center gap-1 bg-slate-100 p-1 rounded-full border border-slate-200">
             <button
               onClick={() => setActiveTab("map")}
@@ -742,7 +721,6 @@ export default function Page() {
       <main className="max-w-2xl mx-auto px-4 pt-4 pb-12 space-y-4">
         {activeTab === "map" && (
           <div className="space-y-4">
-            {/* インタラクティブ構内図 */}
             <div className="relative w-full rounded-3xl overflow-hidden border-2 border-slate-200 shadow-md bg-slate-200 aspect-[4/3]">
               <img
                 src="/校内図.jpeg"
@@ -797,7 +775,6 @@ export default function Page() {
               })}
             </div>
 
-            {/* Selected Location Details */}
             <div className={`rounded-3xl p-5 border shadow-sm space-y-4 transition-all ${currentZone.lightBg}`}>
               <div className="flex items-start justify-between gap-2 border-b border-current/10 pb-3">
                 <div className="flex items-center gap-3">
@@ -814,7 +791,6 @@ export default function Page() {
 
               <p className="text-xs leading-relaxed font-medium opacity-90">{currentZone.desc}</p>
 
-              {/* 1号館が選択されている場合、詳細図（1F/2F/3F）モーダルを開くボタンを表示 */}
               {selectedZoneId === "bldg1" && (
                 <button
                   onClick={() => setIsBldg1ModalOpen(true)}
@@ -955,7 +931,6 @@ export default function Page() {
                 
                 <div className="divide-y divide-slate-100">
                   {stage.schedule.map((item) => {
-                    // 現在実施中のイベントかどうか判定 (シミュレーション時間を使用)
                     const simulateDate = new Date(2026, 9, 24, 12, 0, 0);
                     const currentTime = simulateDate;
                     const [startHour, startMin] = item.startTime.split(":").map(Number);
@@ -1013,7 +988,6 @@ export default function Page() {
               </button>
             </div>
 
-            {/* 1F / 2F / 3F 切り替えタブ */}
             <div className="flex justify-center gap-2 bg-slate-100 p-1 rounded-2xl shrink-0">
               {(["1F", "2F", "3F"] as const).map((floor) => (
                 <button
@@ -1030,7 +1004,6 @@ export default function Page() {
               ))}
             </div>
 
-            {/* フロア詳細画像 ＆ ピンオーバーレイ */}
             <div className="relative w-full rounded-2xl overflow-hidden border border-slate-200 bg-slate-100 aspect-[16/9] shrink-0">
               <img
                 src={`/${currentFloor}.jpeg`}
@@ -1038,7 +1011,6 @@ export default function Page() {
                 className="w-full h-full object-contain select-none"
               />
 
-              {/* 各教室のピン */}
               {floorStalls.map((stall) => {
                 if (!stall.pinPos) return null;
                 return (
@@ -1046,14 +1018,11 @@ export default function Page() {
                     key={stall.id}
                     onClick={() => {
                       setModalItem(stall);
-                      // モーダルが重ならないようにフロア図モーダルを閉じるか調整
-                      // 今回は重ねて表示
                     }}
                     style={{ top: stall.pinPos.top, left: stall.pinPos.left }}
                     className="absolute -translate-x-1/2 -translate-y-1/2 z-20 flex flex-col items-center group transition hover:scale-110"
                   >
                     <div className="bg-rose-600 text-white font-black text-[10px] px-2 py-0.5 rounded-full shadow-md flex items-center gap-1 border border-white whitespace-nowrap animate-bounce relative">
-                      {/* パルスエフェクト */}
                       <span className="absolute inset-0 rounded-full bg-rose-600 animate-pulse opacity-75"></span>
                       <span className="relative z-10 flex items-center gap-1">
                         <span>{stall.icon}</span>
@@ -1066,7 +1035,6 @@ export default function Page() {
               })}
             </div>
 
-            {/* 現在の階の教室一覧カード */}
             <div className="overflow-y-auto max-h-48 space-y-2 pr-1 shrink">
               <h4 className="text-xs font-bold text-slate-500 sticky top-0 bg-white py-1">📍 {currentFloor} の教室・出展企画</h4>
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 pb-1">
