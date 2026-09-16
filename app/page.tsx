@@ -1,4 +1,3 @@
-// app/page.tsx
 "use client";
 
 import React, { useState, useMemo } from "react";
@@ -13,7 +12,10 @@ import {
   ExternalLink,
   Layers,
   Radio,
-  Car, // 交通・アクセスアイコンを追加
+  Car,
+  Clock,
+  Navigation,
+  Info,
 } from "lucide-react";
 
 // InstagramアイコンをインラインSVGで定義
@@ -452,9 +454,9 @@ const TECH_FLOATING_ITEMS = [
 
 export default function Page() {
   const [isEntered, setIsEntered] = useState(false);
-  // タブの状態定義。 "access" を追加。
   const [activeTab, setActiveTab] = useState<"map" | "stalls" | "events" | "access">("map");
   const [searchQuery, setSearchQuery] = useState("");
+  const [selectedCategory, setSelectedCategory] = useState<string>("すべて");
   const [selectedZoneId, setSelectedZoneId] = useState("gym1");
   const [modalItem, setModalItem] = useState<StallItem | null>(null);
 
@@ -464,12 +466,9 @@ export default function Page() {
 
   // リアルタイムイベント特定ロジック（シミュレーション時刻を使用）
   const liveEvent = useMemo(() => {
-    // 現在の日本時間（JST）をシミュレート (例: 10/24 12:00)
-    // const now = new Date(); // リアルな現在時刻を使う場合はこちら
     const simulateDate = new Date(2026, 9, 24, 12, 0, 0); // 月は0から始まるため10月=9
     const currentTime = simulateDate;
 
-    // イベントスケジュールから現在実施中のものを検索
     for (const stage of EVENTS_DATA) {
       for (const event of stage.schedule) {
         const [startHour, startMin] = event.startTime.split(":").map(Number);
@@ -485,17 +484,21 @@ export default function Page() {
     return null;
   }, []);
 
-  // 検索クエリに基づいて出店・企画をフィルタリング
+  // 検索クエリおよびカテゴリ指定に基づいて出店・企画をフィルタリング
   const filteredStalls = useMemo(() => {
     return STALLS_DATA.filter((stall) => {
-      return (
+      const matchesSearch =
         stall.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
         stall.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
         stall.location.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        stall.grade.toLowerCase().includes(searchQuery.toLowerCase())
-      );
+        stall.grade.toLowerCase().includes(searchQuery.toLowerCase());
+
+      const matchesCategory =
+        selectedCategory === "すべて" || stall.category === selectedCategory;
+
+      return matchesSearch && matchesCategory;
     });
-  }, [searchQuery]);
+  }, [searchQuery, selectedCategory]);
 
   // 地図上で選択されたゾーン（建物）の出店・企画
   const zoneStalls = useMemo(() => {
@@ -560,20 +563,16 @@ export default function Page() {
           ))}
         </div>
 
-        {/* 空白スペーサー */}
         <div />
 
         {/* メインコンテンツブロック */}
         <div className="w-full max-w-sm flex flex-col items-center text-center z-10 my-auto space-y-6">
-          {/* サブタイトル英字 */}
           <div className="text-teal-600 font-extrabold text-xs tracking-[0.25em] font-sans">
             TSURUOKA KOSEN FESTIVAL 2026
           </div>
 
-          {/* メインタイトル：1文字ずつ降ってくるアニメーション */}
           <div className="flex flex-col items-center justify-center font-black tracking-tight font-sans">
             <div className="flex items-baseline justify-center text-[#E53935] drop-shadow-sm">
-              {/* 「熱狂の」 */}
               <div className="text-4xl sm:text-5xl flex">
                 {titlePart1.map((char, index) => (
                   <span
@@ -586,9 +585,7 @@ export default function Page() {
                 ))}
               </div>
 
-              {/* 「高専祭」 ＆ 上部の「カーニバル」 */}
               <div className="relative inline-block ml-1">
-                {/* 「カーニバル」1文字ずつドロップ */}
                 <span className="absolute -top-4 left-1/2 -translate-x-1/2 text-[11px] sm:text-xs font-black text-rose-500 tracking-widest whitespace-nowrap flex">
                   {titlePart2.map((char, index) => (
                     <span
@@ -601,7 +598,6 @@ export default function Page() {
                   ))}
                 </span>
 
-                {/* 「高専祭」 */}
                 <div className="text-5xl sm:text-6xl flex">
                   {titlePart3.map((char, index) => (
                     <span
@@ -617,7 +613,6 @@ export default function Page() {
             </div>
           </div>
 
-          {/* 日時バッジ（カプセルデザイン） */}
           <div className="bg-white/95 border border-slate-200/80 shadow-md rounded-full px-5 py-2.5 flex items-center justify-center gap-2 text-xs font-extrabold text-slate-700">
             <span className="text-rose-600">2026.10.24 SAT</span>
             <span className="text-slate-300">|</span>
@@ -625,9 +620,7 @@ export default function Page() {
             <span className="text-slate-400 font-normal">@鶴岡高専</span>
           </div>
 
-          {/* 公式Instagramリンク（追加） */}
           <div className="flex flex-col items-center gap-2 pt-2 z-10">
-            {/* 外部画像 `/insta_qr.png` を表示。正確なパスに画像を配置する必要があります。 */}
             <img src="/insta_qr.png" alt="公式Instagram QRコード" className="w-24 h-24 object-contain shadow-md rounded-xl border border-slate-200" />
             <div className="text-xs font-bold text-slate-500 flex items-center gap-1.5">
               <InstagramIcon className="w-4 h-4 text-pink-600" />
@@ -635,7 +628,6 @@ export default function Page() {
             </div>
           </div>
 
-          {/* 入場ボタン */}
           <div className="pt-4 w-full flex flex-col items-center space-y-3">
             <button
               onClick={() => setIsEntered(true)}
@@ -645,14 +637,12 @@ export default function Page() {
               <span className="text-lg">⚙️</span>
             </button>
 
-            {/* 下部メッセージ */}
             <p className="text-xs text-slate-500 font-semibold tracking-wide">
               鶴岡高専祭をお楽しみください！
             </p>
           </div>
         </div>
 
-        {/* 下部スペーサー */}
         <div />
       </div>
     );
@@ -661,10 +651,9 @@ export default function Page() {
   // アプリケーションメイン画面（入場後）
   return (
     <div className="min-h-screen bg-slate-50 text-slate-800 pb-20 font-sans relative">
-      {/* リアルタイムピックアップバナー（全ページ上部） */}
+      {/* リアルタイムピックアップバナー */}
       {liveEvent && (
         <div className="sticky top-0 z-50 bg-gradient-to-r from-orange-500 to-red-600 text-white border-b border-white/20 shadow-xl overflow-hidden">
-          {/* アニメーション用スタイル定義 */}
           <style>{`
             @keyframes liveFade {
               0%, 100% { opacity: 0.3; }
@@ -678,7 +667,7 @@ export default function Page() {
             .animate-live-fade { animation: liveFade 1.5s ease-in-out infinite; }
             .animate-live-wave { animation: liveWave 0.8s ease-in-out infinite; transform-origin: bottom; }
           `}</style>
-          
+
           <div className="max-w-2xl mx-auto p-4 flex items-center justify-between gap-4 relative">
             <div className="min-w-0 flex-1">
               <div className="flex items-center gap-2 text-xs sm:text-sm font-black tracking-widest uppercase mb-1 opacity-90">
@@ -701,8 +690,7 @@ export default function Page() {
                 </span>
               </div>
             </div>
-            
-            {/* 詳細ページへ移動するボタン */}
+
             <button
               onClick={() => {
                 setActiveTab("events");
@@ -720,15 +708,12 @@ export default function Page() {
       {/* Header */}
       <header className={`sticky ${liveEvent ? "top-[76px] sm:top-[72px]" : "top-0"} z-40 bg-white/90 backdrop-blur-md border-b border-slate-200 shadow-sm transition-all`}>
         <div className="max-w-2xl mx-auto px-4 py-2.5 flex items-center justify-between gap-2">
-          {/* 左上ロゴ：「高専ロゴ.jpg」アイコン + 「高専祭」テキスト */}
           <button onClick={() => setIsEntered(false)} className="flex items-center gap-2.5 text-left shrink-0">
             <img src="/高専ロゴ.jpg" alt="高専ロゴ" className="w-9 h-9 object-contain" />
             <span className="font-black text-lg text-slate-800">高専祭</span>
           </button>
 
-          {/* 右上ナビゲーション */}
           <nav className="flex items-center gap-1 bg-slate-100 p-1 rounded-full border border-slate-200">
-            {/* マップ */}
             <button
               onClick={() => setActiveTab("map")}
               className={`flex items-center gap-1 px-3 py-1.5 rounded-full text-xs font-bold transition-all duration-200 ${
@@ -739,7 +724,6 @@ export default function Page() {
               <Map className="w-4 h-4" />
               {activeTab === "map" && <span>マップ</span>}
             </button>
-            {/* 企画一覧 */}
             <button
               onClick={() => setActiveTab("stalls")}
               className={`flex items-center gap-1 px-3 py-1.5 rounded-full text-xs font-bold transition-all duration-200 ${
@@ -750,7 +734,6 @@ export default function Page() {
               <Store className="w-4 h-4" />
               {activeTab === "stalls" && <span>企画一覧</span>}
             </button>
-            {/* ステージ */}
             <button
               onClick={() => setActiveTab("events")}
               className={`flex items-center gap-1 px-3 py-1.5 rounded-full text-xs font-bold transition-all duration-200 ${
@@ -761,7 +744,6 @@ export default function Page() {
               <Calendar className="w-4 h-4" />
               {activeTab === "events" && <span>ステージ</span>}
             </button>
-            {/* 交通・アクセス（追加） */}
             <button
               onClick={() => setActiveTab("access")}
               className={`flex items-center gap-1 px-3 py-1.5 rounded-full text-xs font-bold transition-all duration-200 ${
@@ -789,10 +771,8 @@ export default function Page() {
                 className="w-full h-full object-cover select-none"
               />
 
-              {/* 建物のピン配置 */}
               {CAMPUS_ZONES.map((zone) => {
                 const isSelected = selectedZoneId === zone.id;
-                // LIVE中のイベント会場かどうか判定
                 const isLiveStageZone = liveEvent?.locationZoneId === zone.id;
 
                 return (
@@ -804,7 +784,6 @@ export default function Page() {
                       isSelected ? "scale-125 z-30" : "hover:scale-110"
                     }`}
                   >
-                    {/* ラベル表示 */}
                     <div
                       className={`px-2 py-0.5 rounded-full text-[10px] font-black whitespace-nowrap shadow-md mb-0.5 border flex items-center gap-1 ${
                         isSelected
@@ -822,7 +801,6 @@ export default function Page() {
                       <span>{zone.pinLabel}</span>
                     </div>
 
-                    {/* ピンアイコンとパルスエフェクト */}
                     <div className="relative flex items-center justify-center">
                       {(isSelected || isLiveStageZone) && (
                         <span className={`absolute w-8 h-8 rounded-full ${isLiveStageZone ? "bg-red-500/50" : "bg-rose-500/40"} animate-ping`} />
@@ -909,124 +887,174 @@ export default function Page() {
           </div>
         )}
 
-        {/* タブ 2: Stalls */}
+        {/* タブ 2: Stalls (企画・出店一覧) */}
         {activeTab === "stalls" && (
           <div className="space-y-4">
-            {/* 検索バー */}
+            {/* 検索・フィルターバー */}
             <div className="bg-white p-4 rounded-3xl border border-slate-200 shadow-sm space-y-3">
               <div className="relative">
                 <Search className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" />
                 <input
                   type="text"
-                  placeholder="クラス・企画名・料理名・場所で検索..."
+                  placeholder="企画名・出し物・クラス・場所で検索..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="w-full pl-10 pr-4 py-2 bg-slate-50 border border-slate-200 rounded-2xl text-xs font-semibold"
+                  className="w-full pl-10 pr-10 py-2.5 bg-slate-50 rounded-2xl border border-slate-200 text-xs font-medium focus:outline-none focus:ring-2 focus:ring-orange-500/50"
                 />
+                {searchQuery && (
+                  <button
+                    onClick={() => setSearchQuery("")}
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600"
+                  >
+                    <X className="w-4 h-4" />
+                  </button>
+                )}
+              </div>
+
+              {/* カテゴリ切り替えボタン */}
+              <div className="flex items-center gap-1.5 overflow-x-auto pb-1 no-scrollbar">
+                {["すべて", "模擬店", "クラス企画", "キッチンカー"].map((cat) => (
+                  <button
+                    key={cat}
+                    onClick={() => setSelectedCategory(cat)}
+                    className={`px-3.5 py-1.5 rounded-full text-xs font-black shrink-0 transition ${
+                      selectedCategory === cat
+                        ? "bg-orange-500 text-white shadow-sm"
+                        : "bg-slate-100 text-slate-600 hover:bg-slate-200"
+                    }`}
+                  >
+                    {cat}
+                  </button>
+                ))}
               </div>
             </div>
 
-            {/* フィルタリングされた企画一覧 */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-              {filteredStalls.map((stall) => (
-                <div
-                  key={stall.id}
-                  onClick={() => setModalItem(stall)}
-                  className="bg-white rounded-3xl p-4 border border-slate-200 shadow-sm cursor-pointer hover:shadow-md transition space-y-2 flex flex-col justify-between"
-                >
-                  <div className="space-y-2">
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center gap-2">
-                        <span className="text-3xl p-2 bg-slate-50 rounded-2xl">{stall.icon}</span>
-                        <div>
-                          <span className="text-[10px] font-black px-2 py-0.5 bg-orange-100 text-orange-700 rounded border border-orange-200">
-                            {stall.grade}
+            {/* 企画一覧表示 */}
+            <div className="space-y-2">
+              <p className="text-xs font-extrabold text-slate-500 px-1">
+                該当件数: {filteredStalls.length}件
+              </p>
+
+              {filteredStalls.length > 0 ? (
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                  {filteredStalls.map((stall) => (
+                    <div
+                      key={stall.id}
+                      onClick={() => setModalItem(stall)}
+                      className="bg-white p-4 rounded-3xl border border-slate-200 shadow-sm hover:shadow-md cursor-pointer transition flex flex-col justify-between space-y-3 group"
+                    >
+                      <div className="flex items-start justify-between gap-3">
+                        <div className="flex items-center gap-3">
+                          <span className="text-3xl p-2.5 bg-orange-50 rounded-2xl group-hover:scale-110 transition shrink-0">
+                            {stall.icon}
                           </span>
-                          <h4 className="font-black text-sm text-slate-800 mt-0.5">{stall.title}</h4>
+                          <div>
+                            <div className="flex items-center gap-1.5">
+                              <span className="text-[10px] font-black px-2 py-0.5 bg-orange-100 text-orange-700 rounded-full">
+                                {stall.grade}
+                              </span>
+                              <span className="text-[10px] font-extrabold text-slate-400">
+                                {stall.category}
+                              </span>
+                            </div>
+                            <h3 className="font-black text-base text-slate-900 mt-1 line-clamp-1">
+                              {stall.title}
+                            </h3>
+                          </div>
                         </div>
                       </div>
-                    </div>
-                    <p className="text-xs text-slate-600 line-clamp-2">{stall.description}</p>
-                  </div>
 
-                  {/* 場所とInstagramリンク */}
-                  <div className="pt-2 border-t flex items-center justify-between text-[11px] text-slate-500 font-bold">
-                    <div className="flex items-center gap-1">
-                      <MapPin className="w-3.5 h-3.5 text-rose-500" />
-                      <span>{stall.location}</span>
-                    </div>
+                      <p className="text-xs text-slate-600 line-clamp-2 leading-relaxed">
+                        {stall.description}
+                      </p>
 
-                    {stall.instagram && (
-                      <a
-                        href={stall.instagram}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        onClick={(e) => e.stopPropagation()}
-                        className="inline-flex items-center gap-1 text-pink-600 bg-pink-50 hover:bg-pink-100 px-2 py-1 rounded-full text-[10px] font-bold border border-pink-200 transition"
-                      >
-                        <InstagramIcon className="w-3 h-3" />
-                        <span>Instagram</span>
-                      </a>
-                    )}
-                  </div>
+                      <div className="pt-2 border-t border-slate-100 flex items-center justify-between text-[11px] font-bold text-slate-500">
+                        <span className="flex items-center gap-1 truncate max-w-[80%]">
+                          <MapPin className="w-3.5 h-3.5 text-orange-500 shrink-0" />
+                          <span className="truncate">{stall.location}</span>
+                        </span>
+                        <ChevronRight className="w-4 h-4 text-slate-300 group-hover:text-orange-500 group-hover:translate-x-0.5 transition" />
+                      </div>
+                    </div>
+                  ))}
                 </div>
-              ))}
+              ) : (
+                <div className="bg-white p-8 rounded-3xl text-center border border-slate-200 text-slate-400 font-bold space-y-2">
+                  <p className="text-2xl">🔍</p>
+                  <p className="text-xs">条件に該当する出店・企画が見つかりませんでした</p>
+                </div>
+              )}
             </div>
           </div>
         )}
 
-        {/* タブ 3: Events */}
+        {/* タブ 3: Events (ステージ企画) */}
         {activeTab === "events" && (
           <div className="space-y-4">
             {EVENTS_DATA.map((stage) => (
-              <div key={stage.stageId} className="bg-white rounded-3xl border border-slate-200 shadow-sm overflow-hidden relative">
-                <div className="p-4 bg-slate-50 border-b border-slate-100 flex items-center justify-between gap-4">
-                  <div className="flex items-center gap-2">
-                    <span className={`px-3 py-1 rounded-full text-xs font-black shrink-0 ${stage.badgeColor}`}>
-                      {stage.stageName}
-                    </span>
-                    <span className="text-xs font-bold text-slate-500">📍 {stage.location}</span>
+              <div key={stage.stageId} className="space-y-3">
+                {/* ステージ見出し */}
+                <div className="bg-gradient-to-r from-slate-900 to-slate-800 text-white p-4 rounded-3xl shadow-md flex items-center justify-between">
+                  <div className="flex items-center gap-3">
+                    <span className="text-2xl">🎭</span>
+                    <div>
+                      <h2 className="font-black text-base">{stage.stageName}</h2>
+                      <p className="text-xs opacity-80 font-medium">場所: {stage.location}</p>
+                    </div>
                   </div>
-                  {/* 地図で場所を確認するボタン */}
                   <button
                     onClick={() => {
                       setSelectedZoneId(stage.locationZoneId);
                       setActiveTab("map");
-                      window.scrollTo({ top: 0, behavior: "smooth" });
                     }}
-                    className="shrink-0 bg-white text-rose-700 px-3 py-1.5 rounded-full text-xs font-black shadow-sm border border-slate-200 hover:bg-slate-50 transition flex items-center gap-1.5"
+                    className="text-xs bg-white/20 hover:bg-white/30 text-white px-3 py-1.5 rounded-full font-bold transition flex items-center gap-1"
                   >
                     <MapPin className="w-3.5 h-3.5" />
-                    <span className="hidden sm:inline">場所を見る</span>
+                    <span>マップ表示</span>
                   </button>
                 </div>
-                
-                {/* タイムテーブル一覧 */}
-                <div className="divide-y divide-slate-100">
-                  {stage.schedule.map((item) => {
-                    // シミュレーション時刻を使ってLIVE判定
-                    const simulateDate = new Date(2026, 9, 24, 12, 0, 0);
-                    const currentTime = simulateDate;
-                    const [startHour, startMin] = item.startTime.split(":").map(Number);
-                    const [endHour, endMin] = item.endTime.split(":").map(Number);
-                    const startDate = new Date(2026, 9, 24, startHour, startMin, 0);
-                    const endDate = new Date(2026, 9, 24, endHour, endMin, 0);
-                    const isLive = currentTime >= startDate && currentTime <= endDate;
+
+                {/* タイムテーブルリスト */}
+                <div className="space-y-3">
+                  {stage.schedule.map((event) => {
+                    const isLive = liveEvent?.id === event.id;
 
                     return (
-                      <div key={item.id} className={`p-4 space-y-2 relative transition-colors ${isLive ? "bg-red-50" : ""}`}>
-                        {/* LIVEインジケーター */}
+                      <div
+                        key={event.id}
+                        className={`p-4 rounded-3xl border transition relative overflow-hidden ${
+                          isLive
+                            ? "bg-gradient-to-r from-orange-500/10 to-rose-500/10 border-orange-500 ring-2 ring-orange-400/50 shadow-md"
+                            : "bg-white border-slate-200 shadow-sm"
+                        }`}
+                      >
                         {isLive && (
-                          <div className="absolute top-4 right-4 flex items-center gap-1.5 bg-red-600 text-white px-3 py-1 rounded-full text-xs font-black shadow-sm animate-live-fade">
-                            <Radio className="w-3.5 h-3.5" />
+                          <div className="absolute top-0 right-0 bg-gradient-to-r from-orange-500 to-rose-500 text-white text-[10px] font-black px-3 py-1 rounded-bl-2xl uppercase tracking-wider flex items-center gap-1">
+                            <Radio className="w-3 h-3 animate-pulse" />
                             <span>LIVE 実施中</span>
                           </div>
                         )}
-                        <span className={`text-xs font-black px-2 py-0.5 rounded border ${isLive ? "text-red-700 bg-white border-red-200" : "text-orange-600 bg-orange-50 border-orange-200"}`}>
-                          {item.time}
-                        </span>
-                        <h4 className={`font-black text-base mt-1 ${isLive ? "text-red-950" : "text-slate-800"}`}>{item.title}</h4>
-                        <p className={`text-xs font-medium ${isLive ? "text-red-800" : "text-slate-600"}`}>{item.desc}</p>
+
+                        <div className="flex items-start gap-3">
+                          <span className="text-3xl p-2 bg-slate-100 rounded-2xl shrink-0 mt-1">
+                            {event.icon}
+                          </span>
+                          <div className="space-y-1 flex-1">
+                            <div className="flex items-center gap-2">
+                              <span className="text-xs font-black text-orange-600 flex items-center gap-1">
+                                <Clock className="w-3.5 h-3.5" />
+                                {event.time}
+                              </span>
+                              <span className="text-[10px] font-extrabold px-2 py-0.5 bg-slate-100 text-slate-600 rounded">
+                                {event.tag}
+                              </span>
+                            </div>
+
+                            <h3 className="font-black text-base text-slate-900">{event.title}</h3>
+                            <p className="text-xs text-slate-500 font-bold">主催: {event.org}</p>
+                            <p className="text-xs text-slate-600 leading-relaxed pt-1">{event.desc}</p>
+                          </div>
+                        </div>
                       </div>
                     );
                   })}
@@ -1036,231 +1064,249 @@ export default function Page() {
           </div>
         )}
 
-        {/* タブ 4: Access（追加・実装） */}
+        {/* タブ 4: Access (交通・アクセス) */}
         {activeTab === "access" && (
           <div className="space-y-4">
-            {/* アクセス情報カード */}
-            <div className="bg-white rounded-3xl p-6 border border-slate-200 shadow-sm space-y-4 overflow-hidden relative">
-              {/* 工学モチーフ浮遊要素を背景に配置 */}
-              <div className="absolute inset-0 pointer-events-none opacity-[0.03]">
-                {TECH_FLOATING_ITEMS.slice(0, 5).map((item, idx) => (
-                    <div key={idx} style={{ top: item.top, left: item.left, animationDuration: item.duration, animationDelay: item.delay }} className={`absolute ${item.size} animate-float-tech text-slate-900`}>{item.icon}</div>
-                ))}
-              </div>
-
-              {/* ヘッダー */}
-              <div className="flex items-center gap-2 border-b border-slate-100 pb-3 relative z-10">
-                <span className="text-xl p-1.5 bg-rose-100 text-rose-700 rounded-xl">🚗</span>
+            <div className="bg-white p-5 rounded-3xl border border-slate-200 shadow-sm space-y-4">
+              <div className="flex items-center gap-3 border-b border-slate-100 pb-3">
+                <span className="text-3xl p-2 bg-sky-50 rounded-2xl text-sky-600">🚌</span>
                 <div>
-                  <h3 className="text-base font-black text-slate-900">交通・アクセス</h3>
-                  <p className="text-[11px] font-bold text-slate-500">臨時駐車場と来場方法のご案内</p>
+                  <h2 className="font-black text-lg text-slate-900">鶴岡高専へのアクセス</h2>
+                  <p className="text-xs text-slate-500 font-medium">山形県鶴岡市井岡字沢田104</p>
                 </div>
               </div>
 
-              {/* コンテンツ */}
-              <div className="space-y-3 pt-2 relative z-10">
-                  {/* 臨時駐車場タイトル */}
-                  <div className="flex items-center gap-2">
-                      <Car className="w-5 h-5 text-orange-600" />
-                      <h4 className="text-sm font-black text-slate-800">臨時駐車場</h4>
+              {/* 交通手段カードリスト */}
+              <div className="space-y-3">
+                <div className="p-3.5 bg-slate-50 rounded-2xl border border-slate-200/80 space-y-1.5">
+                  <div className="flex items-center gap-2 text-xs font-black text-slate-800">
+                    <Navigation className="w-4 h-4 text-sky-600" />
+                    <span>JR鶴岡駅から路線バス</span>
                   </div>
+                  <p className="text-xs text-slate-600 leading-relaxed font-medium">
+                    JR鶴岡駅より庄内交通バス「湯野浜温泉行き（加茂経由）」乗車、約20分。「高専前」下車すぐ。
+                  </p>
+                </div>
 
-                  {/* 情報ボックス */}
-                  <div className="bg-slate-50 p-4 rounded-2xl border border-slate-100 space-y-2 text-xs font-medium text-slate-700">
-                      <p className="font-bold text-slate-900">臨時駐車場は切添グラウンドです。</p>
-                      <p className="flex items-center gap-1.5">
-                          <MapPin className="w-3.5 h-3.5 text-rose-500 flex-shrink-0" />
-                          <span>〒997-0022 山形県鶴岡市切添町10</span>
-                      </p>
-                      <p className="flex items-center gap-1.5">
-                          <Calendar className="w-3.5 h-3.5 text-orange-500 flex-shrink-0" />
-                          <span>利用時間：8:30〜15:00</span>
-                      </p>
-                      <p className="text-slate-500 text-[11px] pt-1 border-t border-slate-200">※ 会場周辺では徐行運転にご協力ください。</p>
+                <div className="p-3.5 bg-slate-50 rounded-2xl border border-slate-200/80 space-y-1.5">
+                  <div className="flex items-center gap-2 text-xs font-black text-slate-800">
+                    <Car className="w-4 h-4 text-emerald-600" />
+                    <span>お車でお越しの場合・駐車場</span>
                   </div>
+                  <p className="text-xs text-slate-600 leading-relaxed font-medium">
+                    山形自動車道「鶴岡IC」より約10分。構内の指定来場者用駐車場をご利用ください。
+                  </p>
+                </div>
 
-                  {/* アクセスマップ画像 */}
-                  {/* 外部画像 `/access_map.png` を表示。正確なパスに画像を配置する必要があります。 */}
-                  <div className="relative w-full rounded-2xl overflow-hidden border border-slate-200 bg-slate-100 aspect-[16/9]">
-                      <img
-                          src="/access_map.png"
-                          alt="臨時駐車場アクセスマップ"
-                          className="w-full h-full object-cover select-none"
-                      />
+                <div className="p-3.5 bg-amber-50 rounded-2xl border border-amber-200 space-y-1.5">
+                  <div className="flex items-center gap-2 text-xs font-black text-amber-900">
+                    <Info className="w-4 h-4 text-amber-600" />
+                    <span>ご来場にあたっての注意事項</span>
                   </div>
-                  <p className="text-[11px] font-bold text-slate-500 text-center">赤いピンが臨時駐車場の位置です</p>
-
-                  {/* Googleマップを開くボタン */}
-                  <div className="pt-2 text-center">
-                      <a
-                          href="https://maps.app.goo.gl/YourGoogleMapsLinkUrl" // 正確なURLに書き換えてください。
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="inline-flex items-center gap-1.5 text-blue-700 bg-blue-50 hover:bg-blue-100 px-3 py-1.5 rounded-full text-xs font-bold border border-blue-200 transition"
-                      >
-                          <MapPin className="w-3.5 h-3.5" />
-                          <span>Google マップで場所を開く</span>
-                          <ExternalLink className="w-3.5 h-3.5" />
-                      </a>
-                  </div>
+                  <ul className="text-xs text-amber-800 space-y-1 list-disc list-inside font-medium">
+                    <li>校内は全面禁煙です。</li>
+                    <li>酒類の持ち込み・飲酒は厳禁となっております。</li>
+                    <li>駐車場には限りがございますので、可能な限り公共交通機関をご利用ください。</li>
+                  </ul>
+                </div>
               </div>
+
+              {/* 外部マップで開くボタン */}
+              <a
+                href="https://maps.google.com/?q=鶴岡高等専門学校"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-full py-3 bg-sky-500 hover:bg-sky-600 text-white rounded-2xl font-black text-xs shadow transition flex items-center justify-center gap-2"
+              >
+                <ExternalLink className="w-4 h-4" />
+                <span>Google マップで地図を開く</span>
+              </a>
             </div>
           </div>
         )}
       </main>
 
-      {/* 1号館 フロア詳細マップ モーダル */}
-      {isBldg1ModalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-3 bg-slate-900/60 backdrop-blur-sm">
-          <div className="bg-white border border-slate-200 text-slate-800 w-full max-w-xl rounded-3xl p-4 sm:p-5 shadow-2xl relative space-y-4 max-h-[92vh] flex flex-col overflow-hidden">
-            <div className="flex items-center justify-between pb-2 border-b shrink-0">
-              <div className="flex items-center gap-2">
-                <span className="text-2xl p-1.5 bg-blue-100 text-blue-700 rounded-xl">🏫</span>
-                <div>
-                  <h3 className="text-base font-black text-slate-900">1号館 フロア詳細マップ</h3>
-                  <p className="text-[11px] font-bold text-slate-500">教室をタップすると企画詳細が見れます</p>
-                </div>
-              </div>
-              <button
-                onClick={() => setIsBldg1ModalOpen(false)}
-                className="p-1.5 rounded-full bg-slate-100 text-slate-500 hover:bg-slate-200 transition"
-              >
-                <X className="w-5 h-5" />
-              </button>
-            </div>
-
-            {/* 1F / 2F / 3F 切り替えタブ */}
-            <div className="flex justify-center gap-2 bg-slate-100 p-1 rounded-2xl shrink-0">
-              {(["1F", "2F", "3F"] as const).map((floor) => (
-                <button
-                  key={floor}
-                  onClick={() => setCurrentFloor(floor)}
-                  className={`flex-1 py-2 rounded-xl font-black text-xs transition-all ${
-                    currentFloor === floor
-                      ? "bg-blue-600 text-white shadow-sm"
-                      : "text-slate-600 hover:bg-slate-200"
-                  }`}
-                >
-                  {floor} 詳細図
-                </button>
-              ))}
-            </div>
-
-            {/* フロア詳細画像 ＆ ピンオーバーレイ */}
-            <div className="relative w-full rounded-2xl overflow-hidden border border-slate-200 bg-slate-100 aspect-[16/9] shrink-0">
-              <img
-                src={`/${currentFloor}.jpeg`}
-                alt={`1号館 ${currentFloor}マップ`}
-                className="w-full h-full object-contain select-none"
-              />
-
-              {/* 各教室のピン */}
-              {floorStalls.map((stall) => {
-                if (!stall.pinPos) return null;
-                return (
-                  <button
-                    key={stall.id}
-                    onClick={() => {
-                      setModalItem(stall);
-                    }}
-                    style={{ top: stall.pinPos.top, left: stall.pinPos.left }}
-                    className="absolute -translate-x-1/2 -translate-y-1/2 z-20 flex flex-col items-center group transition hover:scale-110"
-                  >
-                    <div className="bg-rose-600 text-white font-black text-[10px] px-2 py-0.5 rounded-full shadow-md flex items-center gap-1 border border-white whitespace-nowrap animate-bounce relative">
-                      <span className="absolute inset-0 rounded-full bg-rose-600 animate-pulse opacity-75"></span>
-                      <span className="relative z-10 flex items-center gap-1">
-                        <span>{stall.icon}</span>
-                        <span>{stall.roomNo}: {stall.title}</span>
-                      </span>
-                    </div>
-                    <div className="w-4 h-4 rounded-full bg-rose-500 ring-4 ring-rose-300 border-2 border-white shadow-sm relative z-10" />
-                  </button>
-                );
-              })}
-            </div>
-
-            {/* 現在の階の教室一覧カード */}
-            <div className="overflow-y-auto max-h-48 space-y-2 pr-1 shrink">
-              <h4 className="text-xs font-bold text-slate-500 sticky top-0 bg-white py-1">📍 {currentFloor} の教室・出展企画</h4>
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 pb-1">
-                {floorStalls.map((stall) => (
-                  <div
-                    key={stall.id}
-                    onClick={() => setModalItem(stall)}
-                    className="bg-slate-50 border border-slate-200 p-2.5 rounded-xl cursor-pointer hover:bg-blue-50 transition flex items-center gap-2"
-                  >
-                    <span className="text-xl flex-shrink-0">{stall.icon}</span>
-                    <div className="min-w-0 flex-grow">
-                      <div className="text-[10px] font-black text-blue-600 truncate">{stall.roomNo} ({stall.grade})</div>
-                      <div className="text-xs font-black truncate text-slate-800">{stall.title}</div>
-                    </div>
+      {/* --- モーダル1: 出店・企画詳細モーダル --- */}
+      {modalItem && (
+        <div className="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4">
+          <div className="bg-white w-full max-w-sm rounded-3xl shadow-2xl overflow-hidden animate-in fade-in zoom-in-95 duration-200">
+            <div className="p-5 space-y-4">
+              <div className="flex items-start justify-between gap-2">
+                <div className="flex items-center gap-3">
+                  <span className="text-4xl p-3 bg-orange-50 rounded-2xl">{modalItem.icon}</span>
+                  <div>
+                    <span className="text-[10px] font-black px-2 py-0.5 bg-orange-100 text-orange-700 rounded-full">
+                      {modalItem.grade}
+                    </span>
+                    <h3 className="text-lg font-black text-slate-900 mt-0.5">{modalItem.title}</h3>
+                    <p className="text-xs text-slate-500 font-bold">{modalItem.dept}</p>
                   </div>
-                ))}
+                </div>
+                <button
+                  onClick={() => setModalItem(null)}
+                  className="p-1.5 text-slate-400 hover:text-slate-600 hover:bg-slate-100 rounded-full transition"
+                >
+                  <X className="w-5 h-5" />
+                </button>
+              </div>
+
+              <div className="space-y-2 text-xs text-slate-700 font-medium leading-relaxed bg-slate-50 p-3.5 rounded-2xl border border-slate-100">
+                <p>{modalItem.description}</p>
+              </div>
+
+              {modalItem.menu && (
+                <div className="space-y-1.5">
+                  <span className="text-xs font-extrabold text-slate-800">🍽️ 提供メニュー・取扱品</span>
+                  <div className="flex flex-wrap gap-1.5">
+                    {modalItem.menu.map((m, i) => (
+                      <span key={i} className="text-xs font-bold bg-amber-50 text-amber-800 border border-amber-200/80 px-2.5 py-1 rounded-xl">
+                        {m}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              <div className="space-y-2 pt-2 border-t border-slate-100">
+                <div className="flex items-center gap-2 text-xs font-extrabold text-slate-600">
+                  <MapPin className="w-4 h-4 text-orange-500" />
+                  <span>{modalItem.location}</span>
+                </div>
+
+                {modalItem.instagram && (
+                  <a
+                    href={modalItem.instagram}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center gap-2 text-xs font-bold text-pink-600 hover:underline pt-1"
+                  >
+                    <InstagramIcon className="w-4 h-4 text-pink-600" />
+                    <span>公式 Instagram を見る</span>
+                    <ExternalLink className="w-3 h-3" />
+                  </a>
+                )}
+              </div>
+
+              <div className="pt-2 flex gap-2">
+                <button
+                  onClick={() => {
+                    setSelectedZoneId(modalItem.zoneId);
+                    setActiveTab("map");
+                    setModalItem(null);
+                  }}
+                  className="w-full py-3 bg-slate-900 text-white rounded-2xl text-xs font-black shadow hover:bg-slate-800 transition flex items-center justify-center gap-1.5"
+                >
+                  <MapPin className="w-4 h-4" />
+                  <span>マップで場所を確認</span>
+                </button>
               </div>
             </div>
           </div>
         </div>
       )}
 
-      {/* 企画詳細モーダル */}
-      {modalItem && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/40 backdrop-blur-sm">
-          <div className="bg-white border border-slate-200 text-slate-800 w-full max-w-md rounded-3xl p-6 shadow-2xl relative space-y-4">
-            <button
-              onClick={() => setModalItem(null)}
-              className="absolute right-4 top-4 p-2 rounded-full bg-slate-100 text-slate-500 hover:bg-slate-200 transition"
-            >
-              <X className="w-5 h-5" />
-            </button>
-            <div className="flex items-center gap-3">
-              <span className="text-4xl p-3 bg-slate-50 rounded-2xl">{modalItem.icon}</span>
-              <div>
-                <div className="flex items-center gap-1.5">
-                  <span className="text-xs font-extrabold px-2.5 py-0.5 rounded-full bg-orange-100 text-orange-700">
-                    {modalItem.grade}
-                  </span>
-                  <span className="text-xs font-bold text-slate-500">{modalItem.category}</span>
-                </div>
-                <h3 className="text-lg font-black text-slate-900 mt-0.5">{modalItem.title}</h3>
-                <p className="text-xs text-slate-500 font-bold">{modalItem.dept}</p>
+      {/* --- モーダル2: 1号館フロア詳細モーダル --- */}
+      {isBldg1ModalOpen && (
+        <div className="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4">
+          <div className="bg-white w-full max-w-lg rounded-3xl shadow-2xl overflow-hidden animate-in fade-in zoom-in-95 duration-200 flex flex-col max-h-[90vh]">
+            {/* モーダルヘッダー */}
+            <div className="p-4 bg-slate-900 text-white flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <Layers className="w-5 h-5 text-blue-400" />
+                <h3 className="font-black text-base">1号館 フロア詳細マップ</h3>
               </div>
+              <button
+                onClick={() => setIsBldg1ModalOpen(false)}
+                className="p-1 text-slate-400 hover:text-white rounded-full transition"
+              >
+                <X className="w-5 h-5" />
+              </button>
             </div>
 
-            <p className="text-xs text-slate-600 font-medium bg-slate-50 p-3.5 rounded-2xl border border-slate-100">
-              {modalItem.description}
-            </p>
+            {/* フロア切り替えタブ */}
+            <div className="flex border-b border-slate-200 bg-slate-100 p-1.5 gap-1.5">
+              {(["1F", "2F", "3F"] as const).map((floor) => (
+                <button
+                  key={floor}
+                  onClick={() => setCurrentFloor(floor)}
+                  className={`flex-1 py-2 rounded-xl text-xs font-black transition ${
+                    currentFloor === floor
+                      ? "bg-blue-600 text-white shadow-sm"
+                      : "text-slate-600 hover:bg-slate-200"
+                  }`}
+                >
+                  {floor}
+                </button>
+              ))}
+            </div>
 
-            {modalItem.menu && modalItem.menu.length > 0 && (
-              <div className="space-y-1">
-                <span className="text-[11px] font-bold text-slate-400">提供内容・メニュー</span>
-                <div className="flex flex-wrap gap-1.5">
-                  {modalItem.menu.map((m, i) => (
-                    <span key={i} className="text-xs font-extrabold px-2.5 py-1 bg-amber-50 text-amber-800 rounded-lg border border-amber-200">
-                      {m}
-                    </span>
+            {/* モーダルコンテンツ (スクロール可) */}
+            <div className="p-4 space-y-4 overflow-y-auto">
+              {/* フロア簡易レイアウト図（グラフィカル表現） */}
+              <div className="relative w-full bg-slate-100 border-2 border-slate-300 rounded-2xl p-4 min-h-[160px] flex flex-col justify-center">
+                <div className="text-center mb-2 text-[11px] font-black text-slate-400 uppercase tracking-widest">
+                  1号館 {currentFloor} 配置イメージ
+                </div>
+
+                {/* 廊下と教室配置 */}
+                <div className="grid grid-cols-3 gap-2">
+                  {floorStalls.map((stall) => (
+                    <button
+                      key={stall.id}
+                      onClick={() => {
+                        setIsBldg1ModalOpen(false);
+                        setModalItem(stall);
+                      }}
+                      className="p-3 bg-white border border-blue-200 rounded-xl shadow-sm hover:border-blue-500 hover:shadow transition flex flex-col items-center text-center space-y-1"
+                    >
+                      <span className="text-xl">{stall.icon}</span>
+                      <span className="text-[10px] font-black text-blue-600 bg-blue-50 px-1.5 py-0.5 rounded">
+                        {stall.roomNo}
+                      </span>
+                      <span className="text-xs font-black text-slate-800 line-clamp-1">
+                        {stall.title}
+                      </span>
+                      <span className="text-[9px] font-bold text-slate-400">{stall.grade}</span>
+                    </button>
                   ))}
                 </div>
               </div>
-            )}
 
-            <div className="text-xs font-bold text-slate-700 flex items-center justify-between pt-2 border-t border-slate-100">
-              <div className="flex items-center gap-1.5 min-w-0">
-                <MapPin className="w-4 h-4 text-rose-500 flex-shrink-0" />
-                <span className="truncate">場所: {modalItem.location}</span>
+              {/* 当該フロアの企画リスト */}
+              <div className="space-y-2">
+                <h4 className="text-xs font-extrabold text-slate-700">
+                  📍 {currentFloor} の催し物一覧 ({floorStalls.length}件)
+                </h4>
+
+                <div className="space-y-2">
+                  {floorStalls.map((stall) => (
+                    <div
+                      key={stall.id}
+                      onClick={() => {
+                        setIsBldg1ModalOpen(false);
+                        setModalItem(stall);
+                      }}
+                      className="p-3 bg-slate-50 border border-slate-200 rounded-2xl hover:bg-white hover:shadow-sm cursor-pointer transition flex items-center justify-between"
+                    >
+                      <div className="flex items-center gap-3">
+                        <span className="text-2xl">{stall.icon}</span>
+                        <div>
+                          <div className="flex items-center gap-1.5">
+                            <span className="text-[9px] font-black px-1.5 py-0.2 bg-blue-100 text-blue-800 rounded">
+                              {stall.roomNo}
+                            </span>
+                            <span className="text-[10px] font-bold text-slate-500">
+                              {stall.grade} ({stall.category})
+                            </span>
+                          </div>
+                          <h5 className="font-black text-xs text-slate-900 mt-0.5">{stall.title}</h5>
+                        </div>
+                      </div>
+                      <ChevronRight className="w-4 h-4 text-slate-400" />
+                    </div>
+                  ))}
+                </div>
               </div>
-
-              {modalItem.instagram && (
-                <a
-                  href={modalItem.instagram}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-1.5 text-white bg-gradient-to-r from-purple-500 via-pink-500 to-orange-500 hover:opacity-90 px-3 py-1.5 rounded-full text-xs font-bold shadow-sm transition"
-                >
-                  <InstagramIcon className="w-4 h-4" />
-                  <span className="hidden sm:inline">公式 Instagram</span>
-                  <ExternalLink className="w-3.5 h-3.5" />
-                </a>
-              )}
             </div>
           </div>
         </div>
