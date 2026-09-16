@@ -11,6 +11,7 @@ import {
   X,
   ExternalLink,
   Layers,
+  Radio,
 } from "lucide-react";
 
 // Lucideから削除されたInstagramアイコンをインラインSVGで定義
@@ -254,7 +255,7 @@ const STALLS_DATA: StallItem[] = [
     dept: "4年 電気・電子コース (4E)",
     location: "7号館 2F 722教室",
     zoneId: "bldg7",
-    description: "4E動くターゲットを狙ってシュート！高得点を狙って豪華景品をゲットしよう！",
+    description: "4E動くターゲットを狙って力強くシュート！高得点を狙って豪華景品をゲットしよう！",
     icon: "⚽"
   },
   {
@@ -316,11 +317,14 @@ const EVENTS_DATA = [
     stageId: "main",
     stageName: "メインステージ",
     location: "第一体育館",
+    locationZoneId: "gym1",
     badgeColor: "bg-rose-500 text-white",
     schedule: [
       {
         id: "m1",
         time: "09:30 - 10:30",
+        startTime: "09:30",
+        endTime: "10:30",
         title: "オープニング ＆ 腕立て選手権",
         org: "実行委員会",
         desc: "高専生の筋肉の頂点を決める熱いバトル！誰が一番腕立て伏せができるかを競い合うオープニングイベント！",
@@ -330,6 +334,8 @@ const EVENTS_DATA = [
       {
         id: "m2",
         time: "11:30 - 12:30",
+        startTime: "11:30",
+        endTime: "12:30",
         title: "爆笑！高専生有志 漫才ステージ",
         org: "有志団体",
         desc: "学内の爆笑王たちが集結！高専あるあるから本格コントまで、会場を笑顔の渦に巻き込みます！",
@@ -339,6 +345,8 @@ const EVENTS_DATA = [
       {
         id: "m3",
         time: "13:30 - 14:30",
+        startTime: "13:30",
+        endTime: "14:30",
         title: "ダンスパフォーマンス LIVE",
         org: "ダンス同好会 ＆ 有志",
         desc: "キレキレのロックダンスからヒップホップまで！エネルギー溢れる最高のステージパフォーマンス！",
@@ -348,6 +356,8 @@ const EVENTS_DATA = [
       {
         id: "m4",
         time: "14:30 - 15:30",
+        startTime: "14:30",
+        endTime: "15:30",
         title: "グランドエンディング ＆ フィナーレ",
         org: "全校生徒・実行委員会",
         desc: "高専祭2026のフィナーレ！全校生徒と来場者の皆様で盛り上がる感動のクライマックス！",
@@ -445,6 +455,26 @@ export default function Page() {
   const [isBldg1ModalOpen, setIsBldg1ModalOpen] = useState(false);
   const [currentFloor, setCurrentFloor] = useState<"1F" | "2F" | "3F">("1F");
 
+  // リアルタイムイベント特定ロジック（シミュレーション）
+  const liveEvent = useMemo(() => {
+    const simulateDate = new Date(2026, 9, 24, 12, 0, 0);
+    const currentTime = simulateDate;
+
+    for (const stage of EVENTS_DATA) {
+      for (const event of stage.schedule) {
+        const [startHour, startMin] = event.startTime.split(":").map(Number);
+        const [endHour, endMin] = event.endTime.split(":").map(Number);
+        const startDate = new Date(2026, 9, 24, startHour, startMin, 0);
+        const endDate = new Date(2026, 9, 24, endHour, endMin, 0);
+
+        if (currentTime >= startDate && currentTime <= endDate) {
+          return { ...event, stageName: stage.stageName, locationZoneId: stage.locationZoneId };
+        }
+      }
+    }
+    return null;
+  }, []);
+
   const filteredStalls = useMemo(() => {
     return STALLS_DATA.filter((stall) => {
       return (
@@ -473,7 +503,6 @@ export default function Page() {
   if (!isEntered) {
     return (
       <div className="min-h-screen bg-[#F8FAFC] text-slate-800 flex flex-col items-center justify-between py-12 px-6 relative overflow-hidden select-none font-sans">
-        {/* アニメーション用スタイル定義 */}
         <style>{`
           @keyframes floatTech {
             0% { transform: translateY(0px) rotate(0deg) scale(1); }
@@ -495,7 +524,6 @@ export default function Page() {
           }
         `}</style>
 
-        {/* 背景：工学モチーフ浮遊要素 */}
         <div className="absolute inset-0 pointer-events-none overflow-hidden">
           {TECH_FLOATING_ITEMS.map((item, idx) => (
             <div
@@ -514,20 +542,15 @@ export default function Page() {
           ))}
         </div>
 
-        {/* 空白スペーサー */}
         <div />
 
-        {/* メインコンテンツブロック */}
         <div className="w-full max-w-sm flex flex-col items-center text-center z-10 my-auto space-y-6">
-          {/* サブタイトル英字 */}
           <div className="text-teal-600 font-extrabold text-xs tracking-[0.25em] font-sans">
             TSURUOKA KOSEN FESTIVAL 2026
           </div>
 
-          {/* メインタイトル：1文字ずつ降ってくるアニメーション */}
           <div className="flex flex-col items-center justify-center font-black tracking-tight font-sans">
             <div className="flex items-baseline justify-center text-[#E53935] drop-shadow-sm">
-              {/* 「熱狂の」 */}
               <div className="text-4xl sm:text-5xl flex">
                 {titlePart1.map((char, index) => (
                   <span
@@ -540,9 +563,7 @@ export default function Page() {
                 ))}
               </div>
 
-              {/* 「高専祭」 ＆ 上部の「カーニバル」 */}
               <div className="relative inline-block ml-1">
-                {/* 「カーニバル」1文字ずつドロップ */}
                 <span className="absolute -top-4 left-1/2 -translate-x-1/2 text-[11px] sm:text-xs font-black text-rose-500 tracking-widest whitespace-nowrap flex">
                   {titlePart2.map((char, index) => (
                     <span
@@ -555,7 +576,6 @@ export default function Page() {
                   ))}
                 </span>
 
-                {/* 「高専祭」 */}
                 <div className="text-5xl sm:text-6xl flex">
                   {titlePart3.map((char, index) => (
                     <span
@@ -571,7 +591,6 @@ export default function Page() {
             </div>
           </div>
 
-          {/* 日時バッジ（カプセルデザイン） */}
           <div className="bg-white/95 border border-slate-200/80 shadow-md rounded-full px-5 py-2.5 flex items-center justify-center gap-2 text-xs font-extrabold text-slate-700">
             <span className="text-rose-600">2026.10.24 SAT</span>
             <span className="text-slate-300">|</span>
@@ -579,7 +598,6 @@ export default function Page() {
             <span className="text-slate-400 font-normal">@鶴岡高専</span>
           </div>
 
-          {/* 入場ボタン */}
           <div className="pt-4 w-full flex flex-col items-center space-y-3">
             <button
               onClick={() => setIsEntered(true)}
@@ -589,31 +607,81 @@ export default function Page() {
               <span className="text-lg">⚙️</span>
             </button>
 
-            {/* 下部メッセージ */}
             <p className="text-xs text-slate-500 font-semibold tracking-wide">
               鶴岡高専祭をお楽しみください！
             </p>
           </div>
         </div>
 
-        {/* 空白スペーサー */}
         <div />
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-slate-50 text-slate-800 pb-20 font-sans">
+    <div className="min-h-screen bg-slate-50 text-slate-800 pb-20 font-sans relative">
+      {/* リアルタイムピックアップバナー（全ページ上部） */}
+      {liveEvent && (
+        <div className="sticky top-0 z-50 bg-gradient-to-r from-orange-500 to-red-600 text-white border-b border-white/20 shadow-xl overflow-hidden">
+          <style>{`
+            @keyframes liveFade {
+              0%, 100% { opacity: 0.3; }
+              50% { opacity: 1; }
+            }
+            @keyframes liveWave {
+              0% { transform: scaleY(0.4); }
+              50% { transform: scaleY(1); }
+              100% { transform: scaleY(0.4); }
+            }
+            .animate-live-fade { animation: liveFade 1.5s ease-in-out infinite; }
+            .animate-live-wave { animation: liveWave 0.8s ease-in-out infinite; transform-origin: bottom; }
+          `}</style>
+          
+          <div className="max-w-2xl mx-auto p-4 flex items-center justify-between gap-4 relative">
+            <div className="min-w-0 flex-1">
+              <div className="flex items-center gap-2 text-xs sm:text-sm font-black tracking-widest uppercase mb-1 opacity-90">
+                <Radio className="w-4 h-4 animate-live-fade"/>
+                <span>ただいま実施中のステージ企画！</span>
+              </div>
+              <div className="flex flex-col sm:flex-row sm:items-baseline gap-0.5 sm:gap-2 text-[13px] sm:text-base font-bold">
+                <span className="flex items-center gap-1">
+                  <span className="text-xl">{liveEvent.icon}</span>
+                  <span>{liveEvent.stageName}: {liveEvent.title}</span>
+                </span>
+                <span className="text-xs sm:text-sm font-black bg-white/20 px-2 py-0.5 rounded flex items-center gap-1.5 shrink-0 w-fit">
+                  <span>{liveEvent.time}</span>
+                  <div className="flex items-end gap-0.5 h-3">
+                    <div className="w-0.5 h-full bg-white animate-live-wave" style={{ animationDelay: "0s" }} />
+                    <div className="w-0.5 h-full bg-white animate-live-wave" style={{ animationDelay: "0.2s" }} />
+                    <div className="w-0.5 h-full bg-white animate-live-wave" style={{ animationDelay: "0.1s" }} />
+                  </div>
+                  <span className="text-[10px] font-black tracking-wider text-amber-100">LIVE</span>
+                </span>
+              </div>
+            </div>
+            
+            <button
+              onClick={() => {
+                setActiveTab("events");
+                window.scrollTo({ top: 0, behavior: "smooth" });
+              }}
+              className="bg-white/95 text-red-700 px-3 py-1.5 rounded-full text-xs font-black shadow hover:bg-white hover:scale-105 transition flex items-center gap-1.5 shrink-0"
+            >
+              <MapPin className="w-3.5 h-3.5"/>
+              <span>詳細・場所</span>
+            </button>
+          </div>
+        </div>
+      )}
+
       {/* Header */}
-      <header className="sticky top-0 z-40 bg-white/90 backdrop-blur-md border-b border-slate-200 shadow-sm">
+      <header className={`sticky ${liveEvent ? "top-[76px] sm:top-[72px]" : "top-0"} z-40 bg-white/90 backdrop-blur-md border-b border-slate-200 shadow-sm transition-all`}>
         <div className="max-w-2xl mx-auto px-4 py-2.5 flex items-center justify-between gap-2">
-          {/* 左上ロゴ：「高専ロゴ.jpg」アイコン + 「高専祭」テキスト */}
           <button onClick={() => setIsEntered(false)} className="flex items-center gap-2.5 text-left shrink-0">
             <img src="/高専ロゴ.jpg" alt="高専ロゴ" className="w-9 h-9 object-contain" />
             <span className="font-black text-lg text-slate-800">高専祭</span>
           </button>
 
-          {/* 右上ナビゲーション */}
           <nav className="flex items-center gap-1 bg-slate-100 p-1 rounded-full border border-slate-200">
             <button
               onClick={() => setActiveTab("map")}
@@ -622,7 +690,7 @@ export default function Page() {
               }`}
               title="マップ"
             >
-              <Map className="w-4 h-4" />
+              <Map className="w-4 h-4"/>
               {activeTab === "map" && <span>マップ</span>}
             </button>
             <button
@@ -632,7 +700,7 @@ export default function Page() {
               }`}
               title="企画一覧"
             >
-              <Store className="w-4 h-4" />
+              <Store className="w-4 h-4"/>
               {activeTab === "stalls" && <span>企画一覧</span>}
             </button>
             <button
@@ -642,7 +710,7 @@ export default function Page() {
               }`}
               title="ステージ"
             >
-              <Calendar className="w-4 h-4" />
+              <Calendar className="w-4 h-4"/>
               {activeTab === "events" && <span>ステージ</span>}
             </button>
           </nav>
@@ -653,7 +721,6 @@ export default function Page() {
       <main className="max-w-2xl mx-auto px-4 pt-4 pb-12 space-y-4">
         {activeTab === "map" && (
           <div className="space-y-4">
-            {/* インタラクティブ構内図 */}
             <div className="relative w-full rounded-3xl overflow-hidden border-2 border-slate-200 shadow-md bg-slate-200 aspect-[4/3]">
               <img
                 src="/校内図.jpeg"
@@ -663,6 +730,8 @@ export default function Page() {
 
               {CAMPUS_ZONES.map((zone) => {
                 const isSelected = selectedZoneId === zone.id;
+                const isLiveStageZone = liveEvent?.locationZoneId === zone.id;
+
                 return (
                   <button
                     key={zone.id}
@@ -676,23 +745,29 @@ export default function Page() {
                       className={`px-2 py-0.5 rounded-full text-[10px] font-black whitespace-nowrap shadow-md mb-0.5 border flex items-center gap-1 ${
                         isSelected
                           ? "bg-slate-900 text-white border-slate-700 ring-2 ring-rose-400"
-                          : "bg-white/95 text-slate-800 border-slate-200 group-hover:bg-orange-500 group-hover:text-white"
+                          : isLiveStageZone
+                            ? "bg-red-600 text-white border-red-700 animate-pulse"
+                            : "bg-white/95 text-slate-800 border-slate-200 group-hover:bg-orange-500 group-hover:text-white"
                       }`}
                     >
-                      <span>{zone.icon}</span>
+                      {isLiveStageZone ? (
+                        <Radio className="w-3 h-3 animate-live-fade"/>
+                      ) : (
+                        <span>{zone.icon}</span>
+                      )}
                       <span>{zone.pinLabel}</span>
                     </div>
 
                     <div className="relative flex items-center justify-center">
-                      {isSelected && (
-                        <span className="absolute w-8 h-8 rounded-full bg-rose-500/40 animate-ping" />
+                      {(isSelected || isLiveStageZone) && (
+                        <span className={`absolute w-8 h-8 rounded-full ${isLiveStageZone ? "bg-red-500/50" : "bg-rose-500/40"} animate-ping`} />
                       )}
                       <div
                         className={`w-7 h-7 rounded-full flex items-center justify-center shadow-lg text-white border-2 border-white transition ${
-                          isSelected ? "bg-rose-600 ring-4 ring-rose-300" : `${zone.color}`
+                          isSelected ? "bg-rose-600 ring-4 ring-rose-300" : isLiveStageZone ? "bg-red-700" : `${zone.color}`
                         }`}
                       >
-                        <MapPin className="w-4 h-4" />
+                        <MapPin className="w-4 h-4"/>
                       </div>
                     </div>
                   </button>
@@ -700,7 +775,6 @@ export default function Page() {
               })}
             </div>
 
-            {/* Selected Location Details */}
             <div className={`rounded-3xl p-5 border shadow-sm space-y-4 transition-all ${currentZone.lightBg}`}>
               <div className="flex items-start justify-between gap-2 border-b border-current/10 pb-3">
                 <div className="flex items-center gap-3">
@@ -717,13 +791,12 @@ export default function Page() {
 
               <p className="text-xs leading-relaxed font-medium opacity-90">{currentZone.desc}</p>
 
-              {/* 1号館が選択されている場合、詳細図（1F/2F/3F）モーダルを開くボタンを表示 */}
               {selectedZoneId === "bldg1" && (
                 <button
                   onClick={() => setIsBldg1ModalOpen(true)}
                   className="w-full py-3 px-4 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-2xl font-black text-xs shadow-md hover:shadow-lg transition flex items-center justify-center gap-2"
                 >
-                  <Layers className="w-4 h-4" />
+                  <Layers className="w-4 h-4"/>
                   <span>1号館のフロア詳細図（1F / 2F / 3F）を開く</span>
                 </button>
               )}
@@ -754,7 +827,7 @@ export default function Page() {
                             <p className="text-[11px] text-slate-500 font-medium">{stall.location}</p>
                           </div>
                         </div>
-                        <ChevronRight className="w-5 h-5 text-slate-400" />
+                        <ChevronRight className="w-5 h-5 text-slate-400"/>
                       </div>
                     ))}
                   </div>
@@ -773,7 +846,7 @@ export default function Page() {
           <div className="space-y-4">
             <div className="bg-white p-4 rounded-3xl border border-slate-200 shadow-sm space-y-3">
               <div className="relative">
-                <Search className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" />
+                <Search className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400"/>
                 <input
                   type="text"
                   placeholder="クラス・企画名・料理名・場所で検索..."
@@ -808,7 +881,7 @@ export default function Page() {
 
                   <div className="pt-2 border-t flex items-center justify-between text-[11px] text-slate-500 font-bold">
                     <div className="flex items-center gap-1">
-                      <MapPin className="w-3.5 h-3.5 text-rose-500" />
+                      <MapPin className="w-3.5 h-3.5 text-rose-500"/>
                       <span>{stall.location}</span>
                     </div>
 
@@ -820,7 +893,7 @@ export default function Page() {
                         onClick={(e) => e.stopPropagation()}
                         className="inline-flex items-center gap-1 text-pink-600 bg-pink-50 hover:bg-pink-100 px-2 py-1 rounded-full text-[10px] font-bold border border-pink-200 transition"
                       >
-                        <InstagramIcon className="w-3 h-3" />
+                        <InstagramIcon className="w-3 h-3"/>
                         <span>Instagram</span>
                       </a>
                     )}
@@ -835,22 +908,59 @@ export default function Page() {
         {activeTab === "events" && (
           <div className="space-y-4">
             {EVENTS_DATA.map((stage) => (
-              <div key={stage.stageId} className="bg-white rounded-3xl border border-slate-200 shadow-sm overflow-hidden">
-                <div className="p-4 bg-slate-50 border-b border-slate-100 flex items-center justify-between">
-                  <span className={`px-3 py-1 rounded-full text-xs font-black ${stage.badgeColor}`}>
-                    {stage.stageName} ({stage.location})
-                  </span>
+              <div key={stage.stageId} className="bg-white rounded-3xl border border-slate-200 shadow-sm overflow-hidden relative">
+                <div className="p-4 bg-slate-50 border-b border-slate-100 flex items-center justify-between gap-4">
+                  <div className="flex items-center gap-2">
+                    <span className={`px-3 py-1 rounded-full text-xs font-black shrink-0 ${stage.badgeColor}`}>
+                      {stage.stageName}
+                    </span>
+                    <span className="text-xs font-bold text-slate-500">📍 {stage.location}</span>
+                  </div>
+                  <button
+                    onClick={() => {
+                      setSelectedZoneId(stage.locationZoneId);
+                      setActiveTab("map");
+                      window.scrollTo({ top: 0, behavior: "smooth" });
+                    }}
+                    className="shrink-0 bg-white text-rose-700 px-3 py-1.5 rounded-full text-xs font-black shadow-sm border border-slate-200 hover:bg-slate-50 transition flex items-center gap-1.5"
+                  >
+                    <MapPin className="w-3.5 h-3.5"/>
+                    <span className="hidden sm:inline">場所を見る</span>
+                  </button>
                 </div>
+                
                 <div className="divide-y divide-slate-100">
-                  {stage.schedule.map((item) => (
-                    <div key={item.id} className="p-4 space-y-1">
-                      <span className="text-xs font-black text-orange-600 bg-orange-50 px-2 py-0.5 rounded border border-orange-200">
-                        {item.time}
-                      </span>
-                      <h4 className="font-black text-sm text-slate-800 mt-1">{item.title}</h4>
-                      <p className="text-xs text-slate-600 font-medium">{item.desc}</p>
-                    </div>
-                  ))}
+                  {stage.schedule.map((item) => {
+                    const simulateDate = new Date(2026, 9, 24, 12, 0, 0);
+                    const currentTime = simulateDate;
+                    const [startHour, startMin] = item.startTime.split(":").map(Number);
+                    const [endHour, endMin] = item.endTime.split(":").map(Number);
+                    const startDate = new Date(2026, 9, 24, startHour, startMin, 0);
+                    const endDate = new Date(2026, 9, 24, endHour, endMin, 0);
+                    const isLive = currentTime >= startDate && currentTime <= endDate;
+
+                    return (
+                      <div key={item.id} className={`p-4 space-y-2 relative transition-colors ${isLive ? "bg-red-50" : ""}`}>
+                        {isLive && (
+                          <div className="absolute top-4 right-4 flex items-center gap-1.5 bg-red-600 text-white px-3 py-1 rounded-full text-xs font-black shadow-sm animate-live-fade">
+                            <Radio className="w-3.5 h-3.5"/>
+                            <span>LIVE 実施中</span>
+                          </div>
+                        )}
+                        <span className={`text-xs font-black px-2 py-0.5 rounded border ${isLive ? "text-red-700 bg-white border-red-200" : "text-orange-600 bg-orange-50 border-orange-200"}`}>
+                          {item.time}
+                        </span>
+                        <h4 className={`font-black text-base mt-1 ${isLive ? "text-red-950" : "text-slate-800"}`}>{item.title}</h4>
+                        <p className={`text-xs font-medium ${isLive ? "text-red-800" : "text-slate-600"}`}>{item.desc}</p>
+                        {isLive && (
+                          <div className="text-[11px] font-black text-red-700 flex items-center gap-1.5 pt-2 border-t border-red-100">
+                            <span>企画詳細を見る</span>
+                            <ChevronRight className="w-4 h-4"/>
+                          </div>
+                        )}
+                      </div>
+                    );
+                  })}
                 </div>
               </div>
             ))}
@@ -861,8 +971,8 @@ export default function Page() {
       {/* 1号館 フロア詳細マップ モーダル */}
       {isBldg1ModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-3 bg-slate-900/60 backdrop-blur-sm">
-          <div className="bg-white border border-slate-200 text-slate-800 w-full max-w-xl rounded-3xl p-4 sm:p-5 shadow-2xl relative space-y-4 max-h-[92vh] flex flex-col">
-            <div className="flex items-center justify-between pb-2 border-b">
+          <div className="bg-white border border-slate-200 text-slate-800 w-full max-w-xl rounded-3xl p-4 sm:p-5 shadow-2xl relative space-y-4 max-h-[92vh] flex flex-col overflow-hidden">
+            <div className="flex items-center justify-between pb-2 border-b shrink-0">
               <div className="flex items-center gap-2">
                 <span className="text-2xl p-1.5 bg-blue-100 text-blue-700 rounded-xl">🏫</span>
                 <div>
@@ -874,12 +984,11 @@ export default function Page() {
                 onClick={() => setIsBldg1ModalOpen(false)}
                 className="p-1.5 rounded-full bg-slate-100 text-slate-500 hover:bg-slate-200 transition"
               >
-                <X className="w-5 h-5" />
+                <X className="w-5 h-5"/>
               </button>
             </div>
 
-            {/* 1F / 2F / 3F 切り替えタブ */}
-            <div className="flex justify-center gap-2 bg-slate-100 p-1 rounded-2xl">
+            <div className="flex justify-center gap-2 bg-slate-100 p-1 rounded-2xl shrink-0">
               {(["1F", "2F", "3F"] as const).map((floor) => (
                 <button
                   key={floor}
@@ -895,47 +1004,49 @@ export default function Page() {
               ))}
             </div>
 
-            {/* フロア詳細画像 ＆ ピンオーバーレイ */}
-            <div className="relative w-full rounded-2xl overflow-hidden border border-slate-200 bg-slate-100 aspect-[16/9]">
+            <div className="relative w-full rounded-2xl overflow-hidden border border-slate-200 bg-slate-100 aspect-[16/9] shrink-0">
               <img
                 src={`/${currentFloor}.jpeg`}
                 alt={`1号館 ${currentFloor}マップ`}
                 className="w-full h-full object-contain select-none"
               />
 
-              {/* 各教室のピン */}
               {floorStalls.map((stall) => {
                 if (!stall.pinPos) return null;
                 return (
                   <button
                     key={stall.id}
-                    onClick={() => setModalItem(stall)}
+                    onClick={() => {
+                      setModalItem(stall);
+                    }}
                     style={{ top: stall.pinPos.top, left: stall.pinPos.left }}
                     className="absolute -translate-x-1/2 -translate-y-1/2 z-20 flex flex-col items-center group transition hover:scale-110"
                   >
-                    <div className="bg-rose-600 text-white font-black text-[10px] px-2 py-0.5 rounded-full shadow-md flex items-center gap-1 border border-white whitespace-nowrap animate-bounce">
-                      <span>{stall.icon}</span>
-                      <span>{stall.roomNo}: {stall.title}</span>
+                    <div className="bg-rose-600 text-white font-black text-[10px] px-2 py-0.5 rounded-full shadow-md flex items-center gap-1 border border-white whitespace-nowrap animate-bounce relative">
+                      <span className="absolute inset-0 rounded-full bg-rose-600 animate-pulse opacity-75"></span>
+                      <span className="relative z-10 flex items-center gap-1">
+                        <span>{stall.icon}</span>
+                        <span>{stall.roomNo}: {stall.title}</span>
+                      </span>
                     </div>
-                    <div className="w-4 h-4 rounded-full bg-rose-500 ring-4 ring-rose-300 border-2 border-white shadow-sm" />
+                    <div className="w-4 h-4 rounded-full bg-rose-500 ring-4 ring-rose-300 border-2 border-white shadow-sm relative z-10" />
                   </button>
                 );
               })}
             </div>
 
-            {/* 現在の階の教室一覧カード */}
-            <div className="overflow-y-auto max-h-48 space-y-2 pr-1">
-              <h4 className="text-xs font-bold text-slate-500">📍 {currentFloor} の教室・出展企画</h4>
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
+            <div className="overflow-y-auto max-h-48 space-y-2 pr-1 shrink">
+              <h4 className="text-xs font-bold text-slate-500 sticky top-0 bg-white py-1">📍 {currentFloor} の教室・出展企画</h4>
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 pb-1">
                 {floorStalls.map((stall) => (
                   <div
                     key={stall.id}
                     onClick={() => setModalItem(stall)}
                     className="bg-slate-50 border border-slate-200 p-2.5 rounded-xl cursor-pointer hover:bg-blue-50 transition flex items-center gap-2"
                   >
-                    <span className="text-xl">{stall.icon}</span>
-                    <div className="min-w-0">
-                      <div className="text-[10px] font-black text-blue-600">{stall.roomNo} ({stall.grade})</div>
+                    <span className="text-xl flex-shrink-0">{stall.icon}</span>
+                    <div className="min-w-0 flex-grow">
+                      <div className="text-[10px] font-black text-blue-600 truncate">{stall.roomNo} ({stall.grade})</div>
                       <div className="text-xs font-black truncate text-slate-800">{stall.title}</div>
                     </div>
                   </div>
@@ -954,7 +1065,7 @@ export default function Page() {
               onClick={() => setModalItem(null)}
               className="absolute right-4 top-4 p-2 rounded-full bg-slate-100 text-slate-500 hover:bg-slate-200 transition"
             >
-              <X className="w-5 h-5" />
+              <X className="w-5 h-5"/>
             </button>
             <div className="flex items-center gap-3">
               <span className="text-4xl p-3 bg-slate-50 rounded-2xl">{modalItem.icon}</span>
@@ -987,10 +1098,10 @@ export default function Page() {
               </div>
             )}
 
-            <div className="text-xs font-bold text-slate-700 flex items-center justify-between pt-2 border-t">
-              <div className="flex items-center gap-1.5">
-                <MapPin className="w-4 h-4 text-rose-500" />
-                <span>場所: {modalItem.location}</span>
+            <div className="text-xs font-bold text-slate-700 flex items-center justify-between pt-2 border-t border-slate-100">
+              <div className="flex items-center gap-1.5 min-w-0">
+                <MapPin className="w-4 h-4 text-rose-500 flex-shrink-0"/>
+                <span className="truncate">場所: {modalItem.location}</span>
               </div>
 
               {modalItem.instagram && (
@@ -1000,9 +1111,9 @@ export default function Page() {
                   rel="noopener noreferrer"
                   className="inline-flex items-center gap-1.5 text-white bg-gradient-to-r from-purple-500 via-pink-500 to-orange-500 hover:opacity-90 px-3 py-1.5 rounded-full text-xs font-bold shadow-sm transition"
                 >
-                  <InstagramIcon className="w-4 h-4" />
-                  <span>公式 Instagram</span>
-                  <ExternalLink className="w-3 h-3" />
+                  <InstagramIcon className="w-4 h-4"/>
+                  <span className="hidden sm:inline">公式 Instagram</span>
+                  <ExternalLink className="w-3.5 h-3.5"/>
                 </a>
               )}
             </div>
