@@ -46,7 +46,6 @@ interface StallItem {
   zoneId: string;
   floor?: "1F" | "2F" | "3F";
   roomNo?: string;
-  pinPos?: { top: string; left: string };
   description: string;
   icon: string;
   instagram?: string;
@@ -66,7 +65,6 @@ const STALLS_DATA: StallItem[] = [
     zoneId: "bldg1",
     floor: "1F",
     roomNo: "111教室",
-    pinPos: { top: "25.5%", left: "61.5%" },
     description: "1-1による熱々で外はサクッ、中はジュワッ！香ばしい絶品ほっとサンド！",
     icon: "🥪",
     menu: ["ほっとサンド"]
@@ -81,7 +79,6 @@ const STALLS_DATA: StallItem[] = [
     zoneId: "bldg1",
     floor: "1F",
     roomNo: "112教室",
-    pinPos: { top: "25.5%", left: "41.5%" },
     description: "1-2がお届けする冷たくてシュワっと美味しい各種ソフトドリンク！",
     icon: "🍹",
     menu: ["ソフトドリンク各種"]
@@ -96,7 +93,6 @@ const STALLS_DATA: StallItem[] = [
     zoneId: "bldg1",
     floor: "1F",
     roomNo: "113教室",
-    pinPos: { top: "25.5%", left: "21.5%" },
     description: "4Mのイケメンたちが華麗にお出迎え！？非日常の最高のおもてなし空間！",
     icon: "🌹"
   },
@@ -112,7 +108,6 @@ const STALLS_DATA: StallItem[] = [
     zoneId: "bldg1",
     floor: "2F",
     roomNo: "121教室",
-    pinPos: { top: "25.5%", left: "61.5%" },
     description: "1-3作！フワフワ甘くて可愛いビッグわたあめ！",
     icon: "🍥",
     menu: ["わたあめ"]
@@ -127,7 +122,6 @@ const STALLS_DATA: StallItem[] = [
     zoneId: "bldg1",
     floor: "2F",
     roomNo: "122教室",
-    pinPos: { top: "25.5%", left: "44.0%" },
     description: "1-4手作り生地のボリューム満点トッピングクレープ！",
     icon: "🥞",
     menu: ["手作りクレープ"]
@@ -142,7 +136,6 @@ const STALLS_DATA: StallItem[] = [
     zoneId: "bldg1",
     floor: "2F",
     roomNo: "123教室",
-    pinPos: { top: "25.5%", left: "21.5%" },
     description: "3Eみんなでワイワイ楽しめる対戦ゲーム＆レトロゲームが揃ったゲームカフェ！",
     icon: "🎮"
   },
@@ -158,7 +151,6 @@ const STALLS_DATA: StallItem[] = [
     zoneId: "bldg1",
     floor: "3F",
     roomNo: "131教室",
-    pinPos: { top: "25.5%", left: "46.0%" },
     description: "4I特製カジノ！本格的なテーブルゲームでスリリングな心理戦を楽しもう！",
     icon: "🎲"
   },
@@ -172,7 +164,6 @@ const STALLS_DATA: StallItem[] = [
     zoneId: "bldg1",
     floor: "3F",
     roomNo: "132教室",
-    pinPos: { top: "25.5%", left: "32.0%" },
     description: "3Iがお届けするおしゃれで落ち着いた雰囲気のノンアルコールバー！",
     icon: "🍸"
   },
@@ -186,7 +177,6 @@ const STALLS_DATA: StallItem[] = [
     zoneId: "bldg1",
     floor: "3F",
     roomNo: "133教室",
-    pinPos: { top: "25.5%", left: "18.0%" },
     description: "3Bによるゆったり寛げる特製喫茶店！こだわりのドリンクでおもてなし。",
     icon: "☕"
   },
@@ -375,32 +365,8 @@ const EVENTS_DATA = [
   }
 ];
 
-// キャンパスマップのゾーン（建物）データ
+// 参考マップ画像 (参考_2.jpg) の正確な建物位置に基づくピン座標定義
 const CAMPUS_ZONES = [
-  {
-    id: "gym1",
-    name: "第一体育館",
-    subName: "メインステージ ＆ 2年模擬店",
-    pinLabel: "第一体育館",
-    color: "bg-rose-500",
-    lightBg: "bg-rose-50 border-rose-300 text-rose-900",
-    icon: "🏟️",
-    top: "72%",
-    left: "30%",
-    desc: "高専祭の超メイン会場！ステージプログラムと2年生4コース（2M, 2E, 2I, 2B）による餃子・ポップコーン・玉こん・焼き鳥！"
-  },
-  {
-    id: "entrance",
-    name: "学生昇降口前",
-    subName: "キッチンカーエリア",
-    pinLabel: "学生昇降口前",
-    color: "bg-amber-500",
-    lightBg: "bg-amber-50 border-amber-300 text-amber-900",
-    icon: "🚚",
-    top: "58%",
-    left: "63%",
-    desc: "話題のキッチンカー3店が集結！ラーメンもっけだの、祇園はんなりCafé、フェリチタプラス！"
-  },
   {
     id: "bldg1",
     name: "1号館",
@@ -409,8 +375,8 @@ const CAMPUS_ZONES = [
     color: "bg-blue-500",
     lightBg: "bg-blue-50 border-blue-300 text-blue-900",
     icon: "🏫",
-    top: "38%",
-    left: "40%",
+    top: "27%",
+    left: "53%",
     desc: "キャンパス中央に位置するメイン校舎。タップして各階（1F/2F/3F）の詳細マップ・配置図を確認できます！"
   },
   {
@@ -421,21 +387,45 @@ const CAMPUS_ZONES = [
     color: "bg-purple-500",
     lightBg: "bg-purple-50 border-purple-300 text-purple-900",
     icon: "👻",
-    top: "26%",
-    left: "72%",
+    top: "20%",
+    left: "86%",
     desc: "体験型アトラクション満載！3M特製お化け屋敷、4Eキッキングスナイパー、4B格付けチェック！"
   },
   {
+    id: "entrance",
+    name: "学生昇降口前広場",
+    subName: "キッチンカーエリア",
+    pinLabel: "学生昇降口前",
+    color: "bg-amber-500",
+    lightBg: "bg-amber-50 border-amber-300 text-amber-900",
+    icon: "🚚",
+    top: "45%",
+    left: "78%",
+    desc: "話題のキッチンカー3店が集結！ラーメンもっけだの、祇園はんなりCafé、フェリチタプラス！"
+  },
+  {
+    id: "gym1",
+    name: "第一体育館",
+    subName: "メインステージ ＆ 2年模擬店",
+    pinLabel: "第一体育館",
+    color: "bg-rose-500",
+    lightBg: "bg-rose-50 border-rose-300 text-rose-900",
+    icon: "🏟️",
+    top: "72%",
+    left: "52%",
+    desc: "高専祭の超メイン会場！ステージプログラムと2年生4コース（2M, 2E, 2I, 2B）による餃子・ポップコーン・玉こん・焼き鳥！"
+  },
+  {
     id: "parking",
-    name: "正門・駐車場",
-    subName: "アプローチ",
+    name: "駐車場",
+    subName: "来場者駐車場",
     pinLabel: "駐車場",
     color: "bg-sky-500",
     lightBg: "bg-sky-50 border-sky-300 text-sky-900",
     icon: "🅿️",
-    top: "84%",
-    left: "86%",
-    desc: "ご来場者様用駐車場および駐輪場です。"
+    top: "78%",
+    left: "93%",
+    desc: "ご来場者様用駐車場です。"
   }
 ];
 
@@ -464,9 +454,9 @@ export default function Page() {
   const [isBldg1ModalOpen, setIsBldg1ModalOpen] = useState(false);
   const [currentFloor, setCurrentFloor] = useState<"1F" | "2F" | "3F">("1F");
 
-  // リアルタイムイベント特定ロジック（シミュレーション時刻を使用）
+  // リアルタイムイベント特定ロジック（シミュレーション時刻）
   const liveEvent = useMemo(() => {
-    const simulateDate = new Date(2026, 9, 24, 12, 0, 0); // 月は0から始まるため10月=9
+    const simulateDate = new Date(2026, 9, 24, 12, 0, 0);
     const currentTime = simulateDate;
 
     for (const stage of EVENTS_DATA) {
@@ -522,7 +512,6 @@ export default function Page() {
   if (!isEntered) {
     return (
       <div className="min-h-screen bg-[#F8FAFC] text-slate-800 flex flex-col items-center justify-between py-12 px-6 relative overflow-hidden select-none font-sans">
-        {/* アニメーション用スタイル定義 */}
         <style>{`
           @keyframes floatTech {
             0% { transform: translateY(0px) rotate(0deg) scale(1); }
@@ -1067,16 +1056,53 @@ export default function Page() {
         {/* タブ 4: Access (交通・アクセス) */}
         {activeTab === "access" && (
           <div className="space-y-4">
+            {/* 1. 臨時駐車場＆インタラクティブGoogle Mapカード（添付画像1の再現） */}
             <div className="bg-white p-5 rounded-3xl border border-slate-200 shadow-sm space-y-4">
               <div className="flex items-center gap-3 border-b border-slate-100 pb-3">
-                <span className="text-3xl p-2 bg-sky-50 rounded-2xl text-sky-600">🚌</span>
+                <span className="text-3xl p-2.5 bg-red-50 rounded-2xl text-red-500">🚗</span>
+                <div>
+                  <h2 className="font-black text-lg text-slate-900">臨時駐車場</h2>
+                  <p className="text-xs text-slate-500 font-medium">臨時駐車場は切添グラウンドです。</p>
+                </div>
+              </div>
+
+              <div className="space-y-2 text-xs font-medium text-slate-700">
+                <p className="font-bold text-slate-800">〒997-0022 山形県鶴岡市切添町10</p>
+                <ul className="space-y-1 text-slate-600 list-disc list-inside">
+                  <li>利用時間: 8:30〜15:00</li>
+                  <li>会場周辺では徐行運転にご協力ください</li>
+                </ul>
+              </div>
+
+              {/* インタラクティブGoogle Map（指操作やマウスで拡大・縮小・移動可能） */}
+              <div className="space-y-2">
+                <div className="relative w-full h-72 rounded-2xl overflow-hidden border border-slate-200 shadow-inner bg-slate-100">
+                  <iframe
+                    title="切添グラウンド Google Map"
+                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3106.8207908902573!2d139.8242!3d38.7215!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x5f8c6837eb5f333b%3A0x6b1b1f618a80a22a!2z44CSOTk3LTAwMjIgIOS4q-W9ouOCi-aLpA!5e0!3m2!1sja!2sjp!4v1700000000000!5m2!1sja!2sjp"
+                    className="w-full h-full border-0"
+                    allowFullScreen={true}
+                    loading="lazy"
+                    referrerPolicy="no-referrer-when-downgrade"
+                  ></iframe>
+                </div>
+                <p className="text-[11px] text-center font-bold text-slate-400">
+                  ※ 赤いピンが臨時駐車場の位置です（指で自由に拡大・縮小・移動が可能です）
+                </p>
+              </div>
+            </div>
+
+            {/* 2. 本校へのアクセス案内カード */}
+            <div className="bg-white p-5 rounded-3xl border border-slate-200 shadow-sm space-y-4">
+              <div className="flex items-center gap-3 border-b border-slate-100 pb-3">
+                <span className="text-3xl p-2.5 bg-sky-50 rounded-2xl text-sky-600">🚌</span>
                 <div>
                   <h2 className="font-black text-lg text-slate-900">鶴岡高専へのアクセス</h2>
                   <p className="text-xs text-slate-500 font-medium">山形県鶴岡市井岡字沢田104</p>
                 </div>
               </div>
 
-              {/* 交通手段カードリスト */}
+              {/* 交通手段案内 */}
               <div className="space-y-3">
                 <div className="p-3.5 bg-slate-50 rounded-2xl border border-slate-200/80 space-y-1.5">
                   <div className="flex items-center gap-2 text-xs font-black text-slate-800">
@@ -1091,10 +1117,10 @@ export default function Page() {
                 <div className="p-3.5 bg-slate-50 rounded-2xl border border-slate-200/80 space-y-1.5">
                   <div className="flex items-center gap-2 text-xs font-black text-slate-800">
                     <Car className="w-4 h-4 text-emerald-600" />
-                    <span>お車でお越しの場合・駐車場</span>
+                    <span>お車でお越しの場合</span>
                   </div>
                   <p className="text-xs text-slate-600 leading-relaxed font-medium">
-                    山形自動車道「鶴岡IC」より約10分。構内の指定来場者用駐車場をご利用ください。
+                    山形自動車道「鶴岡IC」より約10分。構内の指定駐車場または上記の臨時駐車場（切添グラウンド）をご利用ください。
                   </p>
                 </div>
 
@@ -1106,12 +1132,12 @@ export default function Page() {
                   <ul className="text-xs text-amber-800 space-y-1 list-disc list-inside font-medium">
                     <li>校内は全面禁煙です。</li>
                     <li>酒類の持ち込み・飲酒は厳禁となっております。</li>
-                    <li>駐車場には限りがございますので、可能な限り公共交通機関をご利用ください。</li>
+                    <li>可能な限り公共交通機関のご利用にご協力ください。</li>
                   </ul>
                 </div>
               </div>
 
-              {/* 外部マップで開くボタン */}
+              {/* 外部アプリ用 Google マップ ボタン */}
               <a
                 href="https://maps.google.com/?q=鶴岡高等専門学校"
                 target="_blank"
@@ -1119,7 +1145,7 @@ export default function Page() {
                 className="w-full py-3 bg-sky-500 hover:bg-sky-600 text-white rounded-2xl font-black text-xs shadow transition flex items-center justify-center gap-2"
               >
                 <ExternalLink className="w-4 h-4" />
-                <span>Google マップで地図を開く</span>
+                <span>Google マップアプリで鶴岡高専を開く</span>
               </a>
             </div>
           </div>
@@ -1240,15 +1266,13 @@ export default function Page() {
               ))}
             </div>
 
-            {/* モーダルコンテンツ (スクロール可) */}
+            {/* モーダルコンテンツ */}
             <div className="p-4 space-y-4 overflow-y-auto">
-              {/* フロア簡易レイアウト図（グラフィカル表現） */}
               <div className="relative w-full bg-slate-100 border-2 border-slate-300 rounded-2xl p-4 min-h-[160px] flex flex-col justify-center">
                 <div className="text-center mb-2 text-[11px] font-black text-slate-400 uppercase tracking-widest">
                   1号館 {currentFloor} 配置イメージ
                 </div>
 
-                {/* 廊下と教室配置 */}
                 <div className="grid grid-cols-3 gap-2">
                   {floorStalls.map((stall) => (
                     <button
@@ -1272,7 +1296,6 @@ export default function Page() {
                 </div>
               </div>
 
-              {/* 当該フロアの企画リスト */}
               <div className="space-y-2">
                 <h4 className="text-xs font-extrabold text-slate-700">
                   📍 {currentFloor} の催し物一覧 ({floorStalls.length}件)
