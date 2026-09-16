@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect, useMemo } from "react";
+import React, { useState, useMemo, useEffect } from "react";
 import {
   Map,
   Store,
@@ -16,9 +16,6 @@ import {
   Clock,
   Navigation,
   Info,
-  ShoppingBag,
-  Ticket,
-  Library,
   AlertTriangle,
 } from "lucide-react";
 
@@ -311,7 +308,7 @@ const STALLS_DATA: StallItem[] = [
     menu: ["スムージー", "ガパオライス等"],
   },
 
-  // --- 施設・サービス ---
+  // --- 校内施設・サービス ---
   {
     id: 201,
     title: "総合メディアセンター",
@@ -528,22 +525,25 @@ export default function Page() {
   const [isBldg1ModalOpen, setIsBldg1ModalOpen] = useState(false);
   const [currentFloor, setCurrentFloor] = useState<"1F" | "2F" | "3F">("1F");
 
-  // 現在時刻管理（クライアントでのリアルタイム更新用）
+  // 現在時刻ステート（リアルタイム更新）
   const [currentTime, setCurrentTime] = useState<Date | null>(null);
 
   useEffect(() => {
     setCurrentTime(new Date());
     const timer = setInterval(() => {
       setCurrentTime(new Date());
-    }, 10000); // 10秒毎に時刻を自動更新
+    }, 5000);
     return () => clearInterval(timer);
   }, []);
 
-  // リアルタイムイベント特定ロジック（現在時刻がイベント時間枠内の場合のみ表示）
+  // リアルタイムイベント特定ロジック（厳密に時間内のみピックアップ表示）
   const liveEvent = useMemo(() => {
     if (!currentTime) return null;
 
-    const currentMinutes = currentTime.getHours() * 60 + currentTime.getMinutes();
+    // 現在時刻の「時」「分」を取得
+    const currentHours = currentTime.getHours();
+    const currentMinutes = currentTime.getMinutes();
+    const currentTotalMinutes = currentHours * 60 + currentMinutes;
 
     for (const stage of EVENTS_DATA) {
       for (const event of stage.schedule) {
@@ -553,13 +553,18 @@ export default function Page() {
         const startTotalMinutes = startHour * 60 + startMin;
         const endTotalMinutes = endHour * 60 + endMin;
 
-        // 時分がイベントの開始〜終了時間枠内であるか判定
-        if (currentMinutes >= startTotalMinutes && currentMinutes <= endTotalMinutes) {
-          return { ...event, stageName: stage.stageName, locationZoneId: stage.locationZoneId };
+        // 現在時刻がイベントの開始時刻〜終了時刻の【時間内】に完全に入っている場合のみマッチ
+        if (currentTotalMinutes >= startTotalMinutes && currentTotalMinutes <= endTotalMinutes) {
+          return {
+            ...event,
+            stageName: stage.stageName,
+            locationZoneId: stage.locationZoneId,
+          };
         }
       }
     }
-    return null; // 時間外の場合は null となりピックアップ非表示
+    // 時間外の場合は一切表示しない (null)
+    return null;
   }, [currentTime]);
 
   // 検索・カテゴリフィルタリング
@@ -591,7 +596,7 @@ export default function Page() {
   // 現在選択中のゾーン情報
   const currentZone = CAMPUS_ZONES.find((z) => z.id === selectedZoneId) || CAMPUS_ZONES[0];
 
-  // ドロップアニメーション用タイトル文字
+  // タイトルアニメーション文字
   const titlePart1 = ["熱", "狂", "の"];
   const titlePart2 = ["カ", "ー", "ニ", "バ", "ル"];
   const titlePart3 = ["高", "専", "祭"];
@@ -1164,7 +1169,7 @@ export default function Page() {
           </div>
         )}
 
-        {/* タブ 4: 交通・アクセス（指定座標 38.70947802632095, 139.7983573859085 を中心としたマップ） */}
+        {/* タブ 4: 交通・アクセス（ご指定座標 38.70950241993693, 139.79776942224186 を正確に指定したGoogle Map） */}
         {activeTab === "access" && (
           <div className="space-y-4">
             {/* 駐車場についての注意書きアラート */}
@@ -1181,7 +1186,7 @@ export default function Page() {
               </div>
             </div>
 
-            {/* 本校へのアクセス ＆ 指定座標を中心にしたGoogleマップ */}
+            {/* 本校へのアクセス ＆ 指定座標を中心とするGoogleマップ */}
             <div className="bg-white p-5 rounded-3xl border border-slate-200 shadow-sm space-y-4">
               <div className="flex items-center gap-3 border-b border-slate-100 pb-3">
                 <span className="text-3xl p-2.5 bg-sky-50 rounded-2xl text-sky-600">🏫</span>
@@ -1191,12 +1196,12 @@ export default function Page() {
                 </div>
               </div>
 
-              {/* 指定された座標 (38.70947802632095, 139.7983573859085) をピンポイントで表示 */}
+              {/* 指定座標（38.70950241993693, 139.79776942224186）を中心に配置したGoogle Map */}
               <div className="space-y-2">
                 <div className="relative w-full h-80 rounded-2xl overflow-hidden border border-slate-200 shadow-inner bg-slate-100">
                   <iframe
-                    title="鶴岡工業高等専門学校 アクセスマップ"
-                    src="https://maps.google.com/maps?q=38.70947802632095,139.7983573859085&t=&z=17&ie=UTF8&iwloc=&output=embed"
+                    title="鶴岡工業高等専門学校 Google Map"
+                    src="https://maps.google.com/maps?q=38.70950241993693,139.79776942224186&t=&z=17&ie=UTF8&iwloc=&output=embed"
                     className="w-full h-full border-0"
                     allowFullScreen={true}
                     loading="lazy"
@@ -1244,7 +1249,7 @@ export default function Page() {
 
               {/* 外部アプリ用 Google マップリンク */}
               <a
-                href="https://maps.google.com/?q=38.70947802632095,139.7983573859085"
+                href="https://maps.google.com/?q=38.70950241993693,139.79776942224186"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="w-full py-3 bg-sky-500 hover:bg-sky-600 text-white rounded-2xl font-black text-xs shadow transition flex items-center justify-center gap-2"
