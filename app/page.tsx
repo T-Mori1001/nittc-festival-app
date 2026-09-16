@@ -621,7 +621,6 @@ export default function Page() {
           }
           .animate-drop-char {
             display: inline-block;
-            /* アニメーション時間を1.5sに伸ばし、よりゆったり表示 */
             animation: dropChar 1.5s cubic-bezier(0.25, 1, 0.5, 1) forwards;
           }
         `}</style>
@@ -655,7 +654,6 @@ export default function Page() {
 
           <div className="flex flex-col items-center justify-center font-black tracking-tight font-sans">
             <div className="flex items-baseline justify-center text-[#E53935] drop-shadow-sm">
-              {/* アニメーションの遅延間隔を広げてゆったりドロップ */}
               <div className="text-4xl sm:text-5xl flex">
                 {titlePart1.map((char, index) => (
                   <span
@@ -703,33 +701,47 @@ export default function Page() {
             <span className="text-slate-400 font-normal">@鶴岡高専</span>
           </div>
 
-          {/* 高専HP QR ＆ 高専祭インスタ QR を並列表示 */}
+          {/* 高専HP QR ＆ 高専祭インスタ QR（タップで各直接サイトへ遷移） */}
           <div className="flex items-center justify-center gap-6 pt-2 z-10 w-full">
             {/* 高専HP */}
-            <div className="flex flex-col items-center gap-1.5">
+            <a
+              href="https://www.tsuruoka-nct.ac.jp/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex flex-col items-center gap-1.5 group hover:scale-105 active:scale-95 transition-all cursor-pointer"
+              title="鶴岡高専 公式HPを開く"
+            >
               <img
                 src="/高専QR.png"
                 alt="鶴岡高専 公式HP QRコード"
-                className="w-22 h-22 object-contain shadow-md rounded-xl border border-slate-200 bg-white p-1"
+                className="w-22 h-22 object-contain shadow-md rounded-xl border border-slate-200 bg-white p-1 group-hover:border-teal-500 group-hover:shadow-lg transition-all"
               />
-              <div className="text-[11px] font-bold text-slate-600 flex items-center gap-1">
+              <div className="text-[11px] font-bold text-slate-600 group-hover:text-teal-600 flex items-center gap-1">
                 <Globe className="w-3.5 h-3.5 text-teal-600" />
                 <span>高専 HP</span>
+                <ExternalLink className="w-3 h-3 text-slate-400 group-hover:text-teal-600" />
               </div>
-            </div>
+            </a>
 
             {/* 高専祭インスタ */}
-            <div className="flex flex-col items-center gap-1.5">
+            <a
+              href="https://www.instagram.com/tsuruoka_kosen_fes/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex flex-col items-center gap-1.5 group hover:scale-105 active:scale-95 transition-all cursor-pointer"
+              title="高専祭公式 Instagramを開く"
+            >
               <img
                 src="/インスタQR.png"
                 alt="高専祭公式 Instagram QRコード"
-                className="w-22 h-22 object-contain shadow-md rounded-xl border border-slate-200 bg-white p-1"
+                className="w-22 h-22 object-contain shadow-md rounded-xl border border-slate-200 bg-white p-1 group-hover:border-pink-500 group-hover:shadow-lg transition-all"
               />
-              <div className="text-[11px] font-bold text-slate-600 flex items-center gap-1">
+              <div className="text-[11px] font-bold text-slate-600 group-hover:text-pink-600 flex items-center gap-1">
                 <InstagramIcon className="w-3.5 h-3.5 text-pink-600" />
                 <span>公式インスタ</span>
+                <ExternalLink className="w-3 h-3 text-slate-400 group-hover:text-pink-600" />
               </div>
-            </div>
+            </a>
           </div>
 
           <div className="pt-2 w-full flex flex-col items-center space-y-3">
@@ -904,7 +916,6 @@ export default function Page() {
                       isSelected ? "scale-125 z-30" : "hover:scale-110"
                     }`}
                   >
-                    {/* デフォルトは非表示、ピンをタップ（選択）時のみ場所名を表示 */}
                     {isSelected && (
                       <div className="px-2.5 py-1 rounded-full text-[11px] font-black whitespace-nowrap shadow-lg mb-1 border border-slate-700 bg-slate-900 text-white ring-2 ring-rose-400 flex items-center gap-1 animate-in fade-in zoom-in-90 duration-200">
                         <span>{zone.icon}</span>

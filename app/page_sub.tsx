@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect, useMemo } from "react";
+import React, { useState, useMemo, useEffect } from "react";
 import {
   Map,
   Store,
@@ -16,10 +16,8 @@ import {
   Clock,
   Navigation,
   Info,
-  ShoppingBag,
-  Ticket,
-  Library,
   AlertTriangle,
+  Globe,
 } from "lucide-react";
 
 // Instagramアイコン用SVG
@@ -311,7 +309,7 @@ const STALLS_DATA: StallItem[] = [
     menu: ["スムージー", "ガパオライス等"],
   },
 
-  // --- 施設・サービス ---
+  // --- 校内施設・サービス ---
   {
     id: 201,
     title: "総合メディアセンター",
@@ -505,15 +503,15 @@ const CAMPUS_ZONES = [
 
 // 工学モチーフ浮遊アニメーションデータ
 const TECH_FLOATING_ITEMS = [
-  { icon: "⚙️", top: "8%", left: "10%", size: "text-3xl", delay: "0s", duration: "7s" },
-  { icon: "🤖", top: "16%", right: "8%", size: "text-4xl", delay: "0.5s", duration: "6.5s" },
-  { icon: "🔩", top: "25%", left: "6%", size: "text-2xl", delay: "1s", duration: "8s" },
-  { icon: "⚡", top: "35%", right: "12%", size: "text-3xl", delay: "0.3s", duration: "5.5s" },
-  { icon: "🔧", top: "45%", left: "12%", size: "text-3xl", delay: "1.2s", duration: "6.8s" },
-  { icon: "💻", top: "52%", right: "6%", size: "text-3xl", delay: "0.8s", duration: "7.5s" },
-  { icon: "🔌", top: "66%", left: "8%", size: "text-2xl", delay: "1.5s", duration: "6.2s" },
-  { icon: "⚙️", top: "75%", right: "10%", size: "text-5xl", delay: "0.2s", duration: "9s" },
-  { icon: "🤖", top: "84%", left: "18%", size: "text-3xl", delay: "1.1s", duration: "7.2s" },
+  { icon: "⚙️", top: "8%", left: "10%", size: "text-3xl", delay: "0s", duration: "10s" },
+  { icon: "🤖", top: "16%", right: "8%", size: "text-4xl", delay: "0.8s", duration: "9.5s" },
+  { icon: "🔩", top: "25%", left: "6%", size: "text-2xl", delay: "1.5s", duration: "11s" },
+  { icon: "⚡", top: "35%", right: "12%", size: "text-3xl", delay: "0.5s", duration: "8.5s" },
+  { icon: "🔧", top: "45%", left: "12%", size: "text-3xl", delay: "1.8s", duration: "10s" },
+  { icon: "💻", top: "52%", right: "6%", size: "text-3xl", delay: "1.2s", duration: "11s" },
+  { icon: "🔌", top: "66%", left: "8%", size: "text-2xl", delay: "2s", duration: "9s" },
+  { icon: "⚙️", top: "75%", right: "10%", size: "text-5xl", delay: "0.4s", duration: "12s" },
+  { icon: "🤖", top: "84%", left: "18%", size: "text-3xl", delay: "1.6s", duration: "10.5s" },
 ];
 
 export default function Page() {
@@ -521,29 +519,31 @@ export default function Page() {
   const [activeTab, setActiveTab] = useState<"map" | "stalls" | "events" | "access">("map");
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCategory, setSelectedCategory] = useState<string>("すべて");
-  const [selectedZoneId, setSelectedZoneId] = useState("gym1");
+  const [selectedZoneId, setSelectedZoneId] = useState<string | null>(null);
   const [modalItem, setModalItem] = useState<StallItem | null>(null);
 
   // 1号館フロア詳細モーダル用ステート
   const [isBldg1ModalOpen, setIsBldg1ModalOpen] = useState(false);
   const [currentFloor, setCurrentFloor] = useState<"1F" | "2F" | "3F">("1F");
 
-  // 現在時刻管理（クライアントでのリアルタイム更新用）
+  // 現在時刻ステート（リアルタイム更新）
   const [currentTime, setCurrentTime] = useState<Date | null>(null);
 
   useEffect(() => {
     setCurrentTime(new Date());
     const timer = setInterval(() => {
       setCurrentTime(new Date());
-    }, 10000); // 10秒毎に時刻を自動更新
+    }, 5000);
     return () => clearInterval(timer);
   }, []);
 
-  // リアルタイムイベント特定ロジック（現在時刻がイベント時間枠内の場合のみ表示）
+  // リアルタイムイベント特定ロジック（時間内のみピックアップ）
   const liveEvent = useMemo(() => {
     if (!currentTime) return null;
 
-    const currentMinutes = currentTime.getHours() * 60 + currentTime.getMinutes();
+    const currentHours = currentTime.getHours();
+    const currentMinutes = currentTime.getMinutes();
+    const currentTotalMinutes = currentHours * 60 + currentMinutes;
 
     for (const stage of EVENTS_DATA) {
       for (const event of stage.schedule) {
@@ -553,13 +553,16 @@ export default function Page() {
         const startTotalMinutes = startHour * 60 + startMin;
         const endTotalMinutes = endHour * 60 + endMin;
 
-        // 時分がイベントの開始〜終了時間枠内であるか判定
-        if (currentMinutes >= startTotalMinutes && currentMinutes <= endTotalMinutes) {
-          return { ...event, stageName: stage.stageName, locationZoneId: stage.locationZoneId };
+        if (currentTotalMinutes >= startTotalMinutes && currentTotalMinutes <= endTotalMinutes) {
+          return {
+            ...event,
+            stageName: stage.stageName,
+            locationZoneId: stage.locationZoneId,
+          };
         }
       }
     }
-    return null; // 時間外の場合は null となりピックアップ非表示
+    return null;
   }, [currentTime]);
 
   // 検索・カテゴリフィルタリング
@@ -580,6 +583,7 @@ export default function Page() {
 
   // 地図上で選択されたゾーンのデータ
   const zoneStalls = useMemo(() => {
+    if (!selectedZoneId) return [];
     return STALLS_DATA.filter((s) => s.zoneId === selectedZoneId);
   }, [selectedZoneId]);
 
@@ -589,9 +593,9 @@ export default function Page() {
   }, [currentFloor]);
 
   // 現在選択中のゾーン情報
-  const currentZone = CAMPUS_ZONES.find((z) => z.id === selectedZoneId) || CAMPUS_ZONES[0];
+  const currentZone = CAMPUS_ZONES.find((z) => z.id === selectedZoneId);
 
-  // ドロップアニメーション用タイトル文字
+  // タイトルアニメーション文字
   const titlePart1 = ["熱", "狂", "の"];
   const titlePart2 = ["カ", "ー", "ニ", "バ", "ル"];
   const titlePart3 = ["高", "専", "祭"];
@@ -607,9 +611,9 @@ export default function Page() {
             100% { transform: translateY(0px) rotate(360deg) scale(1); }
           }
           @keyframes dropChar {
-            0% { transform: translateY(-70px) scale(0.3); opacity: 0; }
-            60% { transform: translateY(14px) scale(1.15); opacity: 1; }
-            80% { transform: translateY(-4px) scale(0.95); }
+            0% { transform: translateY(-80px) scale(0.2); opacity: 0; }
+            65% { transform: translateY(12px) scale(1.1); opacity: 1; }
+            85% { transform: translateY(-3px) scale(0.98); }
             100% { transform: translateY(0) scale(1); opacity: 1; }
           }
           .animate-float-tech {
@@ -617,7 +621,8 @@ export default function Page() {
           }
           .animate-drop-char {
             display: inline-block;
-            animation: dropChar 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+            /* アニメーション時間を1.5sに伸ばし、よりゆったり表示 */
+            animation: dropChar 1.5s cubic-bezier(0.25, 1, 0.5, 1) forwards;
           }
         `}</style>
 
@@ -650,12 +655,13 @@ export default function Page() {
 
           <div className="flex flex-col items-center justify-center font-black tracking-tight font-sans">
             <div className="flex items-baseline justify-center text-[#E53935] drop-shadow-sm">
+              {/* アニメーションの遅延間隔を広げてゆったりドロップ */}
               <div className="text-4xl sm:text-5xl flex">
                 {titlePart1.map((char, index) => (
                   <span
                     key={index}
                     className="animate-drop-char"
-                    style={{ animationDelay: `${index * 0.1}s` }}
+                    style={{ animationDelay: `${index * 0.18}s` }}
                   >
                     {char}
                   </span>
@@ -668,7 +674,7 @@ export default function Page() {
                     <span
                       key={index}
                       className="animate-drop-char"
-                      style={{ animationDelay: `${0.3 + index * 0.08}s` }}
+                      style={{ animationDelay: `${0.6 + index * 0.15}s` }}
                     >
                       {char}
                     </span>
@@ -680,7 +686,7 @@ export default function Page() {
                     <span
                       key={index}
                       className="animate-drop-char"
-                      style={{ animationDelay: `${0.7 + index * 0.1}s` }}
+                      style={{ animationDelay: `${1.3 + index * 0.18}s` }}
                     >
                       {char}
                     </span>
@@ -697,19 +703,36 @@ export default function Page() {
             <span className="text-slate-400 font-normal">@鶴岡高専</span>
           </div>
 
-          <div className="flex flex-col items-center gap-2 pt-2 z-10">
-            <img
-              src="/insta_qr.png"
-              alt="公式Instagram QRコード"
-              className="w-24 h-24 object-contain shadow-md rounded-xl border border-slate-200"
-            />
-            <div className="text-xs font-bold text-slate-500 flex items-center gap-1.5">
-              <InstagramIcon className="w-4 h-4 text-pink-600" />
-              <span>公式 Instagram</span>
+          {/* 高専HP QR ＆ 高専祭インスタ QR を並列表示 */}
+          <div className="flex items-center justify-center gap-6 pt-2 z-10 w-full">
+            {/* 高専HP */}
+            <div className="flex flex-col items-center gap-1.5">
+              <img
+                src="/高専QR.png"
+                alt="鶴岡高専 公式HP QRコード"
+                className="w-22 h-22 object-contain shadow-md rounded-xl border border-slate-200 bg-white p-1"
+              />
+              <div className="text-[11px] font-bold text-slate-600 flex items-center gap-1">
+                <Globe className="w-3.5 h-3.5 text-teal-600" />
+                <span>高専 HP</span>
+              </div>
+            </div>
+
+            {/* 高専祭インスタ */}
+            <div className="flex flex-col items-center gap-1.5">
+              <img
+                src="/インスタQR.png"
+                alt="高専祭公式 Instagram QRコード"
+                className="w-22 h-22 object-contain shadow-md rounded-xl border border-slate-200 bg-white p-1"
+              />
+              <div className="text-[11px] font-bold text-slate-600 flex items-center gap-1">
+                <InstagramIcon className="w-3.5 h-3.5 text-pink-600" />
+                <span>公式インスタ</span>
+              </div>
             </div>
           </div>
 
-          <div className="pt-4 w-full flex flex-col items-center space-y-3">
+          <div className="pt-2 w-full flex flex-col items-center space-y-3">
             <button
               onClick={() => setIsEntered(true)}
               className="w-full max-w-[260px] py-4 rounded-full bg-gradient-to-r from-red-500 via-orange-500 to-amber-500 text-white text-base font-black tracking-wider shadow-lg hover:shadow-xl hover:scale-105 active:scale-95 transition-all duration-300 flex items-center justify-center gap-2 border border-white/30"
@@ -873,28 +896,21 @@ export default function Page() {
                 return (
                   <button
                     key={zone.id}
-                    onClick={() => setSelectedZoneId(zone.id)}
+                    onClick={() =>
+                      setSelectedZoneId((prev) => (prev === zone.id ? null : zone.id))
+                    }
                     style={{ top: zone.top, left: zone.left }}
                     className={`absolute -translate-x-1/2 -translate-y-1/2 transition-all duration-300 z-10 flex flex-col items-center group ${
                       isSelected ? "scale-125 z-30" : "hover:scale-110"
                     }`}
                   >
-                    <div
-                      className={`px-2 py-0.5 rounded-full text-[10px] font-black whitespace-nowrap shadow-md mb-0.5 border flex items-center gap-1 ${
-                        isSelected
-                          ? "bg-slate-900 text-white border-slate-700 ring-2 ring-rose-400"
-                          : isLiveStageZone
-                          ? "bg-red-600 text-white border-red-700 animate-pulse"
-                          : "bg-white/95 text-slate-800 border-slate-200 group-hover:bg-orange-500 group-hover:text-white"
-                      }`}
-                    >
-                      {isLiveStageZone ? (
-                        <Radio className="w-3 h-3 animate-live-fade" />
-                      ) : (
+                    {/* デフォルトは非表示、ピンをタップ（選択）時のみ場所名を表示 */}
+                    {isSelected && (
+                      <div className="px-2.5 py-1 rounded-full text-[11px] font-black whitespace-nowrap shadow-lg mb-1 border border-slate-700 bg-slate-900 text-white ring-2 ring-rose-400 flex items-center gap-1 animate-in fade-in zoom-in-90 duration-200">
                         <span>{zone.icon}</span>
-                      )}
-                      <span>{zone.pinLabel}</span>
-                    </div>
+                        <span>{zone.pinLabel}</span>
+                      </div>
+                    )}
 
                     <div className="relative flex items-center justify-center">
                       {(isSelected || isLiveStageZone) && (
@@ -922,71 +938,78 @@ export default function Page() {
             </div>
 
             {/* 選択されたスポットの詳細パネル */}
-            <div className={`rounded-3xl p-5 border shadow-sm space-y-4 transition-all ${currentZone.lightBg}`}>
-              <div className="flex items-start justify-between gap-2 border-b border-current/10 pb-3">
-                <div className="flex items-center gap-3">
-                  <span className="text-3xl p-2 bg-white/80 rounded-2xl shadow-sm">{currentZone.icon}</span>
-                  <div>
-                    <h3 className="text-xl font-black text-slate-900">{currentZone.name}</h3>
-                    <p className="text-xs font-bold opacity-80">{currentZone.subName}</p>
+            {currentZone ? (
+              <div className={`rounded-3xl p-5 border shadow-sm space-y-4 transition-all ${currentZone.lightBg}`}>
+                <div className="flex items-start justify-between gap-2 border-b border-current/10 pb-3">
+                  <div className="flex items-center gap-3">
+                    <span className="text-3xl p-2 bg-white/80 rounded-2xl shadow-sm">{currentZone.icon}</span>
+                    <div>
+                      <h3 className="text-xl font-black text-slate-900">{currentZone.name}</h3>
+                      <p className="text-xs font-bold opacity-80">{currentZone.subName}</p>
+                    </div>
                   </div>
+                  <span className="text-xs font-black px-3 py-1 bg-white/90 rounded-full shadow-sm">
+                    対象リスト ({zoneStalls.length}件)
+                  </span>
                 </div>
-                <span className="text-xs font-black px-3 py-1 bg-white/90 rounded-full shadow-sm">
-                  対象リスト ({zoneStalls.length}件)
-                </span>
-              </div>
 
-              <p className="text-xs leading-relaxed font-medium opacity-90">{currentZone.desc}</p>
+                <p className="text-xs leading-relaxed font-medium opacity-90">{currentZone.desc}</p>
 
-              {/* 1号館の場合はフロアモーダルボタンを表示 */}
-              {selectedZoneId === "bldg1" && (
-                <button
-                  onClick={() => setIsBldg1ModalOpen(true)}
-                  className="w-full py-3 px-4 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-2xl font-black text-xs shadow-md hover:shadow-lg transition flex items-center justify-center gap-2"
-                >
-                  <Layers className="w-4 h-4" />
-                  <span>1号館のフロア詳細マップ（1F / 2F / 3F）を開く</span>
-                </button>
-              )}
-
-              {/* そのエリアの企画・施設一覧 */}
-              <div className="space-y-2">
-                <h4 className="text-xs font-extrabold text-slate-800 flex items-center gap-1">
-                  <span>📍 {currentZone.name} の出展・施設一覧</span>
-                </h4>
-
-                {zoneStalls.length > 0 ? (
-                  <div className="grid grid-cols-1 gap-2">
-                    {zoneStalls.map((stall) => (
-                      <div
-                        key={stall.id}
-                        onClick={() => setModalItem(stall)}
-                        className="bg-white text-slate-800 p-3.5 rounded-2xl border border-slate-200 shadow-sm hover:shadow-md cursor-pointer transition flex items-center justify-between"
-                      >
-                        <div className="flex items-center gap-3">
-                          <span className="text-2xl p-2 bg-slate-50 rounded-xl">{stall.icon}</span>
-                          <div>
-                            <div className="flex items-center gap-1.5">
-                              <span className="text-[10px] font-black px-2 py-0.2 bg-orange-100 text-orange-700 rounded">
-                                {stall.grade}
-                              </span>
-                              <span className="text-[10px] font-bold text-slate-500">{stall.category}</span>
-                            </div>
-                            <h5 className="font-black text-sm text-slate-900 mt-0.5">{stall.title}</h5>
-                            <p className="text-[11px] text-slate-500 font-medium">{stall.location}</p>
-                          </div>
-                        </div>
-                        <ChevronRight className="w-5 h-5 text-slate-400" />
-                      </div>
-                    ))}
-                  </div>
-                ) : (
-                  <div className="bg-white/60 p-4 rounded-2xl text-center text-xs text-slate-500 font-bold border border-slate-200">
-                    このエリアに関する個別のアトラクションリストは以上です。
-                  </div>
+                {/* 1号館の場合はフロアモーダルボタンを表示 */}
+                {selectedZoneId === "bldg1" && (
+                  <button
+                    onClick={() => setIsBldg1ModalOpen(true)}
+                    className="w-full py-3 px-4 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-2xl font-black text-xs shadow-md hover:shadow-lg transition flex items-center justify-center gap-2"
+                  >
+                    <Layers className="w-4 h-4" />
+                    <span>1号館のフロア詳細マップ（1F / 2F / 3F）を開く</span>
+                  </button>
                 )}
+
+                {/* そのエリアの企画・施設一覧 */}
+                <div className="space-y-2">
+                  <h4 className="text-xs font-extrabold text-slate-800 flex items-center gap-1">
+                    <span>📍 {currentZone.name} の出展・施設一覧</span>
+                  </h4>
+
+                  {zoneStalls.length > 0 ? (
+                    <div className="grid grid-cols-1 gap-2">
+                      {zoneStalls.map((stall) => (
+                        <div
+                          key={stall.id}
+                          onClick={() => setModalItem(stall)}
+                          className="bg-white text-slate-800 p-3.5 rounded-2xl border border-slate-200 shadow-sm hover:shadow-md cursor-pointer transition flex items-center justify-between"
+                        >
+                          <div className="flex items-center gap-3">
+                            <span className="text-2xl p-2 bg-slate-50 rounded-xl">{stall.icon}</span>
+                            <div>
+                              <div className="flex items-center gap-1.5">
+                                <span className="text-[10px] font-black px-2 py-0.2 bg-orange-100 text-orange-700 rounded">
+                                  {stall.grade}
+                                </span>
+                                <span className="text-[10px] font-bold text-slate-500">{stall.category}</span>
+                              </div>
+                              <h5 className="font-black text-sm text-slate-900 mt-0.5">{stall.title}</h5>
+                              <p className="text-[11px] text-slate-500 font-medium">{stall.location}</p>
+                            </div>
+                          </div>
+                          <ChevronRight className="w-5 h-5 text-slate-400" />
+                        </div>
+                      ))}
+                    </div>
+                  ) : (
+                    <div className="bg-white/60 p-4 rounded-2xl text-center text-xs text-slate-500 font-bold border border-slate-200">
+                      このエリアに関する個別のアトラクションリストは以上です。
+                    </div>
+                  )}
+                </div>
               </div>
-            </div>
+            ) : (
+              <div className="bg-white p-5 rounded-3xl border border-slate-200 text-center text-slate-500 font-bold text-xs space-y-1 shadow-sm">
+                <p className="text-xl">📍</p>
+                <p>マップ上のピンをタップすると場所の詳細が表示されます</p>
+              </div>
+            )}
           </div>
         )}
 
@@ -1164,7 +1187,7 @@ export default function Page() {
           </div>
         )}
 
-        {/* タブ 4: 交通・アクセス（指定座標 38.70947802632095, 139.7983573859085 を中心としたマップ） */}
+        {/* タブ 4: 交通・アクセス */}
         {activeTab === "access" && (
           <div className="space-y-4">
             {/* 駐車場についての注意書きアラート */}
@@ -1181,7 +1204,7 @@ export default function Page() {
               </div>
             </div>
 
-            {/* 本校へのアクセス ＆ 指定座標を中心にしたGoogleマップ */}
+            {/* 本校へのアクセス ＆ Googleマップ */}
             <div className="bg-white p-5 rounded-3xl border border-slate-200 shadow-sm space-y-4">
               <div className="flex items-center gap-3 border-b border-slate-100 pb-3">
                 <span className="text-3xl p-2.5 bg-sky-50 rounded-2xl text-sky-600">🏫</span>
@@ -1191,12 +1214,12 @@ export default function Page() {
                 </div>
               </div>
 
-              {/* 指定された座標 (38.70947802632095, 139.7983573859085) をピンポイントで表示 */}
+              {/* 指定座標（38.70950241993693, 139.79776942224186）を中心としたマップ */}
               <div className="space-y-2">
                 <div className="relative w-full h-80 rounded-2xl overflow-hidden border border-slate-200 shadow-inner bg-slate-100">
                   <iframe
-                    title="鶴岡工業高等専門学校 アクセスマップ"
-                    src="https://maps.google.com/maps?q=38.70947802632095,139.7983573859085&t=&z=17&ie=UTF8&iwloc=&output=embed"
+                    title="鶴岡工業高等専門学校 Google Map"
+                    src="https://maps.google.com/maps?q=38.70950241993693,139.79776942224186&t=&z=17&ie=UTF8&iwloc=&output=embed"
                     className="w-full h-full border-0"
                     allowFullScreen={true}
                     loading="lazy"
@@ -1242,9 +1265,8 @@ export default function Page() {
                 </div>
               </div>
 
-              {/* 外部アプリ用 Google マップリンク */}
               <a
-                href="https://maps.google.com/?q=38.70947802632095,139.7983573859085"
+                href="https://maps.google.com/?q=38.70950241993693,139.79776942224186"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="w-full py-3 bg-sky-500 hover:bg-sky-600 text-white rounded-2xl font-black text-xs shadow transition flex items-center justify-center gap-2"
